@@ -19,12 +19,8 @@ public class EggCracking : MonoBehaviour
 
     public ParticleSystem[] ambientVfx;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
+    private Camera eggCamera;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -36,15 +32,35 @@ public class EggCracking : MonoBehaviour
     private void DoRaycast()
     {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = eggCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform.root.CompareTag("Egg"))
+            if (RecursiveHitFind(hit))
             {
                 EggTapped(hit.point);
             }
         }
+    }
+
+    private bool RecursiveHitFind(RaycastHit hit, Transform activeTransform = null)
+    {
+        if (activeTransform == null)
+        {
+            activeTransform = hit.transform;
+        }
+
+        if (activeTransform.CompareTag("Egg"))
+        {
+            return true;
+        }
+
+        if (activeTransform.parent != null)
+        {
+            return RecursiveHitFind(hit, activeTransform.parent);
+        }
+
+        return false;
     }
 
     public void EggTapped(Vector3 tapLocation)
@@ -128,5 +144,10 @@ public class EggCracking : MonoBehaviour
         {
             vfx.Play();
         }
+    }
+
+    public void SetCamera(Camera eggCamera)
+    {
+        this.eggCamera = eggCamera;
     }
 }
