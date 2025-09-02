@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e36c418ddece504ab0dca67a4e238d5, type: 3}
+  m_Name: Arctic_Ox
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1703209682340281143, guid: 8459140a28c7eac4d8b170b721453d02, type: 3}
+  animalName: Ox
+  description: This big cow is actually an OX. He sends you love and kisses xoxo
+  rarity: 1
+  family: 1
+  behaviour: 0
+  age: 1
+  possibleEvolutions: []
+  openingExtraScale: 2

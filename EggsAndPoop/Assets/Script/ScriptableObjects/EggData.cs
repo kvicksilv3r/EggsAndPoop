@@ -7,4 +7,5 @@ public class EggData : ScriptableObject
     public AnimalFamily[] eggTypes;
     public AnimalRarity eggMinRarity;
     public AnimalRarity eggMaxRarity;
+    public GameObject eggPrefab;
 }

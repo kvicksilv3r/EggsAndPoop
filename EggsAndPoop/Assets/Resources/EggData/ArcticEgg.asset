@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b945cf360e3c3246b5a54aaf52088a4, type: 3}
-  m_Name: DebugEgg
+  m_Name: ArcticEgg
   m_EditorClassIdentifier: 
-  eggName: Debug egging
-  eggTypes: 00000000
+  eggName: Arctic egg
+  eggTypes: 01000000
   eggMinRarity: 0
-  eggMaxRarity: 2
-  eggPrefab: {fileID: 5581874701819194801, guid: 5f1e9dc337411484e983fa6384dac424, type: 3}
+  eggMaxRarity: 4
+  eggPrefab: {fileID: 5581874701819194801, guid: fae3cc8616a3fbf4e80487cb16987a6a, type: 3}

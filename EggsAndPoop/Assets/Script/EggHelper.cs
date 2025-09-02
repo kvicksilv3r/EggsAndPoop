@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -15,9 +16,19 @@ public class EggHelper : MonoBehaviour
 
     public Camera eggCamera;
 
-    void Start()
-    {
+    public static EggHelper Instance;
 
+    public float eggSpawnOffset;
+    public float eggSpawnTime;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.m_SetupEgg.AddListener(SetupEgg);
     }
 
     public void SetupEgg()
@@ -27,14 +38,18 @@ public class EggHelper : MonoBehaviour
             DestroyCurrentEgg();
         }
 
-        var egg = Instantiate(crackingEgg, eggSceneRoot.transform);
+        var eggdata = EggOpeningController.Instance.GetEgg();
+
+        var egg = Instantiate(eggdata.eggPrefab, eggSceneRoot.transform);
         egg.GetComponent<EggCracking>().SetCamera(eggCamera);
 
-        egg.transform.localPosition = position;
+        egg.transform.localPosition = position + Vector3.up * eggSpawnOffset;
         egg.transform.rotation = Quaternion.Euler(rotation);
         egg.transform.localScale = scale;
 
         activeEgg = egg;
+
+        egg.transform.DOMove(eggSceneRoot.transform.position + position, eggSpawnTime);
     }
 
     private void DestroyCurrentEgg()

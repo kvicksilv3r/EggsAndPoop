@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Egg
+  m_Name: M_Egg_Basic
   m_Shader: {fileID: -6465566751694194690, guid: a44401f8b3d263c4e9c2ed62b3f5adff, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

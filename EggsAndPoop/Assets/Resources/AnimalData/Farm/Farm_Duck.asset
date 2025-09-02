@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e36c418ddece504ab0dca67a4e238d5, type: 3}
-  m_Name: Farm_Rooster
+  m_Name: Farm_Duck
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5510196490160580397, guid: 511008ffae6ab11459f4abdc9e6f876c, type: 3}
-  animalName: Rooster
-  description: Cockadiddle doo
+  prefab: {fileID: 8964966116814765260, guid: 12b696ce7d428d745aee485c8e3ef831, type: 3}
+  animalName: Duck
+  description: 'Fun fact: Ducks go QUACK'
   rarity: 1
   family: 0
   behaviour: 0
   age: 1
   possibleEvolutions: []
+  openingExtraScale: 1

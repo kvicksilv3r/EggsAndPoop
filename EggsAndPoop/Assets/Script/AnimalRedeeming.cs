@@ -16,14 +16,15 @@ public class AnimalRedeeming : MonoBehaviour
         Instance = this;
     }
 
-    void Update()
-    {
-
-    }
-
     public void SetEgg(EggData newEgg)
     {
         activeEgg = newEgg;
+    }
+
+    public AnimalData OpenEgg(EggData newEgg)
+    {
+        SetEgg(newEgg);
+        return OpenEgg();
     }
 
     public AnimalData OpenEgg()

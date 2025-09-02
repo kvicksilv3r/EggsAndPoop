@@ -91,8 +91,7 @@ public class EggCracking : MonoBehaviour
         for (int i = 0; i < crackSections; i++)
         {
             var t = transform.GetChild(crackIndex);
-            //t.Rotate(Vector3.up, Random.Range(-crackAmount, crackAmount));
-            //t.Rotate(Vector3.right, Random.Range(-crackAmount / 2f, crackAmount / 2f));
+
             if (i % 2 == 0)
             {
                 t.Rotate(Vector3.up, crackAmount / 2f);
@@ -144,6 +143,8 @@ public class EggCracking : MonoBehaviour
         {
             vfx.Play();
         }
+
+        GameManager.Instance.m_EggCrackedOpen.Invoke();
     }
 
     public void SetCamera(Camera eggCamera)

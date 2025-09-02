@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e36c418ddece504ab0dca67a4e238d5, type: 3}
-  m_Name: Farm_Buffalo
+  m_Name: Arctic_ArcticFox
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5688514589227935463, guid: ad0058799afa43640919848d26f0f33b, type: 3}
-  animalName: Buffalo
-  description: Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo
-  rarity: 2
-  family: 0
-  behaviour: 0
+  prefab: {fileID: 5528603755101481349, guid: 8640f86cc1cb10448814047cfd71eec9, type: 3}
+  animalName: Arctic fox
+  description: This little fella can survive in snow. What excuse do you have?
+  rarity: 0
+  family: 1
+  behaviour: 1
   age: 1
   possibleEvolutions: []
+  openingExtraScale: 2.2

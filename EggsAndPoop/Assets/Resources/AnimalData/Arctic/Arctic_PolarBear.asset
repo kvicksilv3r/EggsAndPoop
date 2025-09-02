@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e36c418ddece504ab0dca67a4e238d5, type: 3}
-  m_Name: Farm_Hen
+  m_Name: Arctic_PolarBear
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3078124929395302595, guid: dce9c9e444374b944bbe648df744fbb4, type: 3}
-  animalName: Hen
-  description: Old lady chicken
-  rarity: 1
-  family: 0
-  behaviour: 0
+  prefab: {fileID: 3709661200891039494, guid: 13010ba8a92e1e84094704ebcf1e34cc, type: 3}
+  animalName: Polar bear
+  description: 'Lets hope this fearce predator isnt bi-polar '
+  rarity: 3
+  family: 1
+  behaviour: 1
   age: 1
-  minAge: 1
-  maxAge: 1
   possibleEvolutions: []
+  openingExtraScale: 2.5

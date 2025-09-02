@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b945cf360e3c3246b5a54aaf52088a4, type: 3}
-  m_Name: DebugEgg
+  m_Script: {fileID: 11500000, guid: 330aa32f27d1db844815a9b331632957, type: 3}
+  m_Name: InventoryConfig
   m_EditorClassIdentifier: 
-  eggName: Debug egging
-  eggTypes: 00000000
-  eggMinRarity: 0
-  eggMaxRarity: 2
-  eggPrefab: {fileID: 5581874701819194801, guid: 5f1e9dc337411484e983fa6384dac424, type: 3}
+  baseMaxOwnedEggs: 5
+  baseMaxOwnedAnimals: 10

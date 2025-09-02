@@ -657,6 +657,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4400229236826937336, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.65
+      objectReference: {fileID: 0}
     - target: {fileID: 4409224723103590636, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -664,6 +668,18 @@ PrefabInstance:
     - target: {fileID: 4606068488606122327, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
       propertyPath: m_Name
       value: EggSceneRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606068488606122327, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501255873689071436, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: eggSpawnTime
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501255873689071436, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: eggSpawnOffset
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7767698459212848941, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -704,6 +720,14 @@ PrefabInstance:
     - target: {fileID: 7767698459212848941, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318202216821067716, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: eggData
+      value: 
+      objectReference: {fileID: 11400000, guid: d06a17bb1d7c0f249b874f5d68a903f9, type: 2}
+    - target: {fileID: 8826694414254806862, guid: 90acfe5746eb8bd4490611f7e806f65d, type: 3}
+      propertyPath: animalAnimTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1199,15 +1223,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066466529007135934, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 366.93387
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3066466529007135934, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2598.8423
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3066466529007135934, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 580.1563
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3066466529007135934, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       propertyPath: m_LocalRotation.w
