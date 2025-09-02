@@ -27,6 +27,23 @@ public class GameStateController : MonoBehaviour
         SetContext(GameContext.Egg);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            if (gameContexts.Count > 1)
+            {
+                Input.backButtonLeavesApp = false;
+                GotoPreviousContext();
+            }
+
+            else
+            {
+                Input.backButtonLeavesApp = true;
+            }
+        }
+    }
+
     public void SetContext(GameContext context)
     {
         if (context == currentContext)
