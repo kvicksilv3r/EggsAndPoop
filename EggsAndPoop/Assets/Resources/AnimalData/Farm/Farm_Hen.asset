@@ -21,4 +21,4 @@ MonoBehaviour:
   behaviour: 0
   age: 1
   possibleEvolutions: []
-  openingExtraScale: 1
+  openingExtraScale: 2

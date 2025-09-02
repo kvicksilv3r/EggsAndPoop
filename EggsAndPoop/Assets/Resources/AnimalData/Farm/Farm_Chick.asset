@@ -23,3 +23,4 @@ MonoBehaviour:
   possibleEvolutions:
   - {fileID: 11400000, guid: 10e2998f29b67d4438a2eac1b78c8087, type: 2}
   - {fileID: 11400000, guid: 82700624f9be4b64eb87ceb783901fc5, type: 2}
+  openingExtraScale: 2
