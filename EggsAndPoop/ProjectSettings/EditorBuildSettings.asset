@@ -12,6 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/EggScene.unity
     guid: b54f097837c21724db7b20b137a731db
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: b8f7bd9365b3f4b43a4f6e7b4c637f7a, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: b86c3d210c1a2594c9a166f4335498de, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 6eba2d8d514d3bc40a9138004e281da5, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

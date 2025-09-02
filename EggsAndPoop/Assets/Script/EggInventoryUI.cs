@@ -1,11 +1,38 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EggInventoryUI : MonoBehaviour
 {
-    public EggData egg;
+    public Transform eggButtonHolster;
+    public GameObject eggButton;
 
-    public void InitializeEggOpening()
+    //todo make this actually update each time
+
+
+    private void Start()
     {
-        EggOpeningController.Instance.InitiateEggOpening(egg);
+        CleanUI();
+        SetupEggButtons();
+    }
+
+
+    private void CleanUI()
+    {
+        foreach (Transform button in eggButtonHolster.transform)
+        {
+            Destroy(button);
+        }
+    }
+
+    public void SetupEggButtons()
+    {
+        var eggs = DataController.instance.playerEggs;
+
+        foreach (var eggEntry in eggs)
+        {
+            var g = Instantiate(eggButton, eggButtonHolster);
+            g.GetComponent<EggUiButton>().SetupButton(eggEntry);
+        }
     }
 }

@@ -17,3 +17,4 @@ MonoBehaviour:
   eggMinRarity: 0
   eggMaxRarity: 4
   eggPrefab: {fileID: 5581874701819194801, guid: fae3cc8616a3fbf4e80487cb16987a6a, type: 3}
+  eggIcon: {fileID: 2800000, guid: 36a00e796fec879469c0784b27f157d6, type: 3}

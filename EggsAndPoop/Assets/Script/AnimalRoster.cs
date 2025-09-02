@@ -1,5 +1,4 @@
 using System.Linq;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class AnimalRoster : MonoBehaviour
@@ -13,12 +12,6 @@ public class AnimalRoster : MonoBehaviour
         Instance = this;
 
         LoadAnimals();
-        LoadEggScene();
-    }
-
-    private void LoadEggScene()
-    {
-
     }
 
     private void LoadAnimals()

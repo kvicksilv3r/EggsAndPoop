@@ -4,15 +4,17 @@ using UnityEngine;
 public class DataController : MonoBehaviour
 {
     public List<PlayerAnimalEntry> playerAnimals = new List<PlayerAnimalEntry>();
+    public List<PlayerEggEntry> playerEggs = new List<PlayerEggEntry>();
+
     public InventoryConfig inventoryConfig;
 
-    void Start()
-    {
+    public static DataController instance;
 
+    private void Awake()
+    {
+        instance = this;
     }
 
-    void Update()
-    {
-
-    }
+    //Egg add
+    //Egg remove
 }
