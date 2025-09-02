@@ -11,6 +11,6 @@ public class GameManager : MonoBehaviour
     {
         var droppedAnimal = AnimalRedeeming.Instance.OpenEgg();
         var rarityString = System.Enum.GetName(typeof(AnimalRarity), droppedAnimal.rarity);
-        print($"You opened a {AnimalRedeeming.Instance.activeEgg.eggName} and found a  {rarityString} {droppedAnimal.animalName}. COOL!");
+        print($"You opened a {AnimalRedeeming.Instance.activeEgg.eggName} and found a {rarityString} {droppedAnimal.animalName}");
     }
 }
