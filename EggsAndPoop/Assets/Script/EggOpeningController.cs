@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EggOpeningController : MonoBehaviour
@@ -6,6 +7,8 @@ public class EggOpeningController : MonoBehaviour
 
     private AnimalData generatedAnimal;
     private EggData eggData;
+
+    public GameObject animalInfoBox;
 
     private void Awake()
     {
@@ -34,6 +37,12 @@ public class EggOpeningController : MonoBehaviour
         DisplayOpenedAnimal();
         RegisterNewAnimal();
         RemoveEggFromInventory();
+        DisplayAnimalInformation();
+    }
+
+    private void DisplayAnimalInformation()
+    {
+        animalInfoBox.GetComponent<AnimalHatchedInformation>().DisplayInfo(generatedAnimal);
     }
 
     public void FetchAnimal()

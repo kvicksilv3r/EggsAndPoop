@@ -29,6 +29,7 @@ public class EggHelper : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.m_SetupEgg.AddListener(SetupEgg);
+        GameManager.Instance.m_EggContextClosed.AddListener(DestroyCurrentEgg);
     }
 
     public void SetupEgg()

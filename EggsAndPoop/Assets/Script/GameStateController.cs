@@ -73,23 +73,53 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    private void ShowContext(GameContext currentContext)
+    private void ShowContext(GameContext context)
     {
-        var affectedObjects = contextMap.Where(c => c.context == currentContext).FirstOrDefault().affectedObjects;
+        EventManager(context, true);
+
+        var affectedObjects = contextMap.Where(c => c.context == context).FirstOrDefault().affectedObjects;
 
         foreach (var target in affectedObjects)
         {
             target.SetActive(true);
         }
+
     }
 
     public void HideContext(GameContext context)
     {
+        EventManager(context, false);
         var affectedObjects = contextMap.Where(c => c.context == context).FirstOrDefault().affectedObjects;
 
         foreach (var target in affectedObjects)
         {
             target.SetActive(false);
         }
+    }
+
+    private void EventManager(GameContext context, bool activating)
+    {
+        switch (currentContext)
+        {
+            case GameContext.Main:
+                break;
+            case GameContext.Settings:
+                break;
+            case GameContext.Home:
+                break;
+            case GameContext.Egg:
+                if (activating)
+                {
+                    GameManager.Instance.m_EggContextOpened.Invoke();
+                }
+                else
+                {
+                    GameManager.Instance.m_EggContextClosed.Invoke();
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 }

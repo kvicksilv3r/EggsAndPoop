@@ -21,6 +21,7 @@ public class AnimalRedeemingVisuals : MonoBehaviour
     void Start()
     {
         GameManager.Instance.m_SetupEgg.AddListener(RemoveAnimal);
+        GameManager.Instance.m_EggContextClosed.AddListener(RemoveAnimal);
     }
 
     public void DisaplayAnimal(AnimalData animal)
