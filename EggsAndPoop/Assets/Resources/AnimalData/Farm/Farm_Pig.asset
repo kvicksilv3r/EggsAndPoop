@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 599376418019952636, guid: 67518faee782bbe47af84d65fe683ede, type: 3}
   animalName: Pig
-  description: You can make bacon out of these things. Amazing aniamls
+  description: You can make bacon out of these things. Amazing animals.
   rarity: 0
   family: 0
   behaviour: 0

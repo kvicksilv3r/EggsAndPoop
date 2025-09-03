@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5510196490160580397, guid: 511008ffae6ab11459f4abdc9e6f876c, type: 3}
   animalName: Rooster
-  description: Cockadiddle doo
+  description: This game would not be suitable for children if I wrote the other
+    common name for this animal
   rarity: 2
   family: 0
   behaviour: 0

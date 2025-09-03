@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 2012484680144267823, guid: 4be9278f227b3d142976aaeb4be66334, type: 3}
   animalName: Donkey
-  description: Shrek had a donkey friend called Donkey. Poor naming fantasy
+  description: Shrek had a donkey friend called Donkey. Poor fantasy.
   rarity: 3
   family: 0
   behaviour: 0

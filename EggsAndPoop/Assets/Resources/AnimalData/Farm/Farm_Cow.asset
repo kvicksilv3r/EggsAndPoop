@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 716786909962507443, guid: efbc0dd0297c4e745951ab58edcbcdef, type: 3}
   animalName: Cow
-  description: Slaps top of cow, this bad boy can fit so much milk
+  description: Slaps top of cow, this bad boy can fit so much milk in it
   rarity: 1
   family: 0
   behaviour: 0
