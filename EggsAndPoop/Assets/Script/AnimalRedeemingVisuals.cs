@@ -13,6 +13,9 @@ public class AnimalRedeemingVisuals : MonoBehaviour
     public float animalAnimTime = 1f;
     public Vector3 animalRotationAmount = Vector3.zero;
 
+    public string animalEnterAnimation = "Idle_A";
+    public string animalEnterEyeAnimation = "Eyes_Happy";
+
     private void Awake()
     {
         Instance = this;
@@ -36,6 +39,10 @@ public class AnimalRedeemingVisuals : MonoBehaviour
         spawnedAnimal.transform.localScale = Vector3.zero;
         spawnedAnimal.transform.DOScale(animalBaseSize * animal.openingExtraScale, animalAnimTime);
         spawnedAnimal.transform.DORotate(animalParent.transform.rotation.eulerAngles + animalRotationAmount, animalAnimTime);
+
+        var animator = spawnedAnimal.GetComponent<Animator>();
+        animator.Play(animalEnterAnimation, 0);
+        animator.Play(animalEnterEyeAnimation, 1);
     }
 
     private IEnumerator AnimateAnimal()
