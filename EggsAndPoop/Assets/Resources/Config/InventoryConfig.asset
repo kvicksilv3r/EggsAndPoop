@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: InventoryConfig
   m_EditorClassIdentifier: 
   baseMaxOwnedEggs: 5
-  baseMaxOwnedAnimals: 10
+  baseMaxOwnedAnimals: 20

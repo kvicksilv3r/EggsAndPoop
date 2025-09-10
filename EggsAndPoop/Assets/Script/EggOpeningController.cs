@@ -38,6 +38,7 @@ public class EggOpeningController : MonoBehaviour
         RegisterNewAnimal();
         RemoveEggFromInventory();
         DisplayAnimalInformation();
+        GameManager.Instance.m_EggCrackedOpenPost.Invoke();
     }
 
     private void DisplayAnimalInformation()
@@ -57,12 +58,11 @@ public class EggOpeningController : MonoBehaviour
 
     public void RegisterNewAnimal()
     {
-        //register animal to player inventory
-
+        PlayerInventoryManager.Instance.AddAnimal(generatedAnimal);
     }
 
     public void RemoveEggFromInventory()
     {
-        //remove egg from egg inventory
+        PlayerInventoryManager.Instance.RemoveEgg(eggData.eggType);
     }
 }

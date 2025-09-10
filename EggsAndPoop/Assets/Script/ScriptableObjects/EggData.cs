@@ -4,7 +4,8 @@ using UnityEngine;
 public class EggData : ScriptableObject
 {
     public string eggName;
-    public AnimalFamily[] eggTypes;
+    public EggType eggType;
+    public AnimalFamily[] containedAnimalTypes;
     public AnimalRarity eggMinRarity;
     public AnimalRarity eggMaxRarity;
     public GameObject eggPrefab;

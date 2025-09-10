@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: FarmEgg
   m_EditorClassIdentifier: 
   eggName: Farm egg
-  eggTypes: 00000000
+  eggType: 1
+  containedAnimalTypes: 00000000
   eggMinRarity: 0
   eggMaxRarity: 4
   eggPrefab: {fileID: 5581874701819194801, guid: 5f1e9dc337411484e983fa6384dac424, type: 3}

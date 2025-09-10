@@ -1,6 +1,6 @@
 [System.Serializable]
 public class PlayerEggEntry
 {
-    public EggData eggData;
+    public EggType eggType;
     public int eggAmount;
 }

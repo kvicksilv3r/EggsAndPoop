@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: ArcticEgg
   m_EditorClassIdentifier: 
   eggName: Arctic egg
-  eggTypes: 01000000
+  eggType: 2
+  containedAnimalTypes: 01000000
   eggMinRarity: 0
   eggMaxRarity: 4
   eggPrefab: {fileID: 5581874701819194801, guid: fae3cc8616a3fbf4e80487cb16987a6a, type: 3}

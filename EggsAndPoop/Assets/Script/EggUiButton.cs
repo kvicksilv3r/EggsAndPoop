@@ -14,10 +14,10 @@ public class EggUiButton : MonoBehaviour
         EggOpeningController.Instance.InitiateEggOpening(eggData);
     }
 
-    public void SetupButton(PlayerEggEntry eggEntry)
+    public void SetupButton(EggData eggData, int amount)
     {
-        this.eggData = eggEntry.eggData;
-        ConstructButton(eggEntry.eggAmount);
+        this.eggData = eggData;
+        ConstructButton(amount);
     }
 
     private void ConstructButton(int eggAmount)

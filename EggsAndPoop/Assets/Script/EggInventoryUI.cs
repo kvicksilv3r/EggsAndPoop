@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EggInventoryUI : MonoBehaviour
@@ -12,27 +10,34 @@ public class EggInventoryUI : MonoBehaviour
 
     private void Start()
     {
-        CleanUI();
-        SetupEggButtons();
+        RefreshUI();
+        GameManager.Instance.m_EggCrackedOpenPost.AddListener(RefreshUI);
+        GameManager.Instance.m_EggContextOpened.AddListener(RefreshUI);
     }
-
 
     private void CleanUI()
     {
         foreach (Transform button in eggButtonHolster.transform)
         {
-            Destroy(button);
+            Destroy(button.gameObject);
         }
     }
 
     public void SetupEggButtons()
     {
-        var eggs = DataController.instance.playerEggs;
+        var eggs = PlayerInventoryManager.Instance.playerEggs;
 
         foreach (var eggEntry in eggs)
         {
             var g = Instantiate(eggButton, eggButtonHolster);
-            g.GetComponent<EggUiButton>().SetupButton(eggEntry);
+            var eggData = EggRoster.Instance.GetByType(eggEntry.eggType);
+            g.GetComponent<EggUiButton>().SetupButton(eggData, eggEntry.eggAmount);
         }
+    }
+
+    public void RefreshUI()
+    {
+        CleanUI();
+        SetupEggButtons();
     }
 }

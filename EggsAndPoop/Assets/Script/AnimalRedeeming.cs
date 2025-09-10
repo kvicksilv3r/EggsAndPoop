@@ -58,7 +58,7 @@ public class AnimalRedeeming : MonoBehaviour
         var selectedDropNumber = Random.Range(minRoll, maxRoll);
         var chosenRarity = GenerateRarity(selectedDropNumber);
 
-        var availableAnimals = AnimalRoster.Instance.GetByFamily(activeEgg.eggTypes)
+        var availableAnimals = AnimalRoster.Instance.GetByFamily(activeEgg.containedAnimalTypes)
             .Where(a => a.rarity == chosenRarity).ToArray();
 
         return availableAnimals[Random.Range(0, availableAnimals.Length)];
