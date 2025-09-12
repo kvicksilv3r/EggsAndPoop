@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: 827278585258328137}
   - component: {fileID: 4997938122873360081}
   - component: {fileID: 4953081865670786912}
+  - component: {fileID: 3828268849901340939}
+  - component: {fileID: 4355165428335345725}
+  - component: {fileID: 6168827445372981257}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -53,6 +56,9 @@ MonoBehaviour:
   m_EggCrackedOpen:
     m_PersistentCalls:
       m_Calls: []
+  m_EggCrackedOpenPost:
+    m_PersistentCalls:
+      m_Calls: []
   m_SetupEgg:
     m_PersistentCalls:
       m_Calls: []
@@ -60,6 +66,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_EggContextClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SaveDataLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  m_AfkDataProcessed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &60460280174951797
@@ -122,19 +134,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c63d5b64e95484aad1cdfac71e8b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnimals: []
-  playerEggs:
-  - eggData: {fileID: 11400000, guid: d06a17bb1d7c0f249b874f5d68a903f9, type: 2}
-    eggAmount: 3
-  - eggData: {fileID: 11400000, guid: 0d457e74d8baa07439efa67db64d7613, type: 2}
-    eggAmount: 1
   inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
   saveData:
-    lastTimeActive: 0
     money: 0
     playerAnimals: []
     playerEggs: []
+    extraEggCapacity: 0
+    unlockedEggTypes: 
     jimmies: Rustled
+  ignoreLoad: 0
 --- !u!114 &4997938122873360081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,4 +167,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a8b9318269a7d40b59f6cd4d75dbb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+  inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+  extendedEggCapacity: 0
+  unlockedEggTypes: 
+  playerAnimals: []
+  playerEggs:
+  - eggType: 1
+    eggAmount: 3
+--- !u!114 &3828268849901340939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de9c6280b58c2c41acc2c3caf8c2220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eggs: []
+--- !u!114 &4355165428335345725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6608920bd4e92e74c90d1ccc213df207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  welcomeBackTMP: {fileID: 0}
+  earnedEggsTMP: {fileID: 0}
+  welcomeBackPanel: {fileID: 0}
+  baseAfkText: You have been away for
+--- !u!114 &6168827445372981257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aac7a5c9564bcb4eb97397f3e02ea4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}

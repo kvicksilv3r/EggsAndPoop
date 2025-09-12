@@ -10,8 +10,8 @@ public class DropRates : ScriptableObject
 public class DropRatePair
 {
     public AnimalRarity rarity;
-    [Tooltip("Percentage chance of this item dropping"), Range(0, 100)]
+    [Tooltip("Percentage chance of this item dropping"), Range(0, 1000)]
     public int dropRate;
-    [Range(0, 100)]
+    [Range(0, 1000)]
     public int maxRollIfHighestRarity;
 }

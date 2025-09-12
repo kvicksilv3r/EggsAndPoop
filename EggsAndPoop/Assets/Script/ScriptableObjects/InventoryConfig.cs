@@ -5,4 +5,5 @@ public class InventoryConfig : ScriptableObject
 {
     public int baseMaxOwnedEggs;
     public int baseMaxOwnedAnimals;
+    public int hoursForNewEgg;
 }

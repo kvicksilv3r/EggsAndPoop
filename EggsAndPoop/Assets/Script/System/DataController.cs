@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class DataController : MonoBehaviour
 
     public static DataController instance;
 
+    public bool ignoreLoad = false;
+
     private void Awake()
     {
         instance = this;
@@ -17,37 +20,49 @@ public class DataController : MonoBehaviour
 
     private void Start()
     {
-        CheckForSave();
+        StartCoroutine(CheckForSave());
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            TryLoadGame();
+            LoadGame();
         }
     }
 
-    private void TryLoadGame()
+    private void LoadGame()
     {
         saveData = DataIO.Instance.Load();
         GameManager.Instance.m_SaveDataLoaded.Invoke();
     }
 
-    public void CheckForSave()
+    public IEnumerator CheckForSave()
     {
-        if (saveData == null)
-        {
-            if (DataIO.Instance.HasSave())
-            {
-                saveData = DataIO.Instance.Load();
-            }
 
-            else
-            {
-                saveData = new SaveData();
-            }
+        yield return new WaitForSeconds(0.1f);
+
+        if (ignoreLoad)
+        {
+            yield return null;
         }
+
+        if (DataIO.Instance.HasSave())
+        {
+            LoadGame();
+        }
+
+        else
+        {
+            SetupFirstSave();
+        }
+    }
+
+    private void SetupFirstSave()
+    {
+        saveData = new SaveData();
+        EggTimer.Instance.SetNextEggTime();
+        SaveGame();
     }
 
     public SaveData GetDataToBeSaved()
@@ -62,9 +77,19 @@ public class DataController : MonoBehaviour
 
     private SaveData GenerateSaveData()
     {
+        saveData.lastTimeActive = DateTime.Now.Ticks;
         PlayerInventoryManager.Instance.ModifySaveData(ref saveData);
+        EggTimer.Instance.ModifySaveData(ref saveData);
         return saveData;
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveGame();
+    }
 
+    private void SaveGame()
+    {
+        DataIO.Instance.SaveGame();
+    }
 }

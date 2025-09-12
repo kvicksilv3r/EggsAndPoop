@@ -10,6 +10,8 @@ public class EggOpeningController : MonoBehaviour
 
     public GameObject animalInfoBox;
 
+    private bool hasMaxEggs = false;
+
     private void Awake()
     {
         Instance = this;
@@ -28,6 +30,7 @@ public class EggOpeningController : MonoBehaviour
     public void InitiateEggOpening(EggData data)
     {
         eggData = data;
+        hasMaxEggs = PlayerInventoryManager.Instance.HasMaxEggs();
         GameManager.Instance.m_SetupEgg.Invoke();
     }
 
@@ -38,6 +41,7 @@ public class EggOpeningController : MonoBehaviour
         RegisterNewAnimal();
         RemoveEggFromInventory();
         DisplayAnimalInformation();
+
         GameManager.Instance.m_EggCrackedOpenPost.Invoke();
     }
 

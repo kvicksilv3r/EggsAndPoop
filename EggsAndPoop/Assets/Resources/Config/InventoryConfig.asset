@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330aa32f27d1db844815a9b331632957, type: 3}
   m_Name: InventoryConfig
   m_EditorClassIdentifier: 
-  baseMaxOwnedEggs: 5
+  baseMaxOwnedEggs: 10
   baseMaxOwnedAnimals: 20
+  hoursForNewEgg: 2

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EggInventoryUI : MonoBehaviour
@@ -5,8 +6,8 @@ public class EggInventoryUI : MonoBehaviour
     public Transform eggButtonHolster;
     public GameObject eggButton;
 
-    //todo make this actually update each time
-
+    public GameObject noEggsPanel;
+    public GameObject fullAnimalSlotsPanel;
 
     private void Start()
     {
@@ -38,6 +39,30 @@ public class EggInventoryUI : MonoBehaviour
     public void RefreshUI()
     {
         CleanUI();
-        SetupEggButtons();
+
+        if (!PlayerInventoryManager.Instance.HasEggs())
+        {
+            DisplayOutOfEggs();
+        }
+
+        if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots())
+        {
+            DisplayFullAnimalInventory();
+        }
+
+        else
+        {
+            SetupEggButtons();
+        }
+    }
+
+    private void DisplayFullAnimalInventory()
+    {
+        fullAnimalSlotsPanel.gameObject.SetActive(true);
+    }
+
+    private void DisplayOutOfEggs()
+    {
+        noEggsPanel.SetActive(true);
     }
 }

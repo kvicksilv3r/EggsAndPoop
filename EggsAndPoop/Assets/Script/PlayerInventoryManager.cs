@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
@@ -33,7 +33,7 @@ public class PlayerInventoryManager : MonoBehaviour
             return;
         }
 
-        EggType eggType = unlockedEggTypes[Random.Range(0, unlockedEggTypes.Count)];
+        EggType eggType = unlockedEggTypes[UnityEngine.Random.Range(0, unlockedEggTypes.Count)];
 
         var hasEggType = playerEggs.Select(e => e.eggType).Count() > 0;
 
@@ -71,7 +71,7 @@ public class PlayerInventoryManager : MonoBehaviour
             totalOwnedEggs += egg.eggAmount;
         }
 
-        if (totalOwnedEggs < MaxEggCapacity())
+        if (totalOwnedEggs < GetMaxEggCapacity())
         {
             return true;
         }
@@ -89,7 +89,7 @@ public class PlayerInventoryManager : MonoBehaviour
         playerAnimals = saveData.playerAnimals.ToList();
     }
 
-    public int MaxEggCapacity()
+    public int GetMaxEggCapacity()
     {
         return inventoryConfig.baseMaxOwnedEggs + extendedEggCapacity;
     }
@@ -104,6 +104,7 @@ public class PlayerInventoryManager : MonoBehaviour
         PlayerAnimalEntry entry = new PlayerAnimalEntry();
         entry.animalData = addedAnimal;
         entry.customAnimalName = addedAnimal.animalName;
+        entry.timeOfBirth = DateTime.Now;
 
         playerAnimals.Add(entry);
     }
@@ -114,5 +115,30 @@ public class PlayerInventoryManager : MonoBehaviour
         saveData.playerEggs = playerEggs.ToArray();
         saveData.unlockedEggTypes = unlockedEggTypes.ToArray();
         saveData.playerAnimals = playerAnimals.ToArray();
+    }
+
+    public bool HasEggs()
+    {
+        return playerEggs.Count > 0;
+    }
+
+    public bool HasMaxEggs()
+    {
+        return playerEggs.Count == GetMaxEggCapacity();
+    }
+
+    public int GetMaxAnimalCount()
+    {
+        return inventoryConfig.baseMaxOwnedAnimals;
+    }
+
+    public int GetCurrentEggCount()
+    {
+        return playerEggs.Count;
+    }
+
+    public bool HasOpenAnimalSlots()
+    {
+        return playerAnimals.Count < GetMaxAnimalCount();
     }
 }

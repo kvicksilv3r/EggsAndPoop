@@ -12,4 +12,5 @@ public class AnimalData : ScriptableObject
     public AnimalAge age;
     public AnimalData[] possibleEvolutions;
     public float openingExtraScale = 1f;
+    public int sellPrice = 0;
 }

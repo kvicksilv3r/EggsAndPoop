@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent m_SaveDataLoaded;
 
+    public UnityEvent m_AfkDataProcessed;
+
     public static GameManager Instance;
 
     private void Awake()

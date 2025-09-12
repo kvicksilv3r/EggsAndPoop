@@ -17,14 +17,14 @@ MonoBehaviour:
     dropRate: 0
     maxRollIfHighestRarity: 0
   - rarity: 1
-    dropRate: 45
-    maxRollIfHighestRarity: 65
+    dropRate: 400
+    maxRollIfHighestRarity: 650
   - rarity: 2
-    dropRate: 65
-    maxRollIfHighestRarity: 85
+    dropRate: 650
+    maxRollIfHighestRarity: 850
   - rarity: 3
-    dropRate: 85
-    maxRollIfHighestRarity: 95
+    dropRate: 850
+    maxRollIfHighestRarity: 975
   - rarity: 4
-    dropRate: 95
-    maxRollIfHighestRarity: 100
+    dropRate: 975
+    maxRollIfHighestRarity: 1000
