@@ -12,24 +12,16 @@ public class DataIO : MonoBehaviour
         Instance = this;
     }
 
-    public void SaveGame()
+    public void SaveGame(SaveData dataToBeSaved)
     {
-        WriteSaveData(DataController.instance.GetDataToBeSaved());
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveGame();
-            print($"Save saved at {Application.persistentDataPath}");
-        }
+        WriteSaveData(dataToBeSaved);
     }
 
     public void WriteSaveData(SaveData data)
     {
         var savedata = JsonUtility.ToJson(data);
         File.WriteAllText(SavePath(), savedata);
+        print("SAVEDATA SAVED");
     }
 
     public bool HasSave()

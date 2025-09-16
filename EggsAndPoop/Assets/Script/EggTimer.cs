@@ -38,13 +38,16 @@ public class EggTimer : MonoBehaviour
         timeAway = DateTime.Now - lastTimeActive;
         newEggs = (int)timeAway.TotalHours / 2;
 
+        print("Now is: " + DateTime.Now.ToString());
+        print("Next egg: " + nextEggTime.ToString());
+
+
         if (newEggs == 0)
         {
-            var convertedNextEggTime = new DateTime(DataController.instance.GetData().nextEggTime);
-            if (convertedNextEggTime.CompareTo(DateTime.Now) < 0)
+            if (nextEggTime.CompareTo(DateTime.Now) < 0)
             {
                 newEggs = 1;
-                SetNextEggTime(convertedNextEggTime);
+                SetNextEggTime(nextEggTime);
             }
         }
 
@@ -55,6 +58,9 @@ public class EggTimer : MonoBehaviour
             newEggs = maxEggs;
         }
 
+        PlayerInventoryManager.Instance.AddEggs(newEggs);
+
+        DataController.instance.CompleteSave();
         GameManager.Instance.m_AfkDataProcessed.Invoke();
     }
 
@@ -66,6 +72,12 @@ public class EggTimer : MonoBehaviour
     public void SetNextEggTime(DateTime referenceTime)
     {
         nextEggTime = referenceTime.AddHours(config.hoursForNewEgg);
+
+        if (nextEggTime.CompareTo(DateTime.Now) < 0)
+        {
+            print("Time has broken. Setting egg timer from NOW.");
+            nextEggTime = DateTime.Now.AddHours(config.hoursForNewEgg);
+        }
     }
 
     public TimeSpan TimeSpanUntilNextEgg()

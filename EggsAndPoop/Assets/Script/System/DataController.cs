@@ -21,6 +21,7 @@ public class DataController : MonoBehaviour
     private void Start()
     {
         StartCoroutine(CheckForSave());
+        GameManager.Instance.m_EggCrackedOpenPost.AddListener(CompleteSave);
     }
 
     private void Update()
@@ -28,6 +29,11 @@ public class DataController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             LoadGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            CompleteSave();
         }
     }
 
@@ -39,7 +45,6 @@ public class DataController : MonoBehaviour
 
     public IEnumerator CheckForSave()
     {
-
         yield return new WaitForSeconds(0.1f);
 
         if (ignoreLoad)
@@ -62,7 +67,7 @@ public class DataController : MonoBehaviour
     {
         saveData = new SaveData();
         EggTimer.Instance.SetNextEggTime();
-        SaveGame();
+        CompleteSave();
     }
 
     public SaveData GetDataToBeSaved()
@@ -85,11 +90,17 @@ public class DataController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SaveGame();
+        CompleteSave();
+    }
+
+    public void CompleteSave()
+    {
+        DataIO.Instance.SaveGame(GenerateSaveData());
     }
 
     private void SaveGame()
     {
-        DataIO.Instance.SaveGame();
+        saveData.lastTimeActive = DateTime.Now.Ticks;
+        DataIO.Instance.SaveGame(saveData);
     }
 }

@@ -26,6 +26,14 @@ public class PlayerInventoryManager : MonoBehaviour
         GameManager.Instance.m_SaveDataLoaded.AddListener(LoadInventory);
     }
 
+    public void AddEggs(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            AddEgg();
+        }
+    }
+
     public void AddEgg()
     {
         if (CanAddEgg() == false)
@@ -87,6 +95,8 @@ public class PlayerInventoryManager : MonoBehaviour
 
         playerAnimals.Clear();
         playerAnimals = saveData.playerAnimals.ToList();
+
+        print("Inventory loaded");
     }
 
     public int GetMaxEggCapacity()
@@ -140,5 +150,10 @@ public class PlayerInventoryManager : MonoBehaviour
     public bool HasOpenAnimalSlots()
     {
         return playerAnimals.Count < GetMaxAnimalCount();
+    }
+
+    public List<PlayerAnimalEntry> GetAnimals()
+    {
+        return playerAnimals;
     }
 }
