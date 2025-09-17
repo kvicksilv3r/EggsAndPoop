@@ -33,4 +33,9 @@ public class AnimalRoster : MonoBehaviour
     {
         return animals.Where(a => families.Contains(a.family)).ToArray();
     }
+
+    public AnimalData GetByIdentifier(AnimalEnum identifier)
+    {
+        return animals.Where(a => a.animalIdentifier == identifier).FirstOrDefault();
+    }
 }

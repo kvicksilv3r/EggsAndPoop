@@ -21,11 +21,6 @@ public class PlayerInventoryManager : MonoBehaviour
         unlockedEggTypes.Add(EggType.Farm);
     }
 
-    private void Start()
-    {
-        GameManager.Instance.m_SaveDataLoaded.AddListener(LoadInventory);
-    }
-
     public void AddEggs(int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -112,19 +107,43 @@ public class PlayerInventoryManager : MonoBehaviour
     public void AddAnimal(AnimalData addedAnimal)
     {
         PlayerAnimalEntry entry = new PlayerAnimalEntry();
-        entry.animalData = addedAnimal;
+        entry.animalIdentifier = addedAnimal.animalIdentifier;
         entry.customAnimalName = addedAnimal.animalName;
-        entry.timeOfBirth = DateTime.Now;
+        entry.timeOfBirth = DateTime.Now.ToLong();
+        entry.guid = Guid.NewGuid().ToString();
+        entry.physicalAnimalData = new PhysicalAnimalData();
 
         playerAnimals.Add(entry);
     }
 
+    public void RemoveAnimal(string animalGuid)
+    {
+        var removedAnimal = playerAnimals.Where(a => a.guid == animalGuid).FirstOrDefault();
+        playerAnimals.Remove(removedAnimal);
+        PhysicalAnimalController.Instance.RemoveAnimal(animalGuid);
+
+        DataController.instance.CompleteSave();
+    }
+
     public void ModifySaveData(ref SaveData saveData)
     {
+        UpdatePhysicalAnimals();
         saveData.extraEggCapacity = extendedEggCapacity;
         saveData.playerEggs = playerEggs.ToArray();
         saveData.unlockedEggTypes = unlockedEggTypes.ToArray();
         saveData.playerAnimals = playerAnimals.ToArray();
+    }
+
+    private void UpdatePhysicalAnimals()
+    {
+        foreach (var playerAnimal in playerAnimals)
+        {
+            if (!PhysicalAnimalController.Instance.AnimalExists(playerAnimal.guid))
+            {
+                continue;
+            }
+            playerAnimal.physicalAnimalData = PhysicalAnimalController.Instance.GetAnimalPhysicalData(playerAnimal.guid);
+        }
     }
 
     public bool HasEggs()
@@ -134,7 +153,7 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public bool HasMaxEggs()
     {
-        return playerEggs.Count == GetMaxEggCapacity();
+        return GetCurrentEggCount() == GetMaxEggCapacity();
     }
 
     public int GetMaxAnimalCount()
@@ -144,7 +163,14 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public int GetCurrentEggCount()
     {
-        return playerEggs.Count;
+        var totalOwnedEggs = 0;
+
+        foreach (var egg in playerEggs)
+        {
+            totalOwnedEggs += egg.eggAmount;
+        }
+
+        return totalOwnedEggs;
     }
 
     public bool HasOpenAnimalSlots()

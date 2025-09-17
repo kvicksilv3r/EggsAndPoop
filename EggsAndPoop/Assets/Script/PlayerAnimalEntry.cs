@@ -1,12 +1,12 @@
 using System;
-using System.Numerics;
 
 [System.Serializable]
 public class PlayerAnimalEntry
 {
-    public AnimalData animalData;
+    public AnimalEnum animalIdentifier;
     public string customAnimalName;
     public bool favourite = false;
+    public long timeOfBirth;
+    public string guid;
     public PhysicalAnimalData physicalAnimalData;
-    public DateTime timeOfBirth;
 }

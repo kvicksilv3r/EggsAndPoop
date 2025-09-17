@@ -1,7 +1,8 @@
 using UnityEngine;
 
+[System.Serializable]
 public class PhysicalAnimalData
 {
-    public Vector3 position;
-    public Vector3 rotation;
+    public Vector3 position = Vector3.zero;
+    public Vector3 forward = Vector3.zero;
 }

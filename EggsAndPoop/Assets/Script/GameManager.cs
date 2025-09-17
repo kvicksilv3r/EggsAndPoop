@@ -10,9 +10,10 @@ public class GameManager : MonoBehaviour
     public UnityEvent m_EggContextOpened;
     public UnityEvent m_EggContextClosed;
 
+    public UnityEvent m_AfkDataProcessed;
     public UnityEvent m_SaveDataLoaded;
 
-    public UnityEvent m_AfkDataProcessed;
+    public UnityEvent m_NukeSaveData;
 
     public static GameManager Instance;
 
@@ -20,12 +21,5 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    public void TestEggDropping()
-    {
-        var droppedAnimal = AnimalRedeeming.Instance.OpenEgg();
-        var rarityString = System.Enum.GetName(typeof(AnimalRarity), droppedAnimal.rarity);
-        print($"You opened a {AnimalRedeeming.Instance.activeEgg.eggName} and found a {rarityString} {droppedAnimal.animalName}");
     }
 }

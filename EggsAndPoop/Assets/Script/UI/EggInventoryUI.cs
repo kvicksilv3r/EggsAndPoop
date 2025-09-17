@@ -18,6 +18,13 @@ public class EggInventoryUI : MonoBehaviour
 
     private void CleanUI()
     {
+        DestroyEggButtons();
+        HideFullAnimalInventory();
+        HideOutOfEggs();
+    }
+
+    private void DestroyEggButtons()
+    {
         foreach (Transform button in eggButtonHolster.transform)
         {
             Destroy(button.gameObject);
@@ -45,7 +52,7 @@ public class EggInventoryUI : MonoBehaviour
             DisplayOutOfEggs();
         }
 
-        if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots())
+        else if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots())
         {
             DisplayFullAnimalInventory();
         }
@@ -61,8 +68,18 @@ public class EggInventoryUI : MonoBehaviour
         fullAnimalSlotsPanel.gameObject.SetActive(true);
     }
 
+    private void HideFullAnimalInventory()
+    {
+        fullAnimalSlotsPanel.gameObject.SetActive(false);
+    }
+
     private void DisplayOutOfEggs()
     {
         noEggsPanel.SetActive(true);
+    }
+
+    private void HideOutOfEggs()
+    {
+        noEggsPanel.SetActive(false);
     }
 }

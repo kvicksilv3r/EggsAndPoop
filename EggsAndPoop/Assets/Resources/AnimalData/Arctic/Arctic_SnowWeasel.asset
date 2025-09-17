@@ -21,3 +21,5 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 1.4
+  sellPrice: 0
+  animalIdentifier: 16

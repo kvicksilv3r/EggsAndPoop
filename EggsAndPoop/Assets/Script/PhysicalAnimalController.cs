@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class PhysicalAnimalController : MonoBehaviour
 
     public GameObject spawnHolster;
 
-    public Dictionary<PhysicalAnimal, PlayerAnimalEntry> animalLinks = new Dictionary<PhysicalAnimal, PlayerAnimalEntry>();
+    public Dictionary<string, PhysicalAnimal> animalLinks = new Dictionary<string, PhysicalAnimal>();
 
     private void Awake()
     {
@@ -16,27 +17,50 @@ public class PhysicalAnimalController : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.m_SaveDataLoaded.AddListener(InstantiateSavedAnimals);
+        GameManager.Instance.m_EggCrackedOpenPost.AddListener(InstantiateAnimals);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            InstantiateSavedAnimals();
-        }
-    }
-
-    public void InstantiateSavedAnimals()
+    public void InstantiateAnimals()
     {
         foreach (var animal in PlayerInventoryManager.Instance.GetAnimals())
         {
-            var spawnPos = spawnHolster.transform.GetChild(Random.Range(0, spawnHolster.transform.childCount)).transform.position;
-            var forwardRot = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
-            var g = Instantiate(animal.animalData.prefab, spawnPos, Quaternion.LookRotation(forwardRot, Vector3.up));
-            g.AddComponent<PhysicalAnimal>();
+            if (animalLinks.ContainsKey(animal.guid))
+            {
+                continue;
+            }
 
-            animalLinks.Add(g.GetComponent<PhysicalAnimal>(), animal);
+            var spawnPos = spawnHolster.transform.GetChild(UnityEngine.Random.Range(0, spawnHolster.transform.childCount)).transform.position;
+            var forwardRot = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
+            var prefab = AnimalRoster.Instance.GetByIdentifier(animal.animalIdentifier).prefab;
+
+            var g = Instantiate(prefab, spawnPos, Quaternion.LookRotation(forwardRot, Vector3.up));
+
+            var p = g.AddComponent<PhysicalAnimal>();
+            p.physicalAnimalData = animal.physicalAnimalData;
+
+            animalLinks.Add(animal.guid, g.GetComponent<PhysicalAnimal>());
         }
+    }
+
+    public void RemoveAnimal(string animalGuid)
+    {
+        if (animalLinks.ContainsKey(animalGuid) == false)
+        {
+            print("Animal links did not contain specified animal");
+            return;
+        }
+
+        DestroyImmediate(animalLinks[animalGuid].gameObject);
+        animalLinks.Remove(animalGuid);
+    }
+
+    public bool AnimalExists(string animalGuid)
+    {
+        return (animalLinks.ContainsKey(animalGuid));
+    }
+
+    public PhysicalAnimalData GetAnimalPhysicalData(string guid)
+    {
+        return animalLinks[guid].physicalAnimalData;
     }
 }

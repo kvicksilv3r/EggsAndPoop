@@ -20,23 +20,22 @@ public class EggTimer : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.m_SaveDataLoaded.AddListener(SetupTimer);
         GameManager.Instance.m_EggCrackedOpenPost.AddListener(CheckSetNextEgg);
     }
 
     public void SetupTimer()
     {
-        nextEggTime = new DateTime(DataController.instance.GetData().nextEggTime);
+        nextEggTime = DataController.instance.GetData().nextEggTime.ToDateTime();
         CalculateAfkTime();
     }
 
     public void CalculateAfkTime()
     {
         print("Calculating afk time");
-        var lastTimeActiveTicks = DataController.instance.GetData().lastTimeActive;
-        var lastTimeActive = new DateTime(lastTimeActiveTicks);
+        var lastTimeActive = DataController.instance.GetData().lastTimeActive.ToDateTime();
         timeAway = DateTime.Now - lastTimeActive;
         newEggs = (int)timeAway.TotalHours / 2;
+
 
         print("Now is: " + DateTime.Now.ToString());
         print("Next egg: " + nextEggTime.ToString());
@@ -49,6 +48,11 @@ public class EggTimer : MonoBehaviour
                 newEggs = 1;
                 SetNextEggTime(nextEggTime);
             }
+        }
+        else
+        {
+            var newNextTime = nextEggTime.AddHours((newEggs - 1) * config.hoursForNewEgg);
+            SetNextEggTime(newNextTime);
         }
 
         var maxEggs = PlayerInventoryManager.Instance.GetMaxEggCapacity() - PlayerInventoryManager.Instance.GetCurrentEggCount();

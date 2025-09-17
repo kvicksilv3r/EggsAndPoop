@@ -13,4 +13,5 @@ public class AnimalData : ScriptableObject
     public AnimalData[] possibleEvolutions;
     public float openingExtraScale = 1f;
     public int sellPrice = 0;
+    public AnimalEnum animalIdentifier;
 }

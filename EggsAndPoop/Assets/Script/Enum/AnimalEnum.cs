@@ -1,0 +1,21 @@
+public enum AnimalEnum
+{
+    Buffalo_Farm,
+    Chick_Farm,
+    Cow_Farm,
+    Donkey_Farm,
+    Duck_Farm,
+    Hen_Farm,
+    Pig_Farm,
+    Rooster_Farm,
+    Sheep_Farm,
+    Fox_Arctic,
+    Ox_Arctic,
+    Penguin_Arctic,
+    PolarBear_Arctic,
+    Reindeer_Arctic,
+    SeaLion_Arctic,
+    Owl_Arctic,
+    Weasel_Arctic,
+    Walrus_Arctic
+}

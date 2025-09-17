@@ -9,9 +9,9 @@ public class DataController : MonoBehaviour
 
     public SaveData saveData;
 
-    public static DataController instance;
+    private bool ignoreSave = false;
 
-    public bool ignoreLoad = false;
+    public static DataController instance;
 
     private void Awake()
     {
@@ -20,8 +20,8 @@ public class DataController : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(CheckForSave());
         GameManager.Instance.m_EggCrackedOpenPost.AddListener(CompleteSave);
+        GameManager.Instance.m_NukeSaveData.AddListener(IgnoreSave);
     }
 
     private void Update()
@@ -40,18 +40,10 @@ public class DataController : MonoBehaviour
     private void LoadGame()
     {
         saveData = DataIO.Instance.Load();
-        GameManager.Instance.m_SaveDataLoaded.Invoke();
     }
 
-    public IEnumerator CheckForSave()
+    public void CheckForSave()
     {
-        yield return new WaitForSeconds(0.1f);
-
-        if (ignoreLoad)
-        {
-            yield return null;
-        }
-
         if (DataIO.Instance.HasSave())
         {
             LoadGame();
@@ -90,7 +82,17 @@ public class DataController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        if (ignoreSave)
+        {
+            return;
+        }
+
         CompleteSave();
+    }
+
+    private void IgnoreSave()
+    {
+        ignoreSave = true;
     }
 
     public void CompleteSave()

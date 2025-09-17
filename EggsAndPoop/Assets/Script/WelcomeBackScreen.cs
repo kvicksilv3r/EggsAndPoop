@@ -7,9 +7,10 @@ public class WelcomeBackScreen : MonoBehaviour
     public TextMeshProUGUI earnedEggsTMP;
     public GameObject welcomeBackPanel;
 
+    public string prefKey = "PlayedGame";
+
     public string baseAfkText = "You have been away for";
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GameManager.Instance.m_AfkDataProcessed.AddListener(Display);
@@ -49,6 +50,13 @@ public class WelcomeBackScreen : MonoBehaviour
 
     public void Display()
     {
+        if (!PlayerPrefs.HasKey(prefKey))
+        {
+            PlayerPrefs.SetInt(prefKey, 1);
+            PlayerPrefs.Save();
+            return;
+        }
+
         welcomeBackPanel.SetActive(true);
         UpdateText();
     }
