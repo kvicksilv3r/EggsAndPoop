@@ -13,7 +13,6 @@ public class PhysicalAnimal : MonoBehaviour
     public NavMeshAgent navMeshAgent;
     public Animator animator;
 
-
     private void Start()
     {
         if (navMeshAgent == null)

@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class PhysicalAnimalBehaviour : MonoBehaviour
 {
     public string idleAnimation = "Idle_A";
     public string eatAnimation = "Eat";
     public string walkAnimation = "Walk";
-    public float timeBetweenFrolicActions = 5;
+    public string rareIdleAnimation = "Idle_B";
+    public float minActionTime = 4;
+    public float maxActionTime = 8;
     public int eatChance = 10;
     public int chillChance = 50;
     public LayerMask layermask;
@@ -80,7 +83,15 @@ public class PhysicalAnimalBehaviour : MonoBehaviour
     private void StartIdling()
     {
         navMeshAgent.isStopped = true;
-        animator.Play(idleAnimation, 0);
+
+        if (Random.Range(0, 100) < specialIdleChance)
+        {
+            animator.Play(rareIdleAnimation, 0);
+        }
+        else
+        {
+            animator.Play(idleAnimation, 0);
+        }
     }
 
     private void StartWalking()
@@ -141,7 +152,7 @@ public class PhysicalAnimalBehaviour : MonoBehaviour
             {
                 SetState(AnimalBehaviourState.Walking);
             }
-            yield return new WaitForSeconds(timeBetweenFrolicActions);
+            yield return new WaitForSeconds(Random.Range(minActionTime, maxActionTime));
         }
     }
 
