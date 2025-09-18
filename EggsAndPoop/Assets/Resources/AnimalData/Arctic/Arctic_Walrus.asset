@@ -23,3 +23,6 @@ MonoBehaviour:
   openingExtraScale: 2.2
   sellPrice: 0
   animalIdentifier: 17
+  maxWalkDistance: 10
+  movementSpeed: 1
+  acceleration: 1

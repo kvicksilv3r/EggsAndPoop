@@ -14,4 +14,7 @@ public class AnimalData : ScriptableObject
     public float openingExtraScale = 1f;
     public int sellPrice = 0;
     public AnimalEnum animalIdentifier;
+    public float maxWalkDistance = 10;
+    public float movementSpeed = 2f;
+    public float acceleration = 5;
 }
