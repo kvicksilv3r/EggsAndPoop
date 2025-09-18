@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 3319330840629498006}
   m_Layer: 0
   m_Name: Pigeon
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

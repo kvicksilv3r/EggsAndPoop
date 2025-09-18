@@ -1,4 +1,4 @@
-public enum AnimalBehaviour
+public enum AnimalPrimalInstinct
 {
     Grazing,
     Predator

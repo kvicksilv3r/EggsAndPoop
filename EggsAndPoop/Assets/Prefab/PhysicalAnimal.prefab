@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5334089448885962381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2451220794068287645}
+  m_Layer: 0
+  m_Name: VisualsHolster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2451220794068287645
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334089448885962381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4371014534624688670}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6944395962995677881
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4371014534624688670}
   - component: {fileID: 2234264921851376400}
+  - component: {fileID: 1812463421116993498}
   - component: {fileID: 2483376976430132009}
   m_Layer: 0
   m_Name: PhysicalAnimal
@@ -30,7 +62,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2451220794068287645}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2234264921851376400
@@ -51,18 +84,38 @@ MonoBehaviour:
     hunger: 1
   animalData: {fileID: 0}
   defaultAnimation: Idle_A
+  visualHolster: {fileID: 2451220794068287645}
+  navMeshAgent: {fileID: 0}
+  animator: {fileID: 0}
+--- !u!114 &1812463421116993498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944395962995677881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa9ac2b4ade8eb346aca68742156b640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAnimation: Idle_A
   eatAnimation: Eat
   walkAnimation: Walk
-  navMeshAgent: {fileID: 0}
   timeBetweenFrolicActions: 5
-  eatChance: 10
-  chillChance: 50
-  animator: {fileID: 0}
+  eatChance: 20
+  chillChance: 70
   layermask:
     serializedVersion: 2
     m_Bits: 39
   dist: 12
+  animator: {fileID: 0}
+  navMeshAgent: {fileID: 2483376976430132009}
+  currentState: 0
+  lastState: 0
   specialIdleChance: 5
+  visualHolster: {fileID: 2451220794068287645}
+  draggedTransformOffset: 2
 --- !u!195 &2483376976430132009
 NavMeshAgent:
   m_ObjectHideFlags: 0

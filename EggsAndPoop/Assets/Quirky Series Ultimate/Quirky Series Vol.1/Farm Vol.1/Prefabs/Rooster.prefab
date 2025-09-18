@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 5510196490160580395}
   m_Layer: 0
   m_Name: Rooster
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -8,7 +8,7 @@ public class AnimalData : ScriptableObject
     public string description;
     public AnimalRarity rarity;
     public AnimalFamily family;
-    public AnimalBehaviour behaviour;
+    public AnimalPrimalInstinct behaviour;
     public AnimalAge age;
     public AnimalData[] possibleEvolutions;
     public float openingExtraScale = 1f;

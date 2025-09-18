@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 6935659746675284362}
   m_Layer: 0
   m_Name: Walrus
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
