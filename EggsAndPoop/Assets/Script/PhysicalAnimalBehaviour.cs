@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
-public class PhysicalAnimalBehaviour : MonoBehaviour
+public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public string idleAnimation = "Idle_A";
     public string eatAnimation = "Eat";
     public string walkAnimation = "Walk";
     public string rareIdleAnimation = "Idle_B";
+    public string flyingAnimation = "Fly";
     public float minActionTime = 4;
     public float maxActionTime = 8;
     public int eatChance = 10;
@@ -106,12 +107,13 @@ public class PhysicalAnimalBehaviour : MonoBehaviour
     {
         StopAllCoroutines();
         navMeshAgent.isStopped = true;
-        visualHolster.transform.position = Vector3.zero + Vector3.up * draggedTransformOffset;
+        animator.Play(flyingAnimation, 0);
+        visualHolster.transform.localPosition = Vector3.zero + Vector3.up * draggedTransformOffset;
     }
 
     public void StopDragged()
     {
-        visualHolster.transform.position = Vector3.zero;
+        visualHolster.transform.localPosition = Vector3.zero;
         EnterRandomState();
         StartCoroutine(Frolicking());
     }
@@ -165,5 +167,22 @@ public class PhysicalAnimalBehaviour : MonoBehaviour
         NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
 
         return navHit.position;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        print("Start drag");
+        SetState(AnimalBehaviourState.Dragged);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        print("End drag");
+        StopDragged();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = eventData.pointerCurrentRaycast.worldPosition;
     }
 }

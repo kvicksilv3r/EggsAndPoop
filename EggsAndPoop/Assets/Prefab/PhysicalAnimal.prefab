@@ -102,7 +102,10 @@ MonoBehaviour:
   idleAnimation: Idle_A
   eatAnimation: Eat
   walkAnimation: Walk
-  timeBetweenFrolicActions: 5
+  rareIdleAnimation: Idle_B
+  flyingAnimation: Fly
+  minActionTime: 4
+  maxActionTime: 8
   eatChance: 20
   chillChance: 70
   layermask:
@@ -116,6 +119,7 @@ MonoBehaviour:
   specialIdleChance: 5
   visualHolster: {fileID: 2451220794068287645}
   draggedTransformOffset: 2
+  distanceToTargetAsStopped: 0.1
 --- !u!195 &2483376976430132009
 NavMeshAgent:
   m_ObjectHideFlags: 0
