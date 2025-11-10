@@ -11,11 +11,6 @@ public class WelcomeBackScreen : MonoBehaviour
 
     public string baseAfkText = "You have been away for";
 
-    void Start()
-    {
-        GameManager.Instance.m_AfkDataProcessed.AddListener(Display);
-    }
-
     public void UpdateText()
     {
         var timeAway = EggTimer.Instance.GetTimeAway();

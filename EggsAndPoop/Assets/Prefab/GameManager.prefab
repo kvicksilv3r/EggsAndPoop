@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 3828268849901340939}
   - component: {fileID: 4355165428335345725}
   - component: {fileID: 6168827445372981257}
+  - component: {fileID: 2203481964581413646}
+  - component: {fileID: 3939110685546442038}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -68,10 +70,13 @@ MonoBehaviour:
   m_EggContextClosed:
     m_PersistentCalls:
       m_Calls: []
+  m_AfkDataProcessed:
+    m_PersistentCalls:
+      m_Calls: []
   m_SaveDataLoaded:
     m_PersistentCalls:
       m_Calls: []
-  m_AfkDataProcessed:
+  m_NukeSaveData:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &60460280174951797
@@ -136,13 +141,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
   saveData:
+    lastTimeActive: 0
     money: 0
     playerAnimals: []
     playerEggs: []
     extraEggCapacity: 0
     unlockedEggTypes: 
     jimmies: Rustled
-  ignoreLoad: 0
+    nextEggTime: 0
 --- !u!114 &4997938122873360081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +208,7 @@ MonoBehaviour:
   welcomeBackTMP: {fileID: 0}
   earnedEggsTMP: {fileID: 0}
   welcomeBackPanel: {fileID: 0}
+  prefKey: PlayedGame
   baseAfkText: You have been away for
 --- !u!114 &6168827445372981257
 MonoBehaviour:
@@ -216,3 +223,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+--- !u!114 &2203481964581413646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c739f0530d15d4187d6167d04c3786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnHolster: {fileID: 0}
+  physicalAnimalPrefab: {fileID: 6944395962995677881, guid: e1c6a55077ba37d4da27fcd451276d36, type: 3}
+--- !u!114 &3939110685546442038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93382175ffab8344aa57c25ff60c3e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bootstrapEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 827278585258328137}
+        m_TargetAssemblyTypeName: DataController, Assembly-CSharp
+        m_MethodName: CheckForSave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4953081865670786912}
+        m_TargetAssemblyTypeName: PlayerInventoryManager, Assembly-CSharp
+        m_MethodName: LoadInventory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6168827445372981257}
+        m_TargetAssemblyTypeName: EggTimer, Assembly-CSharp
+        m_MethodName: SetupTimer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2203481964581413646}
+        m_TargetAssemblyTypeName: PhysicalAnimalController, Assembly-CSharp
+        m_MethodName: InstantiateAnimals
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
