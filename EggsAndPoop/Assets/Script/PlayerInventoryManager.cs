@@ -7,6 +7,7 @@ public class PlayerInventoryManager : MonoBehaviour
 {
     public static PlayerInventoryManager Instance;
     public InventoryConfig inventoryConfig;
+    public QuirkData quirkData;
 
     public int extendedEggCapacity = 0;
 
@@ -24,8 +25,24 @@ public class PlayerInventoryManager : MonoBehaviour
     public void AddEggs(int amount)
     {
         for (int i = 0; i < amount; i++)
-        {
             AddEgg();
+    }
+
+    public void AddEggsOfType(EggType eggType, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if (!CanAddEgg()) return;
+
+            var existing = playerEggs.FirstOrDefault(e => e.eggType == eggType);
+            if (existing != null)
+            {
+                existing.eggAmount++;
+            }
+            else
+            {
+                playerEggs.Add(new PlayerEggEntry { eggType = eggType, eggAmount = 1 });
+            }
         }
     }
 
@@ -38,13 +55,12 @@ public class PlayerInventoryManager : MonoBehaviour
 
         EggType eggType = unlockedEggTypes[UnityEngine.Random.Range(0, unlockedEggTypes.Count)];
 
-        var hasEggType = playerEggs.Select(e => e.eggType).Count() > 0;
+        var existingEntry = playerEggs.FirstOrDefault(e => e.eggType == eggType);
 
-        if (hasEggType)
+        if (existingEntry != null)
         {
-            playerEggs.Where(e => e.eggType == eggType).FirstOrDefault().eggAmount++;
+            existingEntry.eggAmount++;
         }
-
         else
         {
             var newEggEntry = new PlayerEggEntry();
@@ -85,11 +101,22 @@ public class PlayerInventoryManager : MonoBehaviour
     public void LoadInventory()
     {
         var saveData = DataController.instance.GetData();
-        playerEggs.Clear();
-        playerEggs = saveData.playerEggs.ToList();
 
-        playerAnimals.Clear();
-        playerAnimals = saveData.playerAnimals.ToList();
+        playerEggs = (saveData.playerEggs ?? new PlayerEggEntry[0]).ToList();
+        playerAnimals = (saveData.playerAnimals ?? new PlayerAnimalEntry[0]).ToList();
+        unlockedEggTypes = (saveData.unlockedEggTypes ?? new EggType[0]).ToList();
+
+        if (!unlockedEggTypes.Contains(EggType.Farm))
+            unlockedEggTypes.Add(EggType.Farm);
+
+        extendedEggCapacity = saveData.extraEggCapacity;
+
+        // Migrate legacy isInStorage flag to enclosureType
+        foreach (var animal in playerAnimals)
+        {
+            if (animal.isInStorage && animal.enclosureType == EnclosureType.Pasture)
+                animal.enclosureType = EnclosureType.Storage;
+        }
 
         print("Inventory loaded");
     }
@@ -112,17 +139,29 @@ public class PlayerInventoryManager : MonoBehaviour
         entry.timeOfBirth = DateTime.Now.ToLong();
         entry.guid = Guid.NewGuid().ToString();
         entry.physicalAnimalData = new PhysicalAnimalData();
+        entry.enclosureType = HasOpenActiveSlots() ? EnclosureType.Pasture : EnclosureType.Storage;
+        entry.quirkId = UnityEngine.Random.Range(0, quirkData.quirks.Length);
 
         playerAnimals.Add(entry);
     }
 
     public void RemoveAnimal(string animalGuid)
     {
-        var removedAnimal = playerAnimals.Where(a => a.guid == animalGuid).FirstOrDefault();
+        var removedAnimal = playerAnimals.FirstOrDefault(a => a.guid == animalGuid);
         playerAnimals.Remove(removedAnimal);
         PhysicalAnimalController.Instance.RemoveAnimal(animalGuid);
 
         DataController.instance.CompleteSave();
+    }
+
+    public void MoveAnimalToStorage(string animalGuid)
+    {
+        EnclosureManager.Instance.AssignToEnclosure(animalGuid, EnclosureType.Storage);
+    }
+
+    public void MoveAnimalToFarm(string animalGuid)
+    {
+        EnclosureManager.Instance.AssignToEnclosure(animalGuid, EnclosureType.Pasture);
     }
 
     public void ModifySaveData(ref SaveData saveData)
@@ -136,7 +175,7 @@ public class PlayerInventoryManager : MonoBehaviour
 
     private void UpdatePhysicalAnimals()
     {
-        foreach (var playerAnimal in playerAnimals)
+        foreach (var playerAnimal in GetActiveAnimals())
         {
             if (!PhysicalAnimalController.Instance.AnimalExists(playerAnimal.guid))
             {
@@ -161,6 +200,11 @@ public class PlayerInventoryManager : MonoBehaviour
         return inventoryConfig.baseMaxOwnedAnimals;
     }
 
+    public int GetMaxActiveAnimalCount()
+    {
+        return inventoryConfig.baseMaxActiveAnimals;
+    }
+
     public int GetCurrentEggCount()
     {
         var totalOwnedEggs = 0;
@@ -178,8 +222,23 @@ public class PlayerInventoryManager : MonoBehaviour
         return playerAnimals.Count < GetMaxAnimalCount();
     }
 
+    public bool HasOpenActiveSlots()
+    {
+        return GetActiveAnimals().Count < GetMaxActiveAnimalCount();
+    }
+
     public List<PlayerAnimalEntry> GetAnimals()
     {
         return playerAnimals;
+    }
+
+    public List<PlayerAnimalEntry> GetActiveAnimals()
+    {
+        return playerAnimals.Where(a => a.enclosureType != EnclosureType.Storage).ToList();
+    }
+
+    public List<PlayerAnimalEntry> GetStorageAnimals()
+    {
+        return playerAnimals.Where(a => a.enclosureType == EnclosureType.Storage).ToList();
     }
 }

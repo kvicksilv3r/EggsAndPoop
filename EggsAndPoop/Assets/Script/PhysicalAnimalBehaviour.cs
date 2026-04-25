@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
-public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     public string idleAnimation = "Idle_A";
     public string eatAnimation = "Eat";
@@ -169,9 +169,18 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
         return navHit.position;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        var animal = GetComponent<PhysicalAnimal>();
+        var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == animal.animalGuid);
+        if (entry == null) return;
+
+        AnimalInfoPanel.Instance.Show(animal.animalGuid, entry.customAnimalName);
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        print("Start drag");
+        AnimalInfoPanel.Instance.Hide();
         SetState(AnimalBehaviourState.Dragged);
     }
 

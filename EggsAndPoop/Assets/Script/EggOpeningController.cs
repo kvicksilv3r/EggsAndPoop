@@ -15,10 +15,6 @@ public class EggOpeningController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         GameManager.Instance.m_EggCrackedOpen.AddListener(EggCrackedOpen);
     }
 
@@ -31,6 +27,7 @@ public class EggOpeningController : MonoBehaviour
     {
         eggData = data;
         hasMaxEggs = PlayerInventoryManager.Instance.HasMaxEggs();
+        EggHelper.Instance.SetupEgg(eggData);
         GameManager.Instance.m_SetupEgg.Invoke();
     }
 

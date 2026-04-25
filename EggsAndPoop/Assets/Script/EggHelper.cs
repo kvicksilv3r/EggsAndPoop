@@ -24,24 +24,17 @@ public class EggHelper : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        GameManager.Instance.m_SetupEgg.AddListener(SetupEgg);
         GameManager.Instance.m_EggContextClosed.AddListener(DestroyCurrentEgg);
     }
 
-    public void SetupEgg()
+    public void SetupEgg(EggData eggData)
     {
         if (EggExists())
         {
             DestroyCurrentEgg();
         }
 
-        var eggdata = EggOpeningController.Instance.GetEgg();
-
-        var egg = Instantiate(eggdata.eggPrefab, eggSceneRoot.transform);
+        var egg = Instantiate(eggData.eggPrefab, eggSceneRoot.transform);
         egg.GetComponent<EggCracking>().SetCamera(eggCamera);
 
         egg.transform.localPosition = position + Vector3.up * eggSpawnOffset;

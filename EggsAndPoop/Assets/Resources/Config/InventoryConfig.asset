@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330aa32f27d1db844815a9b331632957, type: 3}
   m_Name: InventoryConfig
   m_EditorClassIdentifier: 
-  baseMaxOwnedEggs: 10
-  baseMaxOwnedAnimals: 20
-  hoursForNewEgg: 2
+  baseMaxOwnedEggs: 3
+  baseMaxOwnedAnimals: 50
+  baseMaxActiveAnimals: 10
+  hoursForNewEgg: 6
+  baseFertilizerCapacity: 100
+  daysUntilQuirkUnlocks: 3
+  breedingPenCapacity: 2
+  feedingTroughCapacity: 2
+  baseFoodCapacity: 100
+  foodConsumptionRatePerHour: 1
+  fertilizerToFoodRatio: 2

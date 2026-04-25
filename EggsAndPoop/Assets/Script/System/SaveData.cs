@@ -7,10 +7,10 @@ public class SaveData
 {
     public long lastTimeActive;
     public int money = 0;
-    public PlayerAnimalEntry[] playerAnimals;
-    public PlayerEggEntry[] playerEggs;
+    public PlayerAnimalEntry[] playerAnimals = new PlayerAnimalEntry[0];
+    public PlayerEggEntry[] playerEggs = new PlayerEggEntry[0];
     public int extraEggCapacity = 0;
-    public EggType[] unlockedEggTypes;
+    public EggType[] unlockedEggTypes = new EggType[0];
     public string jimmies = "Rustled";
     public long nextEggTime;
     public int farmLevel = 0;
@@ -18,4 +18,6 @@ public class SaveData
     public int playerExperience = 0;
     public int fertilizerAmount = 0;
     public int fertilizerCapacity = 0;
+    public int foodAmount = 0;
+    public int foodCapacity = 0;
 }

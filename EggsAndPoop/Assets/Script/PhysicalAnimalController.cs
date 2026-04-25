@@ -14,35 +14,37 @@ public class PhysicalAnimalController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         GameManager.Instance.m_EggCrackedOpenPost.AddListener(InstantiateAnimals);
     }
 
     public void InstantiateAnimals()
     {
-        foreach (var animal in PlayerInventoryManager.Instance.GetAnimals())
+        foreach (var animal in PlayerInventoryManager.Instance.GetActiveAnimals())
         {
             if (animalLinks.ContainsKey(animal.guid))
             {
                 continue;
             }
 
+            var animalData = AnimalRoster.Instance.GetByIdentifier(animal.animalIdentifier);
+            if (animalData == null)
+            {
+                Debug.LogError($"No AnimalData found for identifier {animal.animalIdentifier}. Skipping animal '{animal.customAnimalName}'.");
+                continue;
+            }
+
             var spawnPos = spawnHolster.transform.GetChild(UnityEngine.Random.Range(0, spawnHolster.transform.childCount)).transform.position;
-            var forwardRot = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
-            var specificAnimalPrefab = AnimalRoster.Instance.GetByIdentifier(animal.animalIdentifier).prefab;
 
             var g = Instantiate(physicalAnimalPrefab, spawnPos, Quaternion.identity);
-            Instantiate(specificAnimalPrefab, g.transform);
-            var p = g.GetComponent<PhysicalAnimal>();
-            p.physicalAnimalData = animal.physicalAnimalData;
-            p.animalData = AnimalRoster.Instance.GetByIdentifier(animal.animalIdentifier);
+            Instantiate(animalData.prefab, g.transform);
 
             g.name = animal.customAnimalName;
 
-            animalLinks.Add(animal.guid, g.GetComponent<PhysicalAnimal>());
+            var p = g.GetComponent<PhysicalAnimal>();
+            p.Initialize(animalData, animal.physicalAnimalData);
+            p.animalGuid = animal.guid;
+
+            animalLinks.Add(animal.guid, p);
         }
     }
 

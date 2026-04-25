@@ -17,4 +17,8 @@ public class AnimalData : ScriptableObject
     public float maxWalkDistance = 10;
     public float movementSpeed = 2f;
     public float acceleration = 5;
+    [Tooltip("Poops produced per hour")]
+    public float poopRate = 1f;
+    [Tooltip("Eggs contributed per hour when in the Breeding Pen")]
+    public float eggContribution = 1f;
 }

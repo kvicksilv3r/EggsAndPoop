@@ -8,34 +8,44 @@ public class PhysicalAnimal : MonoBehaviour
 {
     public PhysicalAnimalData physicalAnimalData;
     public AnimalData animalData;
+    public string animalGuid;
     public string defaultAnimation = "Idle_A";
     public Transform visualHolster;
     public NavMeshAgent navMeshAgent;
     public Animator animator;
 
-    private void Start()
+    public void Initialize(AnimalData data, PhysicalAnimalData physicalData)
     {
+        animalData = data;
+        physicalAnimalData = physicalData;
+
         if (navMeshAgent == null)
-        {
             navMeshAgent = GetComponent<NavMeshAgent>();
-        }
 
         if (animator == null)
-        {
             animator = GetComponentInChildren<Animator>();
-        }
 
         SetupHierarchy();
-
         SetupNavAgent();
-
         SetupPosition();
         SetupRotation();
-
         SetupDefaultAnimation();
         UpdateAnimalData();
 
         StartCoroutine(Loop());
+
+        if (animalData.poopRate > 0)
+            StartCoroutine(PoopLoop());
+    }
+
+    private IEnumerator PoopLoop()
+    {
+        var interval = 3600f / animalData.poopRate;
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            FertilizerManager.Instance.AddFertilizer(1);
+        }
     }
 
     private void SetupHierarchy()

@@ -19,10 +19,6 @@ public class AnimalRedeemingVisuals : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    void Start()
-    {
         GameManager.Instance.m_SetupEgg.AddListener(RemoveAnimal);
         GameManager.Instance.m_EggContextClosed.AddListener(RemoveAnimal);
     }

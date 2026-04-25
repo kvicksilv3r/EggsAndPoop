@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Bootstrapper : MonoBehaviour
 {
-    public UnityEvent bootstrapEvents;
-
     private void Start()
     {
-        bootstrapEvents.Invoke();
+        DataController.instance.CheckForSave();
+        PlayerInventoryManager.Instance.LoadInventory();
+        FertilizerManager.Instance.LoadFertilizer();  // snapshots lastTimeActive before any CompleteSave
+        EnclosureManager.Instance.Initialize();        // AFK eggs + AFK poop, then fires m_AfkDataProcessed
+        PhysicalAnimalController.Instance.InstantiateAnimals();
     }
-    //TODO REBUILD ANIMAL DATA SAVE DATA
 }

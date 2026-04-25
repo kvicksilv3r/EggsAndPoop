@@ -13,34 +13,34 @@ public class WelcomeBackScreen : MonoBehaviour
 
     public void UpdateText()
     {
-        var timeAway = EggTimer.Instance.GetTimeAway();
+        var timeAway = System.TimeSpan.FromHours(FertilizerManager.Instance.CachedHoursAway);
 
-        string days = timeAway.Days > 0 ? timeAway.Days.ToString() + "d " : "";
-        string hours = timeAway.Hours > 0 ? timeAway.Hours.ToString() + "h " : "";
-        string minutes = timeAway.Minutes > 0 ? timeAway.Minutes.ToString() + "m " : "";
-        string seconds = timeAway.Seconds > 0 ? timeAway.Seconds.ToString() + "s" : "";
+        string days = timeAway.Days > 0 ? timeAway.Days + "d " : "";
+        string hours = timeAway.Hours > 0 ? timeAway.Hours + "h " : "";
+        string minutes = timeAway.Minutes > 0 ? timeAway.Minutes + "m " : "";
+        string seconds = timeAway.Seconds > 0 ? timeAway.Seconds + "s" : "";
 
         welcomeBackTMP.text = $"{baseAfkText} \n {days}{hours}{minutes}{seconds}";
 
-        var earnedEggs = EggTimer.Instance.GetNewEggs();
+        var earnedEggs = EnclosureManager.Instance.LastSessionEggsEarned;
 
         if (earnedEggs == 0)
         {
-            if (PlayerInventoryManager.Instance.HasMaxEggs())
-            {
-                earnedEggsTMP.text = "You've earned no new eggs \n (Egg storage full)";
-            }
-
-            else
-            {
-                earnedEggsTMP.text = $"You've earned no new eggs yet \n Next egg in {EggTimer.Instance.StringUntilNextTime()}";
-            }
+            earnedEggsTMP.text = PlayerInventoryManager.Instance.HasMaxEggs()
+                ? "Your egg basket is full. Time to hatch some!"
+                : $"No new eggs yet. Next one in {EnclosureManager.Instance.TimeUntilNextEgg()}";
         }
-
         else
         {
-            earnedEggsTMP.text = earnedEggs > 1 ? $"You've earned {earnedEggs} new eggs" : $"You've earned {earnedEggs} new egg";
+            earnedEggsTMP.text = earnedEggs > 1
+                ? $"Your animals have been busy! {earnedEggs} new eggs waiting for you."
+                : "One of your animals left you a little surprise. A new egg!";
         }
+    }
+
+    private void Awake()
+    {
+        GameManager.Instance.m_AfkDataProcessed.AddListener(Display);
     }
 
     public void Display()
@@ -53,11 +53,6 @@ public class WelcomeBackScreen : MonoBehaviour
         }
 
         welcomeBackPanel.SetActive(true);
-        UpdateText();
-    }
-
-    private void Update()
-    {
         UpdateText();
     }
 

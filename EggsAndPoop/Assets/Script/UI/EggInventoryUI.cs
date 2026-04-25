@@ -9,11 +9,15 @@ public class EggInventoryUI : MonoBehaviour
     public GameObject noEggsPanel;
     public GameObject fullAnimalSlotsPanel;
 
+    private void Awake()
+    {
+        GameManager.Instance.m_EggCrackedOpenPost.AddListener(RefreshUI);
+        GameManager.Instance.m_EggContextOpened.AddListener(RefreshUI);
+    }
+
     private void Start()
     {
         RefreshUI();
-        GameManager.Instance.m_EggCrackedOpenPost.AddListener(RefreshUI);
-        GameManager.Instance.m_EggContextOpened.AddListener(RefreshUI);
     }
 
     private void CleanUI()

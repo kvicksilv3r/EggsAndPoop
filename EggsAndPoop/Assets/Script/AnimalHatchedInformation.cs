@@ -11,7 +11,7 @@ public class AnimalHatchedInformation : MonoBehaviour
 
     public RarityColorMap rarityColorMap;
 
-    private void Start()
+    private void Awake()
     {
         GameManager.Instance.m_SetupEgg.AddListener(Hide);
         GameManager.Instance.m_EggContextOpened.AddListener(Hide);

@@ -16,10 +16,6 @@ public class DataController : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
         GameManager.Instance.m_EggCrackedOpenPost.AddListener(CompleteSave);
         GameManager.Instance.m_NukeSaveData.AddListener(IgnoreSave);
     }
@@ -48,17 +44,17 @@ public class DataController : MonoBehaviour
         {
             LoadGame();
         }
-
         else
         {
             SetupFirstSave();
         }
+
+        GameManager.Instance.m_SaveDataLoaded.Invoke();
     }
 
     private void SetupFirstSave()
     {
         saveData = new SaveData();
-        EggTimer.Instance.SetNextEggTime();
         CompleteSave();
     }
 
@@ -76,7 +72,7 @@ public class DataController : MonoBehaviour
     {
         saveData.lastTimeActive = DateTime.Now.Ticks;
         PlayerInventoryManager.Instance.ModifySaveData(ref saveData);
-        EggTimer.Instance.ModifySaveData(ref saveData);
+        FertilizerManager.Instance.ModifySaveData(ref saveData);
         return saveData;
     }
 
