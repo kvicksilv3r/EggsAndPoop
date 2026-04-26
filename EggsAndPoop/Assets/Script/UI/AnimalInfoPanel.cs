@@ -11,6 +11,7 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TMP_InputField nameInputField;
     public TextMeshProUGUI ageText;
+    public TextMeshProUGUI sexText;
     public TextMeshProUGUI quirkText;
     public Button changeNameButton;
     public Button sendToStorageButton;
@@ -40,6 +41,8 @@ public class AnimalInfoPanel : MonoBehaviour
         nameInputField.gameObject.SetActive(false);
 
         ageText.text = FormatAge(entry.timeOfBirth);
+        if (sexText != null)
+            sexText.text = entry.sex == AnimalSex.Female ? "♀ Girl" : "♂ Boy";
         quirkText.text = FormatQuirk(entry);
 
         panel.SetActive(true);

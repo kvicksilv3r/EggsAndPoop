@@ -20,7 +20,7 @@ public class AnimalHatchedInformation : MonoBehaviour
 
     public void DisplayInfo(AnimalData animalData)
     {
-        nameTMP.text = animalData.animalName;
+        nameTMP.text = animalData.speciesName;
         descriptionTMP.text = animalData.description;
 
         var color = rarityColorMap.colorMap.Where(a => a.rarity == animalData.rarity).FirstOrDefault().rarityColor;

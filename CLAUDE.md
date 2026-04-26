@@ -15,6 +15,10 @@ The game aims to create **warm emotional connections** between the player and th
 - Reward patience and presence. Features like time-locked quirks exist to make returning players feel like their animals *grew* while they were gone.
 - Avoid anything that feels like pressure. This is a feel-good idle game — no punishment mechanics, no urgency.
 
+## Unity-Specific Rules
+
+- **Never rename a field on a ScriptableObject without adding `[FormerlySerializedAs("oldName")]`.** ScriptableObject assets are serialized by field name — renaming silently drops the stored value in every asset. The risk is high because assets are populated in the Editor and the data loss won't show up as a compile error. Add `using UnityEngine.Serialization;` and place the attribute on the renamed field. It can be removed after all assets have been re-saved, but leaving it in permanently is harmless.
+
 ## Build & Development
 
 This is a Unity project — there is no CLI build command. Open `EggsAndPoop/EggsAndPoop.sln` in Visual Studio or Rider for C# editing with IntelliSense. Build and run via the Unity Editor.

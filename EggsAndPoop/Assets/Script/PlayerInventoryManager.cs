@@ -135,12 +135,18 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         PlayerAnimalEntry entry = new PlayerAnimalEntry();
         entry.animalIdentifier = addedAnimal.animalIdentifier;
-        entry.customAnimalName = addedAnimal.animalName;
         entry.timeOfBirth = DateTime.Now.ToLong();
         entry.guid = Guid.NewGuid().ToString();
         entry.physicalAnimalData = new PhysicalAnimalData();
         entry.enclosureType = HasOpenActiveSlots() ? EnclosureType.Pasture : EnclosureType.Storage;
-        entry.quirkId = UnityEngine.Random.Range(0, quirkData.quirks.Length);
+        entry.quirkId = quirkData != null ? UnityEngine.Random.Range(0, quirkData.quirks.Length) : 0;
+        entry.sex = addedAnimal.sexOverride switch
+        {
+            AnimalSexOverride.Male => AnimalSex.Male,
+            AnimalSexOverride.Female => AnimalSex.Female,
+            _ => (AnimalSex)UnityEngine.Random.Range(0, 2)
+        };
+        entry.customAnimalName = AnimalNameGenerator.GetRandomName(entry.sex);
 
         playerAnimals.Add(entry);
     }

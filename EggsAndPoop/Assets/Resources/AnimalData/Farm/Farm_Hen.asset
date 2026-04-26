@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Hen
   m_EditorClassIdentifier: 
   prefab: {fileID: 3078124929395302595, guid: dce9c9e444374b944bbe648df744fbb4, type: 3}
-  animalName: Hen
+  speciesName: Hen
   description: Old lady chicken. Very boring animals but makes a lot of noise and
     also eggs
   rarity: 1
@@ -27,3 +27,6 @@ MonoBehaviour:
   maxWalkDistance: 10
   movementSpeed: 3
   acceleration: 8
+  poopRate: 1
+  eggContribution: 1
+  sexOverride: 2

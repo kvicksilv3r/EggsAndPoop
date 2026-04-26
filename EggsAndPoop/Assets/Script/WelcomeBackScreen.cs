@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -54,6 +55,16 @@ public class WelcomeBackScreen : MonoBehaviour
 
         welcomeBackPanel.SetActive(true);
         UpdateText();
+        StartCoroutine(LiveCountdown());
+    }
+
+    private IEnumerator LiveCountdown()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            UpdateText();
+        }
     }
 
     public void Hide()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ public class EnclosureManager : MonoBehaviour
     private const float BreedingPenFloorEggsPerHour = 1f / 24f;
 
     public int LastSessionEggsEarned { get; private set; }
+
+    private DateTime _nextFarmEggTime;
 
     private void Awake()
     {
@@ -113,6 +116,10 @@ public class EnclosureManager : MonoBehaviour
         {
             float rate = GetBreedingRateForFamily(family);
             float interval = 3600f / rate;
+
+            if (family == AnimalFamily.Farm)
+                _nextFarmEggTime = DateTime.Now.AddSeconds(interval);
+
             yield return new WaitForSeconds(interval);
 
             var eggType = FamilyToEggType(family);
@@ -224,13 +231,13 @@ public class EnclosureManager : MonoBehaviour
 
     public string TimeUntilNextEgg()
     {
-        float totalRate = GetBreedingRateForFamily(AnimalFamily.Farm);
-        float intervalSeconds = 3600f / totalRate;
-        var span = System.TimeSpan.FromSeconds(intervalSeconds);
+        var remaining = _nextFarmEggTime - DateTime.Now;
 
-        string hours = span.Hours > 0 ? span.Hours + "h " : "";
-        string minutes = span.Minutes > 0 ? span.Minutes + "m " : "";
-        string seconds = span.Seconds + "s";
+        if (remaining.TotalSeconds <= 0) return "any moment now...";
+
+        string hours = remaining.Hours > 0 ? remaining.Hours + "h " : "";
+        string minutes = remaining.Minutes > 0 ? remaining.Minutes + "m " : "";
+        string seconds = remaining.Seconds + "s";
         return hours + minutes + seconds;
     }
 }

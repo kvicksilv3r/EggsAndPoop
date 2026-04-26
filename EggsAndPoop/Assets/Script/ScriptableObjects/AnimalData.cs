@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "AnimalData", menuName = "EAP/New AnimalData")]
 public class AnimalData : ScriptableObject
 {
     public GameObject prefab;
-    public string animalName;
+    [FormerlySerializedAs("animalName")]
+    public string speciesName;
     public string description;
     public AnimalRarity rarity;
     public AnimalFamily family;
@@ -21,4 +23,6 @@ public class AnimalData : ScriptableObject
     public float poopRate = 1f;
     [Tooltip("Eggs contributed per hour when in the Breeding Pen")]
     public float eggContribution = 1f;
+    [Tooltip("Force a specific sex, or leave Random for 50/50")]
+    public AnimalSexOverride sexOverride = AnimalSexOverride.Random;
 }

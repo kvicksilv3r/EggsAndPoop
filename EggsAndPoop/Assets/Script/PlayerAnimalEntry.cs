@@ -11,5 +11,6 @@ public class PlayerAnimalEntry
     public long timeOfBirth;
     public string guid;
     public int quirkId = -1;
+    public AnimalSex sex;
     public PhysicalAnimalData physicalAnimalData;
 }
