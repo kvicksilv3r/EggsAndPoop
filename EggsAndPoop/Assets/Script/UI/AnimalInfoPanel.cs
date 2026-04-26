@@ -22,7 +22,8 @@ public class AnimalInfoPanel : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        panel.SetActive(false);
+        panel.SetActive(true);   // force active so children initialise
+        panel.SetActive(false);  // then immediately hide
         nameInputField.gameObject.SetActive(false);
         sendToStorageButton.onClick.AddListener(SendToStorage);
         closeButton.onClick.AddListener(Hide);
@@ -35,6 +36,7 @@ public class AnimalInfoPanel : MonoBehaviour
         currentGuid = guid;
 
         var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == guid);
+        var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
 
         nameText.text = animalName;
         nameText.gameObject.SetActive(true);
@@ -42,14 +44,18 @@ public class AnimalInfoPanel : MonoBehaviour
 
         ageText.text = FormatAge(entry.timeOfBirth);
         if (sexText != null)
-            sexText.text = entry.sex == AnimalSex.Female ? "♀ Girl" : "♂ Boy";
+            sexText.text = entry.sex == AnimalSex.Female ? "♀" : "♂";
         quirkText.text = FormatQuirk(entry);
+
+        if (data != null)
+            AnimalPortraitRenderer.Instance.Show(data);
 
         panel.SetActive(true);
     }
 
     public void Hide()
     {
+        AnimalPortraitRenderer.Instance.Clear();
         panel.SetActive(false);
         currentGuid = null;
     }
