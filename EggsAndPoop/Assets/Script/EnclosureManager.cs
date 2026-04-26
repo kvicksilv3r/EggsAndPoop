@@ -177,22 +177,24 @@ public class EnclosureManager : MonoBehaviour
 
     // ── Assignment ────────────────────────────────────────────────────────────
 
-    public void AssignToEnclosure(string guid, EnclosureType targetType)
+    public bool AssignToEnclosure(string guid, EnclosureType targetType)
     {
         var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == guid);
-        if (entry == null) return;
-        if (entry.enclosureType == targetType) return;
+        if (entry == null) return false;
+        if (entry.enclosureType == targetType) return true;
 
         if (targetType != EnclosureType.Storage && !CanAssignToEnclosure(targetType))
         {
-            Debug.LogWarning($"Enclosure {targetType} is full.");
-            return;
+            Debug.LogWarning($"[Enclosure] {entry.customAnimalName} → {targetType} REJECTED (full)");
+            return false;
         }
 
-        bool wasActive = entry.enclosureType != EnclosureType.Storage;
+        EnclosureType previousType = entry.enclosureType;
+        bool wasActive = previousType != EnclosureType.Storage;
         bool willBeActive = targetType != EnclosureType.Storage;
 
         entry.enclosureType = targetType;
+        Debug.Log($"[Enclosure] {entry.customAnimalName}: {previousType} → {targetType}");
 
         if (wasActive && !willBeActive)
             PhysicalAnimalController.Instance.RemoveAnimal(guid);
@@ -203,6 +205,7 @@ public class EnclosureManager : MonoBehaviour
             StartCoroutine(FeedingCoroutine(guid));
 
         DataController.instance.CompleteSave();
+        return true;
     }
 
     public bool CanAssignToEnclosure(EnclosureType type)

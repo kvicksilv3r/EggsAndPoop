@@ -98,7 +98,7 @@ public class PhysicalAnimal : MonoBehaviour
     {
         if (physicalAnimalData.position != Vector3.zero)
         {
-            transform.position = physicalAnimalData.position;
+            navMeshAgent.Warp(physicalAnimalData.position);
         }
     }
 }

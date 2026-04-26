@@ -19,11 +19,12 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
     public Animator animator;
     public NavMeshAgent navMeshAgent;
     public AnimalBehaviourState currentState;
-    public AnimalBehaviourState lastState;
     public int specialIdleChance = 5;
     public Transform visualHolster;
     public float draggedTransformOffset = 2f;
     public float distanceToTargetAsStopped = 0.1f;
+
+    private Vector3 _dragStartPosition;
 
     private void Start()
     {
@@ -47,7 +48,6 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
 
     public void SetState(AnimalBehaviourState state)
     {
-        lastState = currentState;
         currentState = state;
 
         switch (currentState)
@@ -105,15 +105,23 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
 
     private void StartDragged()
     {
+        _dragStartPosition = transform.position;
         StopAllCoroutines();
-        navMeshAgent.isStopped = true;
+        navMeshAgent.enabled = false;
         animator.Play(flyingAnimation, 0);
-        visualHolster.transform.localPosition = Vector3.zero + Vector3.up * draggedTransformOffset;
+        visualHolster.transform.localPosition = Vector3.up * draggedTransformOffset;
     }
 
-    public void StopDragged()
+    public void StopDragged(bool returnToStart = false)
     {
         visualHolster.transform.localPosition = Vector3.zero;
+
+        Vector3 landingPosition = returnToStart || !NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas)
+            ? _dragStartPosition
+            : hit.position;
+
+        transform.position = landingPosition;
+        navMeshAgent.enabled = true;
         EnterRandomState();
         StartCoroutine(Frolicking());
     }
@@ -160,13 +168,12 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
 
     private Vector3 GetRandomPoint()
     {
-        Vector3 randDirection = Random.insideUnitSphere * dist;
+        Vector3 randDirection = transform.position + Random.insideUnitSphere * dist;
 
-        NavMeshHit navHit;
+        if (NavMesh.SamplePosition(randDirection, out NavMeshHit navHit, dist, layermask))
+            return navHit.position;
 
-        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
-
-        return navHit.position;
+        return transform.position;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -186,8 +193,27 @@ public class PhysicalAnimalBehaviour : MonoBehaviour, IBeginDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        print("End drag");
-        StopDragged();
+        var enclosure = FindEnclosureAtPosition(transform.position);
+        var animal = GetComponent<PhysicalAnimal>();
+        EnclosureType targetType = enclosure != null ? enclosure.enclosureType : EnclosureType.Pasture;
+
+        bool assigned = EnclosureManager.Instance.AssignToEnclosure(animal.animalGuid, targetType);
+
+        if (targetType == EnclosureType.Storage)
+            return; // animal GameObject is destroyed by AssignToEnclosure, don't touch it after
+
+        StopDragged(returnToStart: !assigned);
+    }
+
+    private EnclosureVolume FindEnclosureAtPosition(Vector3 position)
+    {
+        var hits = Physics.OverlapSphere(position, 0.5f);
+        foreach (var hit in hits)
+        {
+            var volume = hit.GetComponent<EnclosureVolume>();
+            if (volume != null) return volume;
+        }
+        return null;
     }
 
     public void OnDrag(PointerEventData eventData)

@@ -111,13 +111,6 @@ public class PlayerInventoryManager : MonoBehaviour
 
         extendedEggCapacity = saveData.extraEggCapacity;
 
-        // Migrate legacy isInStorage flag to enclosureType
-        foreach (var animal in playerAnimals)
-        {
-            if (animal.isInStorage && animal.enclosureType == EnclosureType.Pasture)
-                animal.enclosureType = EnclosureType.Storage;
-        }
-
         print("Inventory loaded");
     }
 

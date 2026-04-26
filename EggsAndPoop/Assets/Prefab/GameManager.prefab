@@ -18,9 +18,11 @@ GameObject:
   - component: {fileID: 4953081865670786912}
   - component: {fileID: 3828268849901340939}
   - component: {fileID: 4355165428335345725}
-  - component: {fileID: 6168827445372981257}
   - component: {fileID: 2203481964581413646}
   - component: {fileID: 3939110685546442038}
+  - component: {fileID: 4711111115246332751}
+  - component: {fileID: 6286821893834768037}
+  - component: {fileID: 6653570695526895389}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -149,6 +151,13 @@ MonoBehaviour:
     unlockedEggTypes: 
     jimmies: Rustled
     nextEggTime: 0
+    farmLevel: 0
+    playerLevel: 1
+    playerExperience: 0
+    fertilizerAmount: 0
+    fertilizerCapacity: 0
+    foodAmount: 0
+    foodCapacity: 0
 --- !u!114 &4997938122873360081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+  quirkData: {fileID: 11400000, guid: bbd28bbee6ba64c4b8e3a1348f4bc29f, type: 2}
   extendedEggCapacity: 0
   unlockedEggTypes: 
   playerAnimals: []
@@ -210,19 +220,6 @@ MonoBehaviour:
   welcomeBackPanel: {fileID: 0}
   prefKey: PlayedGame
   baseAfkText: You have been away for
---- !u!114 &6168827445372981257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2445403513721993689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aac7a5c9564bcb4eb97397f3e02ea4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
 --- !u!114 &2203481964581413646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,54 +246,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93382175ffab8344aa57c25ff60c3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bootstrapEvents:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 827278585258328137}
-        m_TargetAssemblyTypeName: DataController, Assembly-CSharp
-        m_MethodName: CheckForSave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4953081865670786912}
-        m_TargetAssemblyTypeName: PlayerInventoryManager, Assembly-CSharp
-        m_MethodName: LoadInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6168827445372981257}
-        m_TargetAssemblyTypeName: EggTimer, Assembly-CSharp
-        m_MethodName: SetupTimer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2203481964581413646}
-        m_TargetAssemblyTypeName: PhysicalAnimalController, Assembly-CSharp
-        m_MethodName: InstantiateAnimals
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+--- !u!114 &4711111115246332751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975c80255c4cb54499f2f1860f1d12ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FertilizerManager
+  inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+--- !u!114 &6286821893834768037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bad5636122156947b195f5dec21054d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnclosureManager
+  inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+--- !u!114 &6653570695526895389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445403513721993689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b72aa2119a9db03418b76c396f25f311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalPortraitRenderer
+  animalAnchor: {fileID: 0}
+  portraitLayer: 8
