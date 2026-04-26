@@ -20,4 +20,6 @@ public class SaveData
     public int fertilizerCapacity = 0;
     public int foodAmount = 0;
     public int foodCapacity = 0;
+    public int poopAmount = 0;
+    public int poopCapacity = 0;
 }

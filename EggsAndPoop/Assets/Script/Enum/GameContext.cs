@@ -3,5 +3,7 @@ public enum GameContext
     Main,
     Settings,
     Home,
-    Egg
+    Egg,
+    Economy,
+    Farm
 }

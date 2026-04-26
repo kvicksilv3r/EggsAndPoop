@@ -21,13 +21,13 @@ public class AnimalRedeeming : MonoBehaviour
         activeEgg = newEgg;
     }
 
-    public AnimalData OpenEgg(EggData newEgg)
+    public AnimalData OpenEgg(EggData newEgg, float rarityBonus = 0f)
     {
         SetEgg(newEgg);
-        return OpenEgg();
+        return OpenEgg(rarityBonus);
     }
 
-    public AnimalData OpenEgg()
+    public AnimalData OpenEgg(float rarityBonus = 0f)
     {
         if (!activeEgg)
         {
@@ -42,12 +42,10 @@ public class AnimalRedeeming : MonoBehaviour
             activeEgg = debugEgg;
         }
 
-        var chosenAnimal = RanomizeAnimal();
-
-        return chosenAnimal;
+        return RandomizeAnimal(rarityBonus);
     }
 
-    private AnimalData RanomizeAnimal()
+    private AnimalData RandomizeAnimal(float rarityBonus = 0f)
     {
         var minRarity = activeEgg.eggMinRarity;
         var maxRarity = activeEgg.eggMaxRarity;
@@ -55,7 +53,8 @@ public class AnimalRedeeming : MonoBehaviour
         var minRoll = dropRates.dropRates.Where(d => d.rarity == minRarity).FirstOrDefault().dropRate;
         var maxRoll = dropRates.dropRates.Where(d => d.rarity == maxRarity).FirstOrDefault().maxRollIfHighestRarity;
 
-        var selectedDropNumber = Random.Range(minRoll, maxRoll);
+        var baseRoll = Random.Range(minRoll, maxRoll);
+        var selectedDropNumber = Mathf.Clamp(Mathf.RoundToInt(baseRoll + rarityBonus), minRoll, maxRoll - 1);
         var chosenRarity = GenerateRarity(selectedDropNumber);
 
         var availableAnimals = AnimalRoster.Instance.GetByFamily(activeEgg.containedAnimalTypes)

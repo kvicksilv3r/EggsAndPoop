@@ -116,7 +116,7 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public int GetMaxEggCapacity()
     {
-        return inventoryConfig.baseMaxOwnedEggs + extendedEggCapacity;
+        return inventoryConfig.baseMaxOwnedEggs + extendedEggCapacity + FarmManager.Instance.GetBonusEggCapacity();
     }
 
     public void AddUnlockedEggType(EggType eggType)
@@ -196,12 +196,12 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public int GetMaxAnimalCount()
     {
-        return inventoryConfig.baseMaxOwnedAnimals;
+        return inventoryConfig.baseMaxOwnedAnimals + FarmManager.Instance.GetBonusAnimalSlots();
     }
 
     public int GetMaxActiveAnimalCount()
     {
-        return inventoryConfig.baseMaxActiveAnimals;
+        return inventoryConfig.baseMaxActiveAnimals + FarmManager.Instance.GetBonusAnimalSlots();
     }
 
     public int GetCurrentEggCount()

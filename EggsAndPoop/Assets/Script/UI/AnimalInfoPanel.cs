@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,11 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI ageText;
     public TextMeshProUGUI sexText;
     public TextMeshProUGUI quirkText;
+    public TextMeshProUGUI errorText;
     public Button changeNameButton;
+    public Button favouriteButton;
+    public TextMeshProUGUI favouriteButtonText;
+    public Button sellButton;
     public Button sendToStorageButton;
     public Button closeButton;
 
@@ -25,10 +30,14 @@ public class AnimalInfoPanel : MonoBehaviour
         panel.SetActive(true);   // force active so children initialise
         panel.SetActive(false);  // then immediately hide
         nameInputField.gameObject.SetActive(false);
+        if (errorText != null) errorText.gameObject.SetActive(false);
+
         sendToStorageButton.onClick.AddListener(SendToStorage);
         closeButton.onClick.AddListener(Hide);
         changeNameButton.onClick.AddListener(OpenNameEdit);
         nameInputField.onEndEdit.AddListener(CommitNameChange);
+        favouriteButton.onClick.AddListener(ToggleFavourite);
+        sellButton.onClick.AddListener(SellAnimal);
     }
 
     public void Show(string guid, string animalName)
@@ -47,6 +56,13 @@ public class AnimalInfoPanel : MonoBehaviour
             sexText.text = entry.sex == AnimalSex.Female ? "♀" : "♂";
         quirkText.text = FormatQuirk(entry);
 
+        RefreshFavouriteButton(entry);
+
+        if (sellButton != null && data != null)
+            sellButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Sell ({data.sellPrice} coins)";
+
+        if (errorText != null) errorText.gameObject.SetActive(false);
+
         if (data != null)
             AnimalPortraitRenderer.Instance.Show(data);
 
@@ -58,6 +74,60 @@ public class AnimalInfoPanel : MonoBehaviour
         AnimalPortraitRenderer.Instance.Clear();
         panel.SetActive(false);
         currentGuid = null;
+    }
+
+    private void ToggleFavourite()
+    {
+        if (currentGuid == null) return;
+        var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == currentGuid);
+        if (entry == null) return;
+
+        entry.favourite = !entry.favourite;
+        RefreshFavouriteButton(entry);
+        DataController.instance.CompleteSave();
+    }
+
+    private void RefreshFavouriteButton(PlayerAnimalEntry entry)
+    {
+        if (favouriteButtonText != null)
+            favouriteButtonText.text = entry.favourite ? "♥" : "♡";
+    }
+
+    private void SellAnimal()
+    {
+        if (currentGuid == null) return;
+
+        var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == currentGuid);
+        if (entry == null) return;
+
+        if (entry.favourite)
+        {
+            ShowError("Can't sell your favourites!");
+            return;
+        }
+
+        var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
+        if (data != null)
+            CoinManager.Instance.AddCoins(data.sellPrice);
+
+        string guid = currentGuid;
+        Hide();
+        PlayerInventoryManager.Instance.RemoveAnimal(guid);
+    }
+
+    private void ShowError(string message)
+    {
+        if (errorText == null) return;
+        errorText.text = message;
+        errorText.gameObject.SetActive(true);
+        StopCoroutine(nameof(HideErrorAfterDelay));
+        StartCoroutine(nameof(HideErrorAfterDelay));
+    }
+
+    private IEnumerator HideErrorAfterDelay()
+    {
+        yield return new WaitForSeconds(2.5f);
+        if (errorText != null) errorText.gameObject.SetActive(false);
     }
 
     private void OpenNameEdit()

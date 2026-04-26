@@ -27,6 +27,16 @@ public class GameStateController : MonoBehaviour
         SetContext(GameContext.Egg);
     }
 
+    public void FarmContext()
+    {
+        SetContext(GameContext.Farm);
+    }
+
+    public void EconomyContext()
+    {
+        SetContext(GameContext.Economy);
+    }
+
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))

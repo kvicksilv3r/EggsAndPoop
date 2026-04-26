@@ -16,6 +16,10 @@ public class EnclosureManager : MonoBehaviour
 
     private DateTime _nextFarmEggTime;
 
+    private float _breedingRarityBonus;
+    private readonly Dictionary<AnimalEnum, DateTime> _lastBreedTimes = new Dictionary<AnimalEnum, DateTime>();
+    private readonly HashSet<AnimalEnum> _activePairCoroutines = new HashSet<AnimalEnum>();
+
     private void Awake()
     {
         Instance = this;
@@ -36,6 +40,7 @@ public class EnclosureManager : MonoBehaviour
 
         StartBreedingCoroutines();
         StartFeedingCoroutines();
+        StartBreedingPairCoroutines();
     }
 
     // ── AFK calculations ─────────────────────────────────────────────────────
@@ -80,15 +85,14 @@ public class EnclosureManager : MonoBehaviour
             bool hadFood = FertilizerManager.Instance.ConsumeFood(foodNeeded);
 
             float effectivePoopRate = hadFood ? data.poopRate * 2f : data.poopRate;
-            FertilizerManager.Instance.AddFertilizer(Mathf.FloorToInt(hoursAway * effectivePoopRate));
+            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * effectivePoopRate));
         }
 
-        // Pasture animals still produce normal AFK poop
         foreach (var entry in GetAnimalsInEnclosure(EnclosureType.Pasture))
         {
             var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
             if (data == null || data.poopRate <= 0) continue;
-            FertilizerManager.Instance.AddFertilizer(Mathf.FloorToInt(hoursAway * data.poopRate));
+            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * data.poopRate));
         }
     }
 
@@ -112,7 +116,6 @@ public class EnclosureManager : MonoBehaviour
             .Distinct()
             .ToList();
 
-        // Always run the floor for Farm
         if (!families.Contains(AnimalFamily.Farm))
             families.Add(AnimalFamily.Farm);
 
@@ -122,7 +125,6 @@ public class EnclosureManager : MonoBehaviour
 
     private IEnumerator BreedingCoroutine(AnimalFamily family)
     {
-        // First wait uses the pre-computed time so AFK partial progress is respected
         float firstWait = family == AnimalFamily.Farm
             ? Mathf.Max(0f, (float)(_nextFarmEggTime - DateTime.Now).TotalSeconds)
             : 3600f / GetBreedingRateForFamily(family);
@@ -171,9 +173,91 @@ public class EnclosureManager : MonoBehaviour
                 Mathf.CeilToInt(inventoryConfig.foodConsumptionRatePerHour));
 
             float effectivePoopRate = hadFood ? data.poopRate * 2f : data.poopRate;
-            FertilizerManager.Instance.AddFertilizer(Mathf.FloorToInt(effectivePoopRate));
+            PoopManager.Instance.AddPoop(Mathf.FloorToInt(effectivePoopRate));
         }
     }
+
+    // ── Breeding pairs ────────────────────────────────────────────────────────
+
+    private void StartBreedingPairCoroutines()
+    {
+        foreach (var species in GetBreedingPairs())
+            TryStartPairCoroutine(species);
+    }
+
+    private void TryStartPairCoroutine(AnimalEnum species)
+    {
+        if (_activePairCoroutines.Contains(species)) return;
+
+        var animalData = AnimalRoster.Instance.GetByIdentifier(species);
+        if (animalData == null) return;
+
+        var eggType = FamilyToEggType(animalData.family);
+        if (eggType == null) return;
+
+        var eggData = EggRoster.Instance.GetByType(eggType.Value);
+        if (eggData == null) return;
+
+        _activePairCoroutines.Add(species);
+        StartCoroutine(BreedingPairCoroutine(species, eggData));
+    }
+
+    private IEnumerator BreedingPairCoroutine(AnimalEnum species, EggData eggData)
+    {
+        while (HasBreedingPair(species))
+        {
+            yield return new WaitForSeconds(GetBreedingCooldownRemaining(species));
+
+            if (!HasBreedingPair(species)) break;
+
+            var result = AnimalRedeeming.Instance.OpenEgg(eggData, _breedingRarityBonus);
+            if (result != null)
+                PlayerInventoryManager.Instance.AddAnimal(result);
+
+            _breedingRarityBonus = 0f;
+            _lastBreedTimes[species] = DateTime.Now;
+        }
+
+        _activePairCoroutines.Remove(species);
+    }
+
+    private float GetBreedingCooldownRemaining(AnimalEnum species)
+    {
+        if (!_lastBreedTimes.TryGetValue(species, out DateTime lastBreed))
+            return 0f;
+
+        float elapsed = (float)(DateTime.Now - lastBreed).TotalSeconds;
+        float cooldown = inventoryConfig.breedingPairCooldownHours * 3600f;
+        return Mathf.Max(0f, cooldown - elapsed);
+    }
+
+    private bool HasBreedingPair(AnimalEnum species)
+    {
+        var penAnimals = GetAnimalsInEnclosure(EnclosureType.BreedingPen)
+            .Where(a => a.animalIdentifier == species).ToList();
+        return penAnimals.Any(a => a.sex == AnimalSex.Male) &&
+               penAnimals.Any(a => a.sex == AnimalSex.Female);
+    }
+
+    private List<AnimalEnum> GetBreedingPairs()
+    {
+        return GetAnimalsInEnclosure(EnclosureType.BreedingPen)
+            .GroupBy(a => a.animalIdentifier)
+            .Where(g => g.Any(a => a.sex == AnimalSex.Male) && g.Any(a => a.sex == AnimalSex.Female))
+            .Select(g => g.Key)
+            .ToList();
+    }
+
+    // ── Mulch ─────────────────────────────────────────────────────────────────
+
+    public void ApplyMulchBonus(int bonus)
+    {
+        _breedingRarityBonus = Mathf.Min(
+            _breedingRarityBonus + bonus,
+            inventoryConfig.maxBreedingRarityBonus);
+    }
+
+    public float GetBreedingRarityBonus() => _breedingRarityBonus;
 
     // ── Assignment ────────────────────────────────────────────────────────────
 
@@ -204,8 +288,17 @@ public class EnclosureManager : MonoBehaviour
         if (targetType == EnclosureType.FeedingTrough)
             StartCoroutine(FeedingCoroutine(guid));
 
+        if (targetType == EnclosureType.BreedingPen || previousType == EnclosureType.BreedingPen)
+            RefreshBreedingPairs();
+
         DataController.instance.CompleteSave();
         return true;
+    }
+
+    private void RefreshBreedingPairs()
+    {
+        foreach (var species in GetBreedingPairs())
+            TryStartPairCoroutine(species);
     }
 
     public bool CanAssignToEnclosure(EnclosureType type)
@@ -245,7 +338,6 @@ public class EnclosureManager : MonoBehaviour
 
     private EggType? FamilyToEggType(AnimalFamily family)
     {
-        // Extend this as new egg types are added.
         return family switch
         {
             AnimalFamily.Farm => EggType.Farm,

@@ -44,7 +44,7 @@ public class PhysicalAnimal : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(interval);
-            FertilizerManager.Instance.AddFertilizer(1);
+            PoopManager.Instance.AddPoop(1);
         }
     }
 

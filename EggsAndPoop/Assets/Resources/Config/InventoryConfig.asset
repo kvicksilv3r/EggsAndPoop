@@ -23,3 +23,24 @@ MonoBehaviour:
   baseFoodCapacity: 100
   foodConsumptionRatePerHour: 1
   fertilizerToFoodRatio: 2
+  basePoopCapacity: 100
+  poopToCoinsRate: 1
+  poopToFertilizerRatio: 1
+  poopMulchBonusPerUnit: 5
+  maxBreedingRarityBonus: 200
+  breedingPairCooldownHours: 72
+  farmUpgradeBaseCost: 100
+  farmUpgradeCostExponent: 1.5
+  farmUpgradeTiers:
+  - additionalAnimalSlots: 2
+    additionalEggCapacity: 1
+    additionalFertilizerCapacity: 20
+    additionalPoopCapacity: 20
+  - additionalAnimalSlots: 1
+    additionalEggCapacity: 0
+    additionalFertilizerCapacity: 10
+    additionalPoopCapacity: 10
+  - additionalAnimalSlots: 1
+    additionalEggCapacity: 1
+    additionalFertilizerCapacity: 10
+    additionalPoopCapacity: 10
