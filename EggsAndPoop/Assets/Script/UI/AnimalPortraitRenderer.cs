@@ -93,15 +93,16 @@ public class AnimalPortraitRenderer : MonoBehaviour
 
     private IEnumerator WatchSpin()
     {
+        // Wait a frame for the animator to transition into Spin before checking
+        yield return null;
+
         float elapsed = 0f;
 
         while (elapsed < SpinDurationForEyes)
         {
-            // If the player stopped the spin early (e.g. panel closed), bail
             if (_animator == null) yield break;
 
-            var state = _animator.GetCurrentAnimatorStateInfo(0);
-            if (!state.IsName("Spin")) yield break;
+            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Spin")) yield break;
 
             elapsed += Time.deltaTime;
             yield return null;

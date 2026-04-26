@@ -29,6 +29,7 @@ public class EnclosureManager : MonoBehaviour
 
         CalculateAfkBreedingOutput(hoursAway);
         CalculateAfkFeedingOutput(hoursAway);
+        SetNextFarmEggTime(hoursAway);
 
         DataController.instance.CompleteSave();
         GameManager.Instance.m_AfkDataProcessed.Invoke();
@@ -91,6 +92,15 @@ public class EnclosureManager : MonoBehaviour
         }
     }
 
+    private void SetNextFarmEggTime(float hoursAway)
+    {
+        float rate = GetBreedingRateForFamily(AnimalFamily.Farm);
+        float interval = 3600f / rate;
+        float secondsPassed = hoursAway * 3600f;
+        float secondsIntoCurrentCycle = secondsPassed % interval;
+        _nextFarmEggTime = DateTime.Now.AddSeconds(interval - secondsIntoCurrentCycle);
+    }
+
     // ── Real-time coroutines ──────────────────────────────────────────────────
 
     private void StartBreedingCoroutines()
@@ -112,6 +122,17 @@ public class EnclosureManager : MonoBehaviour
 
     private IEnumerator BreedingCoroutine(AnimalFamily family)
     {
+        // First wait uses the pre-computed time so AFK partial progress is respected
+        float firstWait = family == AnimalFamily.Farm
+            ? Mathf.Max(0f, (float)(_nextFarmEggTime - DateTime.Now).TotalSeconds)
+            : 3600f / GetBreedingRateForFamily(family);
+
+        yield return new WaitForSeconds(firstWait);
+
+        var eggType = FamilyToEggType(family);
+        if (eggType != null)
+            PlayerInventoryManager.Instance.AddEggsOfType(eggType.Value, 1);
+
         while (true)
         {
             float rate = GetBreedingRateForFamily(family);
@@ -122,7 +143,7 @@ public class EnclosureManager : MonoBehaviour
 
             yield return new WaitForSeconds(interval);
 
-            var eggType = FamilyToEggType(family);
+            eggType = FamilyToEggType(family);
             if (eggType != null)
                 PlayerInventoryManager.Instance.AddEggsOfType(eggType.Value, 1);
         }
