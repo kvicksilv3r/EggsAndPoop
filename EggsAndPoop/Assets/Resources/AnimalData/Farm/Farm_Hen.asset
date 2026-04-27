@@ -22,11 +22,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2
-  sellPrice: 0
+  sellPrice: 2
   animalIdentifier: 5
   maxWalkDistance: 10
   movementSpeed: 3
   acceleration: 8
   poopRate: 1
-  eggContribution: 1
+  eggContribution: 0.1
   sexOverride: 2

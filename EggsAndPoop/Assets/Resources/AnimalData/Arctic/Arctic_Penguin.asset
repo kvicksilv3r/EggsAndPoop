@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arctic_Penguin
   m_EditorClassIdentifier: 
   prefab: {fileID: 3584599820630843841, guid: add5ab1cca4ee994d9f396d44d51bc66, type: 3}
-  animalName: Penguin
+  speciesName: Penguin
   description: Can you imagine this creature almost outsmarting Batman?
   rarity: 1
   family: 1
@@ -21,8 +21,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2.8
-  sellPrice: 0
+  sellPrice: 3
   animalIdentifier: 11
   maxWalkDistance: 10
   movementSpeed: 1
   acceleration: 5
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

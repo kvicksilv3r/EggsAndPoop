@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arctic_ArcticFox
   m_EditorClassIdentifier: 
   prefab: {fileID: 5528603755101481349, guid: 8640f86cc1cb10448814047cfd71eec9, type: 3}
-  animalName: Arctic fox
+  speciesName: Arctic fox
   description: This little fella can survive in snow. What excuse do you have?
   rarity: 0
   family: 1
@@ -21,8 +21,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2.2
-  sellPrice: 0
+  sellPrice: 2
   animalIdentifier: 9
   maxWalkDistance: 10
   movementSpeed: 3
   acceleration: 8
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

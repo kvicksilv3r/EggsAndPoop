@@ -25,6 +25,12 @@ public class EggOpeningController : MonoBehaviour
 
     public void InitiateEggOpening(EggData data)
     {
+        if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots())
+        {
+            FloatingMessageController.Instance.Show("Your farm and barn are full. Make some room first!");
+            return;
+        }
+
         eggData = data;
         hasMaxEggs = PlayerInventoryManager.Instance.HasMaxEggs();
         EggHelper.Instance.SetupEgg(eggData);
@@ -59,7 +65,11 @@ public class EggOpeningController : MonoBehaviour
 
     public void RegisterNewAnimal()
     {
+        bool farmWasFull = !PlayerInventoryManager.Instance.HasOpenActiveSlots();
         PlayerInventoryManager.Instance.AddAnimal(generatedAnimal);
+
+        if (farmWasFull)
+            FloatingMessageController.Instance.Show("Your farm is full — they're settling into the barn for now.");
     }
 
     public void RemoveEggFromInventory()

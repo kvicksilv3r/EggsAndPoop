@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arctic_Reindeer
   m_EditorClassIdentifier: 
   prefab: {fileID: 9074739552759902731, guid: 8d4ecaf818d6b504f991a963a30e58d7, type: 3}
-  animalName: Reindeer
+  speciesName: Reindeer
   description: It should be called a snowdeer to be honest
   rarity: 4
   family: 1
@@ -21,8 +21,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2
-  sellPrice: 0
+  sellPrice: 60
   animalIdentifier: 13
   maxWalkDistance: 10
   movementSpeed: 2
   acceleration: 6
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

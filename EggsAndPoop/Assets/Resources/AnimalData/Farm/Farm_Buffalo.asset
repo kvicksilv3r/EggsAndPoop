@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Buffalo
   m_EditorClassIdentifier: 
   prefab: {fileID: 5688514589227935463, guid: ad0058799afa43640919848d26f0f33b, type: 3}
-  animalName: Buffalo
+  speciesName: Buffalo
   description: Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo
   rarity: 4
   family: 0
@@ -21,3 +21,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2
+  sellPrice: 50
+  animalIdentifier: 0
+  maxWalkDistance: 10
+  movementSpeed: 2
+  acceleration: 5
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

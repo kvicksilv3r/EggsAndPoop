@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arctic_SeaLion
   m_EditorClassIdentifier: 
   prefab: {fileID: 1664746700288019358, guid: 981931ef30c4eff4eaa909f3b0793909, type: 3}
-  animalName: Sea lion
+  speciesName: Sea lion
   description: Despite the name this animal does look nothing like a lion. What a
     scam.
   rarity: 0
@@ -22,8 +22,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2
-  sellPrice: 0
+  sellPrice: 2
   animalIdentifier: 14
   maxWalkDistance: 10
   movementSpeed: 1
   acceleration: 1
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

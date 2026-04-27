@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arctic_Walrus
   m_EditorClassIdentifier: 
   prefab: {fileID: 6935659746675284366, guid: 45dd76ea3e48f1b4f9ee53f144721d54, type: 3}
-  animalName: Walrus
+  speciesName: Walrus
   description: Hey look, it is Jamie Hyneman
   rarity: 4
   family: 1
@@ -21,8 +21,11 @@ MonoBehaviour:
   age: 1
   possibleEvolutions: []
   openingExtraScale: 2.2
-  sellPrice: 0
+  sellPrice: 60
   animalIdentifier: 17
   maxWalkDistance: 10
   movementSpeed: 1
   acceleration: 1
+  poopRate: 1
+  eggContribution: 0.05
+  sexOverride: 0

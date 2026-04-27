@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +13,14 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI ageText;
     public TextMeshProUGUI sexText;
     public TextMeshProUGUI quirkText;
-    public TextMeshProUGUI errorText;
     public Button changeNameButton;
     public Button favouriteButton;
     public TextMeshProUGUI favouriteButtonText;
     public Button sellButton;
     public Button sendToStorageButton;
     public Button closeButton;
+
+    private const int MaxNameLength = 20;
 
     private string currentGuid;
 
@@ -29,9 +29,8 @@ public class AnimalInfoPanel : MonoBehaviour
         Instance = this;
         panel.SetActive(true);   // force active so children initialise
         panel.SetActive(false);  // then immediately hide
+        nameInputField.characterLimit = MaxNameLength;
         nameInputField.gameObject.SetActive(false);
-        if (errorText != null) errorText.gameObject.SetActive(false);
-
         sendToStorageButton.onClick.AddListener(SendToStorage);
         closeButton.onClick.AddListener(Hide);
         changeNameButton.onClick.AddListener(OpenNameEdit);
@@ -47,7 +46,7 @@ public class AnimalInfoPanel : MonoBehaviour
         var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == guid);
         var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
 
-        nameText.text = animalName;
+        nameText.text = animalName.Length > MaxNameLength ? animalName[..MaxNameLength] : animalName;
         nameText.gameObject.SetActive(true);
         nameInputField.gameObject.SetActive(false);
 
@@ -60,8 +59,6 @@ public class AnimalInfoPanel : MonoBehaviour
 
         if (sellButton != null && data != null)
             sellButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Sell ({data.sellPrice} coins)";
-
-        if (errorText != null) errorText.gameObject.SetActive(false);
 
         if (data != null)
             AnimalPortraitRenderer.Instance.Show(data);
@@ -102,7 +99,7 @@ public class AnimalInfoPanel : MonoBehaviour
 
         if (entry.favourite)
         {
-            ShowError("Can't sell your favourites!");
+            FloatingMessageController.Instance.Show("That one's a favourite — unfavourite them first.");
             return;
         }
 
@@ -113,21 +110,6 @@ public class AnimalInfoPanel : MonoBehaviour
         string guid = currentGuid;
         Hide();
         PlayerInventoryManager.Instance.RemoveAnimal(guid);
-    }
-
-    private void ShowError(string message)
-    {
-        if (errorText == null) return;
-        errorText.text = message;
-        errorText.gameObject.SetActive(true);
-        StopCoroutine(nameof(HideErrorAfterDelay));
-        StartCoroutine(nameof(HideErrorAfterDelay));
-    }
-
-    private IEnumerator HideErrorAfterDelay()
-    {
-        yield return new WaitForSeconds(2.5f);
-        if (errorText != null) errorText.gameObject.SetActive(false);
     }
 
     private void OpenNameEdit()
@@ -142,12 +124,14 @@ public class AnimalInfoPanel : MonoBehaviour
     {
         if (!string.IsNullOrWhiteSpace(newName) && currentGuid != null)
         {
+            var trimmed = newName.Length > MaxNameLength ? newName[..MaxNameLength] : newName;
             var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == currentGuid);
             if (entry != null)
             {
-                entry.customAnimalName = newName;
+                entry.customAnimalName = trimmed;
                 DataController.instance.CompleteSave();
             }
+            newName = trimmed;
         }
 
         nameText.text = string.IsNullOrWhiteSpace(newName) ? nameText.text : newName;
