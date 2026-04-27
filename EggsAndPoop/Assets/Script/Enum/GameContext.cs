@@ -5,5 +5,6 @@ public enum GameContext
     Home,
     Egg,
     Economy,
-    Farm
+    Farm,
+    Barn
 }
