@@ -1,12 +1,11 @@
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BarnAnimalEntry : MonoBehaviour
 {
+    public RawImage animalImage;
     public TextMeshProUGUI nameText;
-    public TextMeshProUGUI speciesText;
-    public TextMeshProUGUI ageText;
 
     private string guid;
 
@@ -16,8 +15,11 @@ public class BarnAnimalEntry : MonoBehaviour
         nameText.text = entry.customAnimalName;
 
         var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
-        speciesText.text = data != null ? data.speciesName : string.Empty;
-        ageText.text = FormatAge(entry.timeOfBirth);
+        if (data != null && animalImage != null)
+        {
+            animalImage.texture = data.icon;
+            animalImage.enabled = data.icon != null;
+        }
     }
 
     public void OnClick()
@@ -25,13 +27,5 @@ public class BarnAnimalEntry : MonoBehaviour
         var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == guid);
         if (entry != null)
             AnimalInfoPanel.Instance.Show(guid, entry.customAnimalName);
-    }
-
-    private string FormatAge(long ticks)
-    {
-        var age = DateTime.Now - new DateTime(ticks);
-        if (age.TotalDays < 1) return "Born today";
-        if (age.TotalDays < 2) return "1 day old";
-        return $"{(int)age.TotalDays} days old";
     }
 }

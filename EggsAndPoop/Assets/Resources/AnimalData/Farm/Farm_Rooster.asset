@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Rooster
   m_EditorClassIdentifier: 
   prefab: {fileID: 5510196490160580397, guid: 511008ffae6ab11459f4abdc9e6f876c, type: 3}
+  icon: {fileID: 2800000, guid: 536ab54369591094a9dd170ce415fd35, type: 3}
   speciesName: Rooster
   description: This game would not be suitable for children if I wrote the other
     common name for this animal

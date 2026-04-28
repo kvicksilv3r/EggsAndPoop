@@ -14,10 +14,11 @@ namespace IconsCreationTool.Editor.Core
         public IconBackgroundData BackgroundData { get; }
         public GameObject[] Targets { get; }
         public bool RenderShadows { get; }
+        public Vector3 RotationOffset { get; }
 
 
         public IconsCreatorData(int size, float padding, string prefix, string suffix,
-            IconBackgroundData backgroundData, List<Object> targets, bool renderShadows)
+            IconBackgroundData backgroundData, List<Object> targets, bool renderShadows, Vector3 rotationOffset)
         {
             Size = size;
             Padding = padding;
@@ -26,6 +27,7 @@ namespace IconsCreationTool.Editor.Core
             BackgroundData = backgroundData;
             Targets = targets.ExtractAllGameObjects().Where(g => g.HasVisibleMesh()).ToArray();
             RenderShadows = renderShadows;
+            RotationOffset = rotationOffset;
         }
     }
 }

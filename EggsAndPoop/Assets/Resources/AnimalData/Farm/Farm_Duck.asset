@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Duck
   m_EditorClassIdentifier: 
   prefab: {fileID: 8964966116814765260, guid: 12b696ce7d428d745aee485c8e3ef831, type: 3}
+  icon: {fileID: 2800000, guid: 9f9f92e37bb7b83489b5f98cf0a21e44, type: 3}
   speciesName: Duck
   description: 'Fun fact: Ducks go QUACK'
   rarity: 1

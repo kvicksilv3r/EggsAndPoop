@@ -8,6 +8,7 @@ public class BarnPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        if (PlayerInventoryManager.Instance == null) return;
         Refresh();
     }
 

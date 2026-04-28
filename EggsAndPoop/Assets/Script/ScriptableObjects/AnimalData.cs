@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 public class AnimalData : ScriptableObject
 {
     public GameObject prefab;
+    public Texture2D icon;
     [FormerlySerializedAs("animalName")]
     public string speciesName;
     public string description;

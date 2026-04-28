@@ -20,6 +20,7 @@ namespace IconsCreationTool.Editor.Core
         [SerializeField] private float padding;
         
         [SerializeField] private bool renderShadows;
+        [SerializeField] private Vector3 rotationOffset;
 
         [SerializeField] private List<Object> targets = new List<Object>();
 
@@ -56,6 +57,7 @@ namespace IconsCreationTool.Editor.Core
         private SerializedProperty _paddingSerializedProperty;
         private SerializedProperty _targetsObjectSerializedProperty;
         private SerializedProperty _renderShadowsSerializedProperty;
+        private SerializedProperty _rotationOffsetSerializedProperty;
 
         #endregion
 
@@ -103,6 +105,7 @@ namespace IconsCreationTool.Editor.Core
             _paddingSerializedProperty = _serializedObject.FindProperty(nameof(padding));
             _targetsObjectSerializedProperty = _serializedObject.FindProperty(nameof(targets));
             _renderShadowsSerializedProperty = _serializedObject.FindProperty(nameof(renderShadows));
+            _rotationOffsetSerializedProperty = _serializedObject.FindProperty(nameof(rotationOffset));
         }
 
 
@@ -261,6 +264,7 @@ namespace IconsCreationTool.Editor.Core
                 IconsCreatorWindowElements.DrawBoldLabel("Other");
                 
                 EditorGUILayout.PropertyField(_renderShadowsSerializedProperty);
+                EditorGUILayout.PropertyField(_rotationOffsetSerializedProperty, new GUIContent("Rotation Offset"));
 
                 IconsCreatorWindowElements.DrawSmallSpace();
             }
@@ -318,19 +322,22 @@ namespace IconsCreationTool.Editor.Core
             {
                 string objectName = targetObject.name;
 
-                bool objectHasRenderingComponents = targetObject.GetComponentInChildren<MeshRenderer>() && 
-                                                    targetObject.GetComponentInChildren<MeshFilter>();
+                bool objectHasRenderingComponents =
+                    (targetObject.GetComponentInChildren<MeshRenderer>() && targetObject.GetComponentInChildren<MeshFilter>()) ||
+                    targetObject.GetComponentInChildren<SkinnedMeshRenderer>();
                 if (!objectHasRenderingComponents)
                 {
-                    Debug.LogWarning($"Game object \"{objectName}\" must have active MeshFilter and MeshRenderer components in its hierarchy!");
+                    Debug.LogWarning($"Game object \"{objectName}\" must have active rendering components (MeshRenderer+MeshFilter or SkinnedMeshRenderer) in its hierarchy!");
                     targetProperty.objectReferenceValue = null;
                     return;
                 }
 
-                bool objectHasAtLeastOneMesh = targetObject.GetComponentsInChildren<MeshFilter>().Any(f => f.sharedMesh);
+                bool objectHasAtLeastOneMesh =
+                    targetObject.GetComponentsInChildren<MeshFilter>().Any(f => f.sharedMesh) ||
+                    targetObject.GetComponentsInChildren<SkinnedMeshRenderer>().Any(s => s.sharedMesh);
                 if (!objectHasAtLeastOneMesh)
                 {
-                    Debug.LogWarning($"Game object \"{objectName}\" must have at least one MeshFilter with an assigned mesh in its hierarchy!");
+                    Debug.LogWarning($"Game object \"{objectName}\" must have at least one mesh assigned in its hierarchy!");
                     targetProperty.objectReferenceValue = null;
                     return;
                 }
@@ -389,7 +396,7 @@ namespace IconsCreationTool.Editor.Core
         {
             IconBackgroundData backgroundData = new IconBackgroundData(backgroundType, backgroundColor, backgroundTexture);
             IconsCreatorData data =
-                new IconsCreatorData(size, padding, prefix, suffix, backgroundData, targets, renderShadows);
+                new IconsCreatorData(size, padding, prefix, suffix, backgroundData, targets, renderShadows, rotationOffset);
             _iconsCreator.SetData(data);
                 
             UpdatePreviewTexture();

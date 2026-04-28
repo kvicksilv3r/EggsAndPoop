@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Cow
   m_EditorClassIdentifier: 
   prefab: {fileID: 716786909962507443, guid: efbc0dd0297c4e745951ab58edcbcdef, type: 3}
+  icon: {fileID: 2800000, guid: 85163934a747abb4ab366472031f8730, type: 3}
   speciesName: Cow
   description: Slaps top of cow, this bad boy can fit so much milk in it
   rarity: 1

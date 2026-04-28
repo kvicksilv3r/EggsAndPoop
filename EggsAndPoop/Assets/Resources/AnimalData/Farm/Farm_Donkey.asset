@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Donkey
   m_EditorClassIdentifier: 
   prefab: {fileID: 2012484680144267823, guid: 4be9278f227b3d142976aaeb4be66334, type: 3}
+  icon: {fileID: 2800000, guid: 6043ac0f3621cf1408e264a0daee5d81, type: 3}
   speciesName: Donkey
   description: Shrek had a donkey friend called Donkey. Poor fantasy.
   rarity: 3

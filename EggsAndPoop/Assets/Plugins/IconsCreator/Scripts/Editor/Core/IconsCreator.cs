@@ -70,7 +70,7 @@ namespace IconsCreationTool.Editor.Core
                 return;
             }
 
-            _sceneHandler.InteractWithTarget(_data.Targets[0], _data.RenderShadows, AdjustCamera);
+            _sceneHandler.InteractWithTarget(_data.Targets[0], _data.RenderShadows, AdjustCamera, _data.RotationOffset);
         }
 
 
@@ -98,10 +98,10 @@ namespace IconsCreationTool.Editor.Core
                 _sceneHandler.InteractWithTarget(target, _data.RenderShadows, t =>
                 {
                     AdjustCamera(t);
-            
+
                     Texture2D icon = _cameraUtility.CaptureCameraView();
                     _iconsSaver.SaveIcon(icon, target.name);
-                });
+                }, _data.RotationOffset);
             }
         }
     }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Pig
   m_EditorClassIdentifier: 
   prefab: {fileID: 599376418019952636, guid: 67518faee782bbe47af84d65fe683ede, type: 3}
+  icon: {fileID: 2800000, guid: 01fee35fe6bcd164cbb2ce7bb8fd334c, type: 3}
   speciesName: Pig
   description: You can make bacon out of these things. Amazing animals.
   rarity: 0

@@ -9,69 +9,55 @@ namespace IconsCreationTool.Editor.Utility.Extensions
             Vector3 minScreenPosition = Vector3.positiveInfinity;
             Vector3 maxScreenPosition = Vector3.negativeInfinity;
 
-            MeshFilter[] meshFilters = gameObject.GetComponentsInChildren<MeshFilter>();
-            
-            foreach (MeshFilter meshFilter in meshFilters)
+            foreach (MeshFilter meshFilter in gameObject.GetComponentsInChildren<MeshFilter>())
             {
-                if (!meshFilter.sharedMesh)
-                {
-                    continue;
-                }
-                
-                Vector3[] vertices = meshFilter.sharedMesh.vertices;
-
-                foreach (Vector3 vertex in vertices)
-                {
-                    Vector3 wsVertexPosition = meshFilter.transform.TransformPoint(vertex);
-                    Vector3 screenPosition = camera.WorldToScreenPoint(wsVertexPosition);
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        minScreenPosition[i] = Mathf.Min(minScreenPosition[i], screenPosition[i]);
-                        maxScreenPosition[i] = Mathf.Max(maxScreenPosition[i], screenPosition[i]);
-                    }
-                }
+                if (!meshFilter.sharedMesh) continue;
+                AccumulateVertices(meshFilter.sharedMesh.vertices, meshFilter.transform, camera, ref minScreenPosition, ref maxScreenPosition);
             }
-            
-            Vector3 min = camera.ScreenToWorldPoint(minScreenPosition);
-            Vector3 max = camera.ScreenToWorldPoint(maxScreenPosition);
+
+            foreach (SkinnedMeshRenderer smr in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if (!smr.sharedMesh) continue;
+                AccumulateVertices(smr.sharedMesh.vertices, smr.transform, camera, ref minScreenPosition, ref maxScreenPosition);
+            }
 
             Bounds bounds = new Bounds();
-            bounds.SetMinMax(min, max);
-            
+            bounds.SetMinMax(
+                camera.ScreenToWorldPoint(minScreenPosition),
+                camera.ScreenToWorldPoint(maxScreenPosition));
             return bounds;
+        }
+
+        private static void AccumulateVertices(Vector3[] vertices, Transform transform, Camera camera,
+            ref Vector3 minScreenPosition, ref Vector3 maxScreenPosition)
+        {
+            foreach (Vector3 vertex in vertices)
+            {
+                Vector3 screenPosition = camera.WorldToScreenPoint(transform.TransformPoint(vertex));
+                for (int i = 0; i < 3; i++)
+                {
+                    minScreenPosition[i] = Mathf.Min(minScreenPosition[i], screenPosition[i]);
+                    maxScreenPosition[i] = Mathf.Max(maxScreenPosition[i], screenPosition[i]);
+                }
+            }
         }
 
 
         public static bool HasVisibleMesh(this GameObject gameObject)
         {
-            bool hasVisibleMesh = false;
-            MeshFilter[] meshFilters = gameObject.GetComponentsInChildren<MeshFilter>();
-            
-            foreach (MeshFilter meshFilter in meshFilters)
+            foreach (MeshFilter meshFilter in gameObject.GetComponentsInChildren<MeshFilter>())
             {
-                if (!meshFilter)
-                {
-                    continue;
-                }
-
-                bool hasMesh = meshFilter.sharedMesh;
-                if (!hasMesh)
-                {
-                    continue;
-                }
-
-                bool hasRendererForMesh = meshFilter.GetComponent<MeshRenderer>();
-                if (!hasRendererForMesh)
-                {
-                    continue;
-                }
-                
-                hasVisibleMesh = true;
-                break;
+                if (meshFilter && meshFilter.sharedMesh && meshFilter.GetComponent<MeshRenderer>())
+                    return true;
             }
 
-            return hasVisibleMesh;
+            foreach (SkinnedMeshRenderer smr in gameObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if (smr && smr.sharedMesh)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

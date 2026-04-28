@@ -13,7 +13,7 @@ Chester
 Noodle
 Barnaby
 Fudge
-Aloysius
+Harry
 Pretzel
 Gus
 Clover
@@ -50,4 +50,4 @@ Flint
 Dumpling
 Julian
 Squee
-Pekka
+Bobbert

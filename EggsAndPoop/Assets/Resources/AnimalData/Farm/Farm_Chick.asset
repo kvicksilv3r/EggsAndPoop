@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Farm_Chick
   m_EditorClassIdentifier: 
   prefab: {fileID: 7465606655834807850, guid: f16c261dc49ab5a4a83b143ba9e46e5a, type: 3}
+  icon: {fileID: 2800000, guid: 7b89c967c4947d6498519e4033ec2c62, type: 3}
   speciesName: Chicken
   description: This little fella likes to peck the ground and gamble in underground
     black market casinos.

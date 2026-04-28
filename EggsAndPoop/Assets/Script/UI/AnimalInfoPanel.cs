@@ -18,6 +18,7 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI favouriteButtonText;
     public Button sellButton;
     public Button sendToStorageButton;
+    public TextMeshProUGUI sendToStorageButtonText;
     public Button closeButton;
 
     private const int MaxNameLength = 20;
@@ -31,7 +32,7 @@ public class AnimalInfoPanel : MonoBehaviour
         panel.SetActive(false);  // then immediately hide
         nameInputField.characterLimit = MaxNameLength;
         nameInputField.gameObject.SetActive(false);
-        sendToStorageButton.onClick.AddListener(SendToStorage);
+        sendToStorageButton.onClick.AddListener(ToggleStorage);
         closeButton.onClick.AddListener(Hide);
         changeNameButton.onClick.AddListener(OpenNameEdit);
         nameInputField.onEndEdit.AddListener(CommitNameChange);
@@ -56,6 +57,7 @@ public class AnimalInfoPanel : MonoBehaviour
         quirkText.text = FormatQuirk(entry);
 
         RefreshFavouriteButton(entry);
+        RefreshStorageButton(entry);
 
         if (sellButton != null && data != null)
             sellButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Sell ({data.sellPrice} coins)";
@@ -139,10 +141,36 @@ public class AnimalInfoPanel : MonoBehaviour
         nameText.gameObject.SetActive(true);
     }
 
-    private void SendToStorage()
+    private void RefreshStorageButton(PlayerAnimalEntry entry)
+    {
+        if (sendToStorageButtonText == null) return;
+        sendToStorageButtonText.text = entry.enclosureType == EnclosureType.Storage
+            ? "Bring to Farm"
+            : "Send to Barn";
+    }
+
+    private void ToggleStorage()
     {
         if (currentGuid == null) return;
-        PlayerInventoryManager.Instance.MoveAnimalToStorage(currentGuid);
+
+        var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == currentGuid);
+        if (entry == null) return;
+
+        if (entry.enclosureType == EnclosureType.Storage)
+        {
+            if (!PlayerInventoryManager.Instance.HasOpenActiveSlots())
+            {
+                FloatingMessageController.Instance.Show("The farm is full — make some room first.");
+                return;
+            }
+
+            PlayerInventoryManager.Instance.MoveAnimalToFarm(currentGuid);
+        }
+        else
+        {
+            PlayerInventoryManager.Instance.MoveAnimalToStorage(currentGuid);
+        }
+
         Hide();
     }
 

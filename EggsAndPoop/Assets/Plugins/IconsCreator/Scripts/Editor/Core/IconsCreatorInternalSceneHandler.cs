@@ -92,26 +92,27 @@ namespace IconsCreationTool.Editor.Core
         }
 
 
-        public void InteractWithTarget(GameObject targetObject, bool renderShadows, Action<GameObject> action)
+        public void InteractWithTarget(GameObject targetObject, bool renderShadows, Action<GameObject> action, Vector3 rotationOffset = default)
         {
             Scene scene = default;
-            
+
             try
             {
                 LayersHelper.CreateLayer(ICONS_CREATOR_TARGETS_LAYER_NAME);
                 scene = OpenScene();
-                
-                GameObject target = PlaceTarget(targetObject);
+
+                GameObject target = PlaceTarget(targetObject, rotationOffset);
                 
                 int layer = LayerMask.NameToLayer(ICONS_CREATOR_TARGETS_LAYER_NAME);
                 target.layer = layer;
                 foreach (Transform transform in target.GetComponentsInChildren<Transform>())
                 {
                     if (transform.TryGetComponent(out MeshRenderer renderer))
-                    {
-                        renderer.shadowCastingMode = renderShadows ? 
-                            ShadowCastingMode.On : ShadowCastingMode.Off;
-                    }
+                        renderer.shadowCastingMode = renderShadows ? ShadowCastingMode.On : ShadowCastingMode.Off;
+
+                    if (transform.TryGetComponent(out SkinnedMeshRenderer skinnedRenderer))
+                        skinnedRenderer.shadowCastingMode = renderShadows ? ShadowCastingMode.On : ShadowCastingMode.Off;
+
                     transform.gameObject.layer = layer;
                 }
                 
@@ -159,7 +160,7 @@ namespace IconsCreationTool.Editor.Core
         }
 
 
-        private GameObject PlaceTarget(GameObject targetObject)
+        private GameObject PlaceTarget(GameObject targetObject, Vector3 rotationOffset)
         {
             if (EditorSceneManager.GetActiveScene().name != SCENE_NAME)
             {
@@ -168,6 +169,7 @@ namespace IconsCreationTool.Editor.Core
             }
 
             GameObject target = Object.Instantiate(targetObject);
+            target.transform.rotation = Quaternion.Euler(rotationOffset);
             return target;
         }
 
