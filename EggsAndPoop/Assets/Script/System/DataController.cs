@@ -76,6 +76,7 @@ public class DataController : MonoBehaviour
         PoopManager.Instance.ModifySaveData(ref saveData);
         CoinManager.Instance.ModifySaveData(ref saveData);
         FarmManager.Instance.ModifySaveData(ref saveData);
+        EggSlotManager.Instance.ModifySaveData(ref saveData);
         return saveData;
     }
 

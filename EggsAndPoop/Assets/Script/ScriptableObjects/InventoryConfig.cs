@@ -37,4 +37,14 @@ public class InventoryConfig : ScriptableObject
     public int farmUpgradeBaseCost = 100;
     public float farmUpgradeCostExponent = 1.5f;
     public List<FarmUpgradeTier> farmUpgradeTiers = new List<FarmUpgradeTier>();
+
+    [Header("Love & Egg Slots")]
+    [Tooltip("Love generated per hour with no animals")]
+    public float baseLovePerHour = 20f;
+    [Tooltip("Additional love per hour for each animal in Pasture")]
+    public float lovePerPastureAnimalPerHour = 10f;
+    [Tooltip("Love accumulated per hour toward the carton (independent of main slots)")]
+    public float cartonLovePerHour = 2f;
+    public EggSlotConfig[] eggSlots = new EggSlotConfig[3];
+    public CartonTierConfig[] cartonTiers = new CartonTierConfig[5];
 }

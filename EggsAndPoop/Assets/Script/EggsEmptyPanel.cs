@@ -8,8 +8,8 @@ public class EggsEmptyPanel : MonoBehaviour
 
     void Update()
     {
-        if (EnclosureManager.Instance == null) return;
+        if (EggSlotManager.Instance == null) return;
 
-        nextEggInTMP.text = $"{baseText} {EnclosureManager.Instance.TimeUntilNextEgg()}";
+        nextEggInTMP.text = $"{baseText} {EggSlotManager.Instance.TimeUntilNextEgg()}";
     }
 }

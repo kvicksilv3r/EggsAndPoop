@@ -22,8 +22,9 @@ public class AnimalData : ScriptableObject
     public float acceleration = 5;
     [Tooltip("Poops produced per hour")]
     public float poopRate = 1f;
-    [Tooltip("Eggs contributed per hour when in the Breeding Pen")]
-    public float eggContribution = 1f;
+    [Tooltip("Love generated per hour when in the Pasture")]
+    [UnityEngine.Serialization.FormerlySerializedAs("eggContribution")]
+    public float loveGeneration = 1f;
     [Tooltip("Force a specific sex, or leave Random for 50/50")]
     public AnimalSexOverride sexOverride = AnimalSexOverride.Random;
 }

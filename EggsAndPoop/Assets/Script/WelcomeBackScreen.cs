@@ -23,13 +23,14 @@ public class WelcomeBackScreen : MonoBehaviour
 
         welcomeBackTMP.text = $"{baseAfkText} \n {days}{hours}{minutes}{seconds}";
 
-        var earnedEggs = EnclosureManager.Instance.LastSessionEggsEarned;
+        var earnedEggs = EnclosureManager.Instance.LastSessionEggsEarned
+                       + EggSlotManager.Instance.LastSessionEggsEarned;
 
         if (earnedEggs == 0)
         {
             earnedEggsTMP.text = PlayerInventoryManager.Instance.HasMaxEggs()
                 ? "Your egg basket is full. Time to hatch some!"
-                : $"No new eggs yet. Next one in {EnclosureManager.Instance.TimeUntilNextEgg()}";
+                : $"No new eggs yet. Next one in {EggSlotManager.Instance.TimeUntilNextEgg()}";
         }
         else
         {

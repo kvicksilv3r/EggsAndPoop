@@ -112,6 +112,7 @@ public class AnimalInfoPanel : MonoBehaviour
         string guid = currentGuid;
         Hide();
         PlayerInventoryManager.Instance.RemoveAnimal(guid);
+        BarnPanel.Instance.Refresh();
     }
 
     private void OpenNameEdit()

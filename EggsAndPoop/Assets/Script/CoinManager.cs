@@ -30,6 +30,17 @@ public class CoinManager : MonoBehaviour
 
     public int GetCoins() => _coins;
 
+    public static string FormatCoins(int copper)
+    {
+        int gold   = copper / 10000;
+        int silver = (copper % 10000) / 100;
+        int rem    = copper % 100;
+
+        if (gold > 0)   return $"{gold}g {silver}s";
+        if (silver > 0) return $"{silver}s {rem}c";
+        return $"{rem}c";
+    }
+
     public void ModifySaveData(ref SaveData saveData)
     {
         saveData.money = _coins;

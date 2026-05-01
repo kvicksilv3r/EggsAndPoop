@@ -10,11 +10,7 @@ public class EnclosureManager : MonoBehaviour
 
     public InventoryConfig inventoryConfig;
 
-    private const float BreedingPenFloorEggsPerHour = 1f / 24f;
-
     public int LastSessionEggsEarned { get; private set; }
-
-    private DateTime _nextFarmEggTime;
 
     private float _breedingRarityBonus;
     private readonly Dictionary<AnimalEnum, DateTime> _lastBreedTimes = new Dictionary<AnimalEnum, DateTime>();
@@ -33,7 +29,7 @@ public class EnclosureManager : MonoBehaviour
 
         CalculateAfkBreedingOutput(hoursAway);
         CalculateAfkFeedingOutput(hoursAway);
-        SetNextFarmEggTime(hoursAway);
+        EggSlotManager.Instance.CalculateAfkOutput(hoursAway);
 
         DataController.instance.CompleteSave();
         GameManager.Instance.m_AfkDataProcessed.Invoke();
@@ -50,14 +46,12 @@ public class EnclosureManager : MonoBehaviour
         var penAnimals = GetAnimalsInEnclosure(EnclosureType.BreedingPen);
         var rateByFamily = new Dictionary<AnimalFamily, float>();
 
-        rateByFamily[AnimalFamily.Farm] = BreedingPenFloorEggsPerHour;
-
         foreach (var entry in penAnimals)
         {
             var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
-            if (data == null) continue;
+            if (data == null || data.family == AnimalFamily.Farm) continue;
             if (!rateByFamily.ContainsKey(data.family)) rateByFamily[data.family] = 0f;
-            rateByFamily[data.family] += data.eggContribution;
+            rateByFamily[data.family] += data.loveGeneration;
         }
 
         LastSessionEggsEarned = 0;
@@ -96,15 +90,6 @@ public class EnclosureManager : MonoBehaviour
         }
     }
 
-    private void SetNextFarmEggTime(float hoursAway)
-    {
-        float rate = GetBreedingRateForFamily(AnimalFamily.Farm);
-        float interval = 3600f / rate;
-        float secondsPassed = hoursAway * 3600f;
-        float secondsIntoCurrentCycle = secondsPassed % interval;
-        _nextFarmEggTime = DateTime.Now.AddSeconds(interval - secondsIntoCurrentCycle);
-    }
-
     // ── Real-time coroutines ──────────────────────────────────────────────────
 
     private void StartBreedingCoroutines()
@@ -116,19 +101,13 @@ public class EnclosureManager : MonoBehaviour
             .Distinct()
             .ToList();
 
-        if (!families.Contains(AnimalFamily.Farm))
-            families.Add(AnimalFamily.Farm);
-
         foreach (var family in families)
             StartCoroutine(BreedingCoroutine(family));
     }
 
     private IEnumerator BreedingCoroutine(AnimalFamily family)
     {
-        float firstWait = family == AnimalFamily.Farm
-            ? Mathf.Max(0f, (float)(_nextFarmEggTime - DateTime.Now).TotalSeconds)
-            : 3600f / GetBreedingRateForFamily(family);
-
+        float firstWait = 3600f / GetBreedingRateForFamily(family);
         yield return new WaitForSeconds(firstWait);
 
         var eggType = FamilyToEggType(family);
@@ -139,10 +118,6 @@ public class EnclosureManager : MonoBehaviour
         {
             float rate = GetBreedingRateForFamily(family);
             float interval = 3600f / rate;
-
-            if (family == AnimalFamily.Farm)
-                _nextFarmEggTime = DateTime.Now.AddSeconds(interval);
-
             yield return new WaitForSeconds(interval);
 
             eggType = FamilyToEggType(family);
@@ -325,15 +300,10 @@ public class EnclosureManager : MonoBehaviour
     private float GetBreedingRateForFamily(AnimalFamily family)
     {
         var penAnimals = GetAnimalsInEnclosure(EnclosureType.BreedingPen);
-        float rate = penAnimals
+        return penAnimals
             .Select(e => AnimalRoster.Instance.GetByIdentifier(e.animalIdentifier))
             .Where(d => d != null && d.family == family)
-            .Sum(d => d.eggContribution);
-
-        if (family == AnimalFamily.Farm)
-            rate = Mathf.Max(rate, BreedingPenFloorEggsPerHour);
-
-        return rate;
+            .Sum(d => d.loveGeneration);
     }
 
     private EggType? FamilyToEggType(AnimalFamily family)
@@ -345,15 +315,4 @@ public class EnclosureManager : MonoBehaviour
         };
     }
 
-    public string TimeUntilNextEgg()
-    {
-        var remaining = _nextFarmEggTime - DateTime.Now;
-
-        if (remaining.TotalSeconds <= 0) return "any moment now...";
-
-        string hours = remaining.Hours > 0 ? remaining.Hours + "h " : "";
-        string minutes = remaining.Minutes > 0 ? remaining.Minutes + "m " : "";
-        string seconds = remaining.Seconds + "s";
-        return hours + minutes + seconds;
-    }
 }

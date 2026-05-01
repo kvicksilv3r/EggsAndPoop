@@ -22,4 +22,12 @@ public class SaveData
     public int foodCapacity = 0;
     public int poopAmount = 0;
     public int poopCapacity = 0;
+
+    // Egg Slot System
+    public float currentSlotProgress = 0f;
+    public int currentSlotIndex = 0;
+    public int[] slotLoveReductionLevel = new int[3];
+    public int[] slotLuckLevel = new int[3];
+    public int cartonCurrentTier = 0;
+    public float cartonLoveProgress = 0f;
 }

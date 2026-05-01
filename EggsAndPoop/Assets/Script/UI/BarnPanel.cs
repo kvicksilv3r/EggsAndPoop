@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class BarnPanel : MonoBehaviour
 {
+    public static BarnPanel Instance;
+
     public Transform listContainer;
     public GameObject animalEntryPrefab;
     public GameObject emptyLabel;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void OnEnable()
     {
