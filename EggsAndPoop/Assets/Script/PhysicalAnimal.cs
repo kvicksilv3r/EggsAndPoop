@@ -40,12 +40,20 @@ public class PhysicalAnimal : MonoBehaviour
 
     private IEnumerator PoopLoop()
     {
-        var interval = 3600f / animalData.poopRate;
         while (true)
         {
+            float multiplier = GetOutputMultiplier();
+            float interval = (3600f / animalData.poopRate) / Mathf.Max(multiplier, 0.01f);
             yield return new WaitForSeconds(interval);
             PoopManager.Instance.AddPoop(1);
         }
+    }
+
+    private float GetOutputMultiplier()
+    {
+        var entry = PlayerInventoryManager.Instance.GetAnimals().Find(a => a.guid == animalGuid);
+        if (entry == null) return 1f;
+        return AnimalAgeHelper.GetOutputMultiplier(entry, animalData, PlayerInventoryManager.Instance.inventoryConfig);
     }
 
     private void SetupHierarchy()

@@ -13,6 +13,7 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI ageText;
     public TextMeshProUGUI sexText;
     public TextMeshProUGUI quirkText;
+    public TextMeshProUGUI happinessText;
     public Button changeNameButton;
     public Button favouriteButton;
     public TextMeshProUGUI favouriteButtonText;
@@ -51,10 +52,16 @@ public class AnimalInfoPanel : MonoBehaviour
         nameText.gameObject.SetActive(true);
         nameInputField.gameObject.SetActive(false);
 
-        ageText.text = FormatAge(entry.timeOfBirth);
+        ageText.text = FormatAge(entry, data);
         if (sexText != null)
             sexText.text = entry.sex == AnimalSex.Female ? "♀" : "♂";
         quirkText.text = FormatQuirk(entry);
+
+        if (happinessText != null)
+        {
+            var config = PlayerInventoryManager.Instance.inventoryConfig;
+            happinessText.text = FormatHappiness(entry.happinessAmount, config.maxHappiness);
+        }
 
         RefreshFavouriteButton(entry);
         RefreshStorageButton(entry);
@@ -175,13 +182,43 @@ public class AnimalInfoPanel : MonoBehaviour
         Hide();
     }
 
-    private string FormatAge(long timeOfBirthTicks)
+    private string FormatAge(PlayerAnimalEntry entry, AnimalData data)
     {
-        var age = DateTime.Now - new DateTime(timeOfBirthTicks);
+        var age = DateTime.Now - new DateTime(entry.timeOfBirth);
 
-        if (age.TotalDays < 1) return "Born today";
-        if (age.TotalDays < 2) return "1 day old";
-        return $"{(int)age.TotalDays} days old";
+        string timeText;
+        if (age.TotalDays < 1)      timeText = "Born today";
+        else if (age.TotalDays < 2) timeText = "1 day old";
+        else                        timeText = $"{(int)age.TotalDays} days old";
+
+        if (data == null) return timeText;
+
+        var config = PlayerInventoryManager.Instance.inventoryConfig;
+        var stage = AnimalAgeHelper.GetAgeStage(entry, data, config);
+        return $"{timeText} — {FormatAgeStage(stage)}";
+    }
+
+    private string FormatAgeStage(AnimalAge stage)
+    {
+        return stage switch
+        {
+            AnimalAge.Baby   => "just finding their feet.",
+            AnimalAge.Young  => "full of life and curiosity.",
+            AnimalAge.Adult  => "in the prime of life.",
+            AnimalAge.Senior => "moving a little slower these days.",
+            AnimalAge.Old    => "earned every grey hair.",
+            _                => ""
+        };
+    }
+
+    private string FormatHappiness(float happiness, float maxHappiness)
+    {
+        float ratio = happiness / maxHappiness;
+        if (ratio >= 0.8f) return "Absolutely beaming. ♥";
+        if (ratio >= 0.6f) return "Content and comfortable.";
+        if (ratio >= 0.4f) return "Getting along just fine.";
+        if (ratio >= 0.2f) return "Seems a little restless lately...";
+        return "Something feels off. Have they been eating?";
     }
 
     private string FormatQuirk(PlayerAnimalEntry entry)

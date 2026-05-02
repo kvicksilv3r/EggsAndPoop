@@ -38,6 +38,27 @@ public class InventoryConfig : ScriptableObject
     public float farmUpgradeCostExponent = 1.5f;
     public List<FarmUpgradeTier> farmUpgradeTiers = new List<FarmUpgradeTier>();
 
+    public RarityAgeThresholds GetAgeThresholds(AnimalRarity rarity)
+    {
+        return ageThresholds.Find(t => t.rarity == rarity);
+    }
+
+    [Header("Animal Age")]
+    public List<RarityAgeThresholds> ageThresholds = new List<RarityAgeThresholds>();
+    public float babyOutputMultiplier   = 0.5f;
+    public float youngOutputMultiplier  = 0.8f;
+    public float adultOutputMultiplier  = 1.0f;
+    public float seniorOutputMultiplier = 0.7f;
+    public float oldOutputMultiplier    = 0.1f;
+    public AnimalAge minimumBreedingAge = AnimalAge.Adult;
+
+    [Header("Happiness")]
+    public float maxHappiness                  = 100f;
+    public float happinessGrowthPerHour        = 5f;
+    public float happinessHungerDecayPerHour   = 10f;
+    public float happinessMinMultiplier        = 1.0f;
+    public float happinessMaxMultiplier        = 2.0f;
+
     [Header("Love & Egg Slots")]
     [Tooltip("Love generated per hour with no animals")]
     public float baseLovePerHour = 20f;

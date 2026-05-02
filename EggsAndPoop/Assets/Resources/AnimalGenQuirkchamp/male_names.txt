@@ -15,6 +15,7 @@ Barnaby
 Fudge
 Harry
 Pretzel
+Gordon
 Gus
 Clover
 Marmaduke
@@ -33,7 +34,6 @@ Brindle
 Copernicus
 Tofu
 Archie
-Clementine
 Rascal
 Wellington
 Niblet
@@ -51,3 +51,4 @@ Dumpling
 Julian
 Squee
 Bobbert
+Bloom

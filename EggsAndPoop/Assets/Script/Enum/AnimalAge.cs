@@ -1,5 +1,8 @@
 public enum AnimalAge
 {
     Baby,
-    Adult
+    Young,
+    Adult,
+    Senior,
+    Old
 }

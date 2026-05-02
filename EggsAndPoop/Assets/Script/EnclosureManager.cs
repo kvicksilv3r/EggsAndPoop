@@ -27,8 +27,10 @@ public class EnclosureManager : MonoBehaviour
     {
         float hoursAway = FertilizerManager.Instance.CachedHoursAway;
 
+        float foodBeforeAfk = FertilizerManager.Instance.GetFoodAmount();
         CalculateAfkBreedingOutput(hoursAway);
         CalculateAfkFeedingOutput(hoursAway);
+        CalculateAfkHappiness(hoursAway, foodBeforeAfk);
         EggSlotManager.Instance.CalculateAfkOutput(hoursAway);
 
         DataController.instance.CompleteSave();
@@ -37,6 +39,7 @@ public class EnclosureManager : MonoBehaviour
         StartBreedingCoroutines();
         StartFeedingCoroutines();
         StartBreedingPairCoroutines();
+        StartCoroutine(HappinessCoroutine());
     }
 
     // ── AFK calculations ─────────────────────────────────────────────────────
@@ -68,9 +71,7 @@ public class EnclosureManager : MonoBehaviour
 
     private void CalculateAfkFeedingOutput(float hoursAway)
     {
-        var troughAnimals = GetAnimalsInEnclosure(EnclosureType.FeedingTrough);
-
-        foreach (var entry in troughAnimals)
+        foreach (var entry in GetAnimalsInEnclosure(EnclosureType.FeedingTrough))
         {
             var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
             if (data == null) continue;
@@ -78,15 +79,58 @@ public class EnclosureManager : MonoBehaviour
             int foodNeeded = Mathf.FloorToInt(hoursAway * inventoryConfig.foodConsumptionRatePerHour);
             bool hadFood = FertilizerManager.Instance.ConsumeFood(foodNeeded);
 
+            float multiplier = AnimalAgeHelper.GetOutputMultiplier(entry, data, inventoryConfig);
             float effectivePoopRate = hadFood ? data.poopRate * 2f : data.poopRate;
-            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * effectivePoopRate));
+            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * effectivePoopRate * multiplier));
         }
 
         foreach (var entry in GetAnimalsInEnclosure(EnclosureType.Pasture))
         {
             var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
             if (data == null || data.poopRate <= 0) continue;
-            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * data.poopRate));
+            float multiplier = AnimalAgeHelper.GetOutputMultiplier(entry, data, inventoryConfig);
+            PoopManager.Instance.AddPoop(Mathf.FloorToInt(hoursAway * data.poopRate * multiplier));
+        }
+    }
+
+    private void CalculateAfkHappiness(float hoursAway, float foodAtSessionStart)
+    {
+        foreach (var entry in GetAnimalsInEnclosure(EnclosureType.Pasture))
+            entry.happinessAmount = Mathf.Min(
+                entry.happinessAmount + inventoryConfig.happinessGrowthPerHour * hoursAway,
+                inventoryConfig.maxHappiness);
+
+        var activeAnimals = PlayerInventoryManager.Instance.GetActiveAnimals();
+        if (activeAnimals.Count == 0) return;
+
+        float foodConsumedPerHour = activeAnimals.Count * inventoryConfig.foodConsumptionRatePerHour;
+        float hoursOfFood = foodConsumedPerHour > 0 ? foodAtSessionStart / foodConsumedPerHour : hoursAway;
+        float hungryHours = Mathf.Max(0f, hoursAway - hoursOfFood);
+
+        if (hungryHours > 0)
+        {
+            float decay = inventoryConfig.happinessHungerDecayPerHour * hungryHours;
+            foreach (var entry in activeAnimals)
+                entry.happinessAmount = Mathf.Max(entry.happinessAmount - decay, 0f);
+        }
+    }
+
+    private IEnumerator HappinessCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60f);
+
+            float gain = inventoryConfig.happinessGrowthPerHour / 60f;
+            foreach (var entry in GetAnimalsInEnclosure(EnclosureType.Pasture))
+                entry.happinessAmount = Mathf.Min(entry.happinessAmount + gain, inventoryConfig.maxHappiness);
+
+            if (FertilizerManager.Instance.GetFoodAmount() <= 0)
+            {
+                float decay = inventoryConfig.happinessHungerDecayPerHour / 60f;
+                foreach (var entry in PlayerInventoryManager.Instance.GetActiveAnimals())
+                    entry.happinessAmount = Mathf.Max(entry.happinessAmount - decay, 0f);
+            }
         }
     }
 
@@ -210,17 +254,24 @@ public class EnclosureManager : MonoBehaviour
     {
         var penAnimals = GetAnimalsInEnclosure(EnclosureType.BreedingPen)
             .Where(a => a.animalIdentifier == species).ToList();
-        return penAnimals.Any(a => a.sex == AnimalSex.Male) &&
-               penAnimals.Any(a => a.sex == AnimalSex.Female);
+        return penAnimals.Any(a => a.sex == AnimalSex.Male && CanBreed(a)) &&
+               penAnimals.Any(a => a.sex == AnimalSex.Female && CanBreed(a));
     }
 
     private List<AnimalEnum> GetBreedingPairs()
     {
         return GetAnimalsInEnclosure(EnclosureType.BreedingPen)
             .GroupBy(a => a.animalIdentifier)
-            .Where(g => g.Any(a => a.sex == AnimalSex.Male) && g.Any(a => a.sex == AnimalSex.Female))
+            .Where(g => g.Any(a => a.sex == AnimalSex.Male && CanBreed(a))
+                     && g.Any(a => a.sex == AnimalSex.Female && CanBreed(a)))
             .Select(g => g.Key)
             .ToList();
+    }
+
+    private bool CanBreed(PlayerAnimalEntry entry)
+    {
+        var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
+        return data != null && AnimalAgeHelper.CanBreed(entry, data, inventoryConfig);
     }
 
     // ── Mulch ─────────────────────────────────────────────────────────────────

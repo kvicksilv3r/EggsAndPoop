@@ -12,4 +12,5 @@ public class PlayerAnimalEntry
     public int quirkId = -1;
     public AnimalSex sex;
     public PhysicalAnimalData physicalAnimalData;
+    public float happinessAmount = 0f;
 }

@@ -12,7 +12,6 @@ public class AnimalData : ScriptableObject
     public AnimalRarity rarity;
     public AnimalFamily family;
     public AnimalPrimalInstinct behaviour;
-    public AnimalAge age;
     public AnimalData[] possibleEvolutions;
     public float openingExtraScale = 1f;
     public int sellPrice = 0;

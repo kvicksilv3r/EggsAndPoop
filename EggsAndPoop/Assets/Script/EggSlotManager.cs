@@ -123,8 +123,9 @@ public class EggSlotManager : MonoBehaviour
         foreach (var entry in EnclosureManager.Instance.GetAnimalsInEnclosure(EnclosureType.Pasture))
         {
             var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
-            if (data != null)
-                total += data.loveGeneration * inventoryConfig.lovePerPastureAnimalPerHour;
+            if (data == null) continue;
+            float multiplier = AnimalAgeHelper.GetOutputMultiplier(entry, data, inventoryConfig);
+            total += data.loveGeneration * inventoryConfig.lovePerPastureAnimalPerHour * multiplier;
         }
         return total;
     }
