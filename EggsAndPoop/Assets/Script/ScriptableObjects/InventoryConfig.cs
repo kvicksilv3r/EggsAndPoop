@@ -64,8 +64,10 @@ public class InventoryConfig : ScriptableObject
     public float baseLovePerHour = 20f;
     [Tooltip("Additional love per hour for each animal in Pasture")]
     public float lovePerPastureAnimalPerHour = 10f;
-    [Tooltip("Love accumulated per hour toward the carton (independent of main slots)")]
-    public float cartonLovePerHour = 2f;
+    [Tooltip("Additional love per hour for each animal in the Breeding Pen")]
+    public float lovePerBreedingAnimalPerHour = 15f;
+    [Tooltip("Multiplier applied to each animal in a matched breeding pair (same species, male + female)")]
+    public float breedingPairLoveMultiplier = 2f;
     public EggSlotConfig[] eggSlots = new EggSlotConfig[3];
     public CartonTierConfig[] cartonTiers = new CartonTierConfig[5];
 }

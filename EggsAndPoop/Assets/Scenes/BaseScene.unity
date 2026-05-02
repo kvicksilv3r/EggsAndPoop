@@ -13040,6 +13040,7 @@ MonoBehaviour:
   ageText: {fileID: 1571701495}
   sexText: {fileID: 207547781}
   quirkText: {fileID: 124616781}
+  happinessText: {fileID: 0}
   changeNameButton: {fileID: 457975937}
   favouriteButton: {fileID: 175171804}
   favouriteButtonText: {fileID: 2125132649}
@@ -25392,6 +25393,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoopManager
   inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
+--- !u!114 &1972395203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263989599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a8b8a710e5b5841b5123899a7929f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggSlotManager
+  inventoryConfig: {fileID: 11400000, guid: 43faf53898f43cc44abcb57b68c9eb3e, type: 2}
 --- !u!1 &1974511921
 GameObject:
   m_ObjectHideFlags: 0
@@ -28218,6 +28232,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2445403513721993689, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972395200}
+    - targetCorrespondingSourceObject: {fileID: 2445403513721993689, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1972395203}
   m_SourcePrefab: {fileID: 100100000, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

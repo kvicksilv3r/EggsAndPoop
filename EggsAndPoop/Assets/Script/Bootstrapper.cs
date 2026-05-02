@@ -11,7 +11,9 @@ public class Bootstrapper : MonoBehaviour
         FarmManager.Instance.ApplyCurrentLevel();
         PoopManager.Instance.LoadPoop();
         CoinManager.Instance.LoadCoins();
+        EggSlotManager.Instance.LoadSlots();
         EnclosureManager.Instance.Initialize();        // AFK eggs + AFK poop, then fires m_AfkDataProcessed
+        EggSlotManager.Instance.StartRealTimeGeneration();
         PhysicalAnimalController.Instance.InstantiateAnimals();
     }
 }

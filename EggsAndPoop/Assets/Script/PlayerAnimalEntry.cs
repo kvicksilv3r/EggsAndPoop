@@ -13,4 +13,5 @@ public class PlayerAnimalEntry
     public AnimalSex sex;
     public PhysicalAnimalData physicalAnimalData;
     public float happinessAmount = 0f;
+    public bool oldAgeNotified = false;
 }

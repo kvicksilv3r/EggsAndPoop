@@ -40,6 +40,7 @@ public class EnclosureManager : MonoBehaviour
         StartFeedingCoroutines();
         StartBreedingPairCoroutines();
         StartCoroutine(HappinessCoroutine());
+        StartCoroutine(OldAgeCheckCoroutine());
     }
 
     // ── AFK calculations ─────────────────────────────────────────────────────
@@ -132,6 +133,38 @@ public class EnclosureManager : MonoBehaviour
                     entry.happinessAmount = Mathf.Max(entry.happinessAmount - decay, 0f);
             }
         }
+    }
+
+    private IEnumerator OldAgeCheckCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        while (true)
+        {
+            CheckOldAgeNotifications();
+            yield return new WaitForSeconds(600f);
+        }
+    }
+
+    private void CheckOldAgeNotifications()
+    {
+        var config = PlayerInventoryManager.Instance.inventoryConfig;
+        bool saved = false;
+
+        foreach (var entry in PlayerInventoryManager.Instance.GetAnimals())
+        {
+            if (entry.oldAgeNotified) continue;
+            var data = AnimalRoster.Instance.GetByIdentifier(entry.animalIdentifier);
+            if (data == null) continue;
+            if (AnimalAgeHelper.GetAgeStage(entry, data, config) != AnimalAge.Old) continue;
+
+            entry.oldAgeNotified = true;
+            FloatingMessageController.Instance.Show(
+                $"{entry.customAnimalName} is getting on in years. Still loved, just moving a little slower.");
+            saved = true;
+        }
+
+        if (saved) DataController.instance.CompleteSave();
     }
 
     // ── Real-time coroutines ──────────────────────────────────────────────────
