@@ -88,7 +88,7 @@ MonoBehaviour:
     maxLoveReductionLevels: 5
     luckBonusPerLevel: 10
     maxLuckLevels: 5
-  - baseLoveCost: 600
+  - baseLoveCost: 800
     loveReductionPerUpgradeLevel: 20
     maxLoveReductionLevels: 5
     luckBonusPerLevel: 10

@@ -9,7 +9,8 @@ public class CollectFX : MonoBehaviour
     public Canvas overlayCanvas;
     public Texture2D fallbackIcon;
 
-    [SerializeField] private float popDuration = 0.18f;
+    [SerializeField] private float popDuration = 0.35f;
+    [SerializeField] private float popOvershoot = 1.70158f;
     [SerializeField] private float flyDuration = 0.55f;
     [SerializeField] private float arcHeight = 200f;
     [SerializeField] private Vector2 iconSize = new Vector2(64, 64);
@@ -37,12 +38,13 @@ public class CollectFX : MonoBehaviour
         rt.anchoredPosition = startPos;
         rt.localScale = Vector3.zero;
 
-        // Pop in
+        // Pop in with spring overshoot
         float t = 0;
         while (t < popDuration)
         {
             t += Time.deltaTime;
-            rt.localScale = Vector3.one * Mathf.Lerp(0f, 1.3f, t / popDuration);
+            float progress = Mathf.Clamp01(t / popDuration);
+            rt.localScale = Vector3.one * BackEaseOut(progress, popOvershoot);
             yield return null;
         }
         rt.localScale = Vector3.one;
@@ -96,5 +98,11 @@ public class CollectFX : MonoBehaviour
     {
         float u = 1f - t;
         return u * u * p0 + 2f * u * t * p1 + t * t * p2;
+    }
+
+    private static float BackEaseOut(float t, float overshoot)
+    {
+        float c3 = overshoot + 1f;
+        return 1f + c3 * Mathf.Pow(t - 1f, 3f) + overshoot * Mathf.Pow(t - 1f, 2f);
     }
 }

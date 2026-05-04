@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -75,15 +76,31 @@ public class EggNestManager : MonoBehaviour
         var nest = _nests.FirstOrDefault(n => n.slotIndex == slotIndex);
         if (nest != null && nest.spawnedEgg != null)
         {
-            var worldPos = nest.spawnedEgg.transform.position;
+            var eggGo = nest.spawnedEgg;
+            var worldPos = eggGo.transform.position;
             var eggData = EggRoster.Instance.GetByType(entry.eggType);
-            Destroy(nest.spawnedEgg);
             nest.spawnedEgg = null;
-            if (CollectFX.Instance != null && eggCollectTarget != null)
-                CollectFX.Instance.Play(worldPos, eggData?.eggIcon, eggCollectTarget);
+            StartCoroutine(ShrinkThenCollect(eggGo, worldPos, eggData?.eggIcon));
         }
 
         DataController.instance.CompleteSave();
+    }
+
+    private IEnumerator ShrinkThenCollect(GameObject eggGo, Vector3 worldPos, Texture2D icon)
+    {
+        float duration = 0.12f;
+        float t = 0;
+        Vector3 startScale = eggGo.transform.localScale;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            eggGo.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t / duration);
+            yield return null;
+        }
+        Destroy(eggGo);
+
+        if (CollectFX.Instance != null && eggCollectTarget != null)
+            CollectFX.Instance.Play(worldPos, icon, eggCollectTarget);
     }
 
     public int GetUnclaimedEggCount() => _unclaimedEggs.Count;

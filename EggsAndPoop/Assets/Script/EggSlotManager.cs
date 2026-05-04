@@ -187,6 +187,17 @@ public class EggSlotManager : MonoBehaviour
         return inventoryConfig.cartonTiers[Mathf.Clamp(_cartonTier, 0, inventoryConfig.cartonTiers.Length - 1)].loveCost;
     }
 
+#if UNITY_EDITOR
+    public void DEBUG_SimulateHours(float hours) => ApplyLove(GetLovePerHour() * hours);
+
+    public void DEBUG_ForceFireAllSlots()
+    {
+        for (int i = 0; i < 4; i++)
+            if (EggNestManager.Instance != null && !EggNestManager.Instance.IsNestOccupied(i))
+                FireSlot(i);
+    }
+#endif
+
     public void ModifySaveData(ref SaveData saveData)
     {
         saveData.slotProgresses = _slotProgress;

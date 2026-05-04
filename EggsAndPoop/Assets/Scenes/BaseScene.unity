@@ -19142,7 +19142,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6031894521331147524, guid: 642434e008ade6144801c118148a7673, type: 3}
       propertyPath: slotIndex
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8225728029975267707, guid: 642434e008ade6144801c118148a7673, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25250,10 +25250,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectFX
   overlayCanvas: {fileID: 1982726433}
   fallbackIcon: {fileID: 2800000, guid: 7b89c967c4947d6498519e4033ec2c62, type: 3}
-  popDuration: 0.18
+  popDuration: 0.35
+  popOvershoot: 7
   flyDuration: 0.55
   arcHeight: 200
-  iconSize: {x: 64, y: 64}
+  iconSize: {x: 128, y: 128}
+--- !u!114 &1972395230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263989599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 887cce667449f8c49ac6d9cb6f00f137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugController
+  simulateHours: 3
 --- !u!1 &1974511921
 GameObject:
   m_ObjectHideFlags: 0
@@ -28143,6 +28157,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2445403513721993689, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972395229}
+    - targetCorrespondingSourceObject: {fileID: 2445403513721993689, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1972395230}
   m_SourcePrefab: {fileID: 100100000, guid: 62c30cfaf3c7aa84c915b957e2038524, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
