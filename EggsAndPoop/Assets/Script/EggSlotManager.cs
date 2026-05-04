@@ -49,8 +49,8 @@ public class EggSlotManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(60f);
-            ApplyLove(GetLovePerHour() / 60f);
+            yield return new WaitForSeconds(1f);
+            ApplyLove(GetLovePerHour() / 3600f);
         }
     }
 
