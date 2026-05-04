@@ -7,7 +7,7 @@ public class DataController : MonoBehaviour
 {
     public InventoryConfig inventoryConfig;
 
-    public SaveData saveData;
+    private SaveData saveData;
 
     private bool ignoreSave = false;
 
@@ -35,19 +35,17 @@ public class DataController : MonoBehaviour
 
     private void LoadGame()
     {
-        saveData = DataIO.Instance.Load();
+        var loaded = DataIO.Instance.Load();
+        if (loaded != null) saveData = loaded;
     }
 
     public void CheckForSave()
     {
         if (DataIO.Instance.HasSave())
-        {
-            LoadGame();
-        }
-        else
-        {
+            saveData = DataIO.Instance.Load();
+
+        if (saveData == null)
             SetupFirstSave();
-        }
 
         GameManager.Instance.m_SaveDataLoaded.Invoke();
     }
@@ -98,11 +96,5 @@ public class DataController : MonoBehaviour
     public void CompleteSave()
     {
         DataIO.Instance.SaveGame(GenerateSaveData());
-    }
-
-    private void SaveGame()
-    {
-        saveData.lastTimeActive = DateTime.Now.Ticks;
-        DataIO.Instance.SaveGame(saveData);
     }
 }

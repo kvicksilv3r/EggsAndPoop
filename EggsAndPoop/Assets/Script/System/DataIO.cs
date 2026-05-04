@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -18,8 +19,11 @@ public class DataIO : MonoBehaviour
 
     public void WriteSaveData(SaveData data)
     {
-        var savedata = JsonUtility.ToJson(data);
-        File.WriteAllText(SavePath(), savedata);
+        var json = JsonUtility.ToJson(data);
+        var tempPath = SavePath() + ".tmp";
+        File.WriteAllText(tempPath, json);
+        File.Copy(tempPath, SavePath(), overwrite: true);
+        File.Delete(tempPath);
         print("SAVEDATA SAVED");
     }
 
@@ -33,15 +37,18 @@ public class DataIO : MonoBehaviour
         return Application.persistentDataPath + SAVE_DATA_PATH;
     }
 
+    // Returns null if the file is missing, empty, or corrupt.
     public SaveData Load()
     {
-        var rawData = ReadSave();
-        var data = JsonUtility.FromJson<SaveData>(rawData);
-        return data;
-    }
-
-    private string ReadSave()
-    {
-        return File.ReadAllText(SavePath());
+        try
+        {
+            var raw = File.ReadAllText(SavePath());
+            return JsonUtility.FromJson<SaveData>(raw);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Save data could not be read, starting fresh. ({e.Message})");
+            return null;
+        }
     }
 }

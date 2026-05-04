@@ -7,6 +7,7 @@ public class EggNestManager : MonoBehaviour
     public static EggNestManager Instance;
 
     public GameObject farmEggPrefab;
+    public RectTransform eggCollectTarget;
 
     private EggNest[] _nests;
     private List<UnclaimedEggData> _unclaimedEggs = new List<UnclaimedEggData>();
@@ -48,7 +49,7 @@ public class EggNestManager : MonoBehaviour
         if (nest == null) return;
 
         var eggData = EggRoster.Instance.GetByType(eggType);
-        var prefab = (eggData != null && eggData.eggPrefab != null) ? eggData.eggPrefab : farmEggPrefab;
+        var prefab = (eggData != null && eggData.nestEggPrefab != null) ? eggData.nestEggPrefab : farmEggPrefab;
         if (prefab == null) return;
 
         var point = nest.spawnPoint != null ? nest.spawnPoint : nest.transform;
@@ -62,7 +63,11 @@ public class EggNestManager : MonoBehaviour
         var entry = _unclaimedEggs.FirstOrDefault(e => e.slotIndex == slotIndex);
         if (entry == null) return;
 
-        if (!PlayerInventoryManager.Instance.CanAddEgg()) return;
+        if (!PlayerInventoryManager.Instance.CanAddEgg())
+        {
+            FloatingMessageController.Instance.Show("Your bag is full. Hatch an egg to make room!");
+            return;
+        }
 
         PlayerInventoryManager.Instance.AddEggsOfType(entry.eggType, 1);
         _unclaimedEggs.Remove(entry);
@@ -70,12 +75,18 @@ public class EggNestManager : MonoBehaviour
         var nest = _nests.FirstOrDefault(n => n.slotIndex == slotIndex);
         if (nest != null && nest.spawnedEgg != null)
         {
+            var worldPos = nest.spawnedEgg.transform.position;
+            var eggData = EggRoster.Instance.GetByType(entry.eggType);
             Destroy(nest.spawnedEgg);
             nest.spawnedEgg = null;
+            if (CollectFX.Instance != null && eggCollectTarget != null)
+                CollectFX.Instance.Play(worldPos, eggData?.eggIcon, eggCollectTarget);
         }
 
         DataController.instance.CompleteSave();
     }
+
+    public int GetUnclaimedEggCount() => _unclaimedEggs.Count;
 
     public void ModifySaveData(ref SaveData saveData)
     {

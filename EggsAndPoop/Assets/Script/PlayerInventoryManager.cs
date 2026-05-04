@@ -19,7 +19,6 @@ public class PlayerInventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        unlockedEggTypes.Add(EggType.Farm);
     }
 
     public void AddEggs(int amount)

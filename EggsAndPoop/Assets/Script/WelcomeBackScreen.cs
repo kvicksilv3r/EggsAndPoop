@@ -23,19 +23,19 @@ public class WelcomeBackScreen : MonoBehaviour
 
         welcomeBackTMP.text = $"{baseAfkText} \n {days}{hours}{minutes}{seconds}";
 
-        var earnedEggs = EggSlotManager.Instance.LastSessionEggsEarned;
+        var eggsAtNests = EggNestManager.Instance.GetUnclaimedEggCount();
 
-        if (earnedEggs == 0)
+        if (eggsAtNests == 0)
         {
-            earnedEggsTMP.text = PlayerInventoryManager.Instance.HasMaxEggs()
-                ? "Your egg basket is full. Time to hatch some!"
-                : $"No new eggs yet. Next one in {EggSlotManager.Instance.TimeUntilNextEgg()}";
+            earnedEggsTMP.text = $"No new eggs yet. Next one in {EggSlotManager.Instance.TimeUntilNextEgg()}";
+        }
+        else if (eggsAtNests == 1)
+        {
+            earnedEggsTMP.text = "One of your animals left a little surprise at the nest!";
         }
         else
         {
-            earnedEggsTMP.text = earnedEggs > 1
-                ? $"Your animals have been busy! {earnedEggs} new eggs waiting for you."
-                : "One of your animals left you a little surprise. A new egg!";
+            earnedEggsTMP.text = $"{eggsAtNests} eggs are waiting for you at the nests!";
         }
     }
 

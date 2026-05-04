@@ -12,23 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330aa32f27d1db844815a9b331632957, type: 3}
   m_Name: InventoryConfig
   m_EditorClassIdentifier: 
-  baseMaxOwnedEggs: 3
+  baseMaxOwnedEggs: 20
   baseMaxOwnedAnimals: 50
   baseMaxActiveAnimals: 10
-  hoursForNewEgg: 6
-  baseFertilizerCapacity: 100
-  daysUntilQuirkUnlocks: 3
   breedingPenCapacity: 2
-  feedingTroughCapacity: 2
+  farmingPlotCapacity: 2
   baseFoodCapacity: 100
+  foodGenerationRatePerAnimalPerHour: 5
   foodConsumptionRatePerHour: 1
-  fertilizerToFoodRatio: 2
-  basePoopCapacity: 100
-  poopToCoinsRate: 1
-  poopToFertilizerRatio: 1
-  poopMulchBonusPerUnit: 5
-  maxBreedingRarityBonus: 200
-  breedingPairCooldownHours: 72
+  daysUntilQuirkUnlocks: 1
   farmUpgradeBaseCost: 100
   farmUpgradeCostExponent: 1.5
   farmUpgradeTiers:

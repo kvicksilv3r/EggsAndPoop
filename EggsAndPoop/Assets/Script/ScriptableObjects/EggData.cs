@@ -9,5 +9,6 @@ public class EggData : ScriptableObject
     public AnimalRarity eggMinRarity;
     public AnimalRarity eggMaxRarity;
     public GameObject eggPrefab;
+    public GameObject nestEggPrefab;
     public Texture2D eggIcon;
 }
