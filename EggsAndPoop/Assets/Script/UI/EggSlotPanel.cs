@@ -21,25 +21,23 @@ public class EggSlotPanel : MonoBehaviour
     {
         if (EggSlotManager.Instance == null || rows == null || rows.Length < 4) return;
 
-        int activeSlot = EggSlotManager.Instance.GetActiveSlot();
-        float activeProgress = EggSlotManager.Instance.GetSlotProgress();
-
         for (int i = 0; i < 4; i++)
         {
             var row = rows[i];
             if (row == null) continue;
 
             float cost = EggSlotManager.Instance.GetSlotCostForIndex(i);
-            float progress = activeSlot == i ? activeProgress : 0f;
+            float progress = EggSlotManager.Instance.GetSlotProgress(i);
+            bool occupied = EggNestManager.Instance != null && EggNestManager.Instance.IsNestOccupied(i);
 
             if (row.labelText != null)
                 row.labelText.text = Labels[i];
 
             if (row.fillBar != null)
-                row.fillBar.fillAmount = cost > 0f ? progress / cost : 0f;
+                row.fillBar.fillAmount = occupied ? 1f : (cost > 0f ? progress / cost : 0f);
 
             if (row.progressText != null)
-                row.progressText.text = $"{Mathf.FloorToInt(progress)} / {Mathf.FloorToInt(cost)}";
+                row.progressText.text = occupied ? "Ready!" : $"{Mathf.FloorToInt(progress)} / {Mathf.FloorToInt(cost)}";
         }
     }
 }

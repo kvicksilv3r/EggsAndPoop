@@ -44,3 +44,66 @@ MonoBehaviour:
     additionalEggCapacity: 1
     additionalFertilizerCapacity: 10
     additionalPoopCapacity: 10
+  ageThresholds:
+  - rarity: 0
+    babyUntilDays: 1
+    youngUntilDays: 3
+    adultUntilDays: 10
+    seniorUntilDays: 20
+  - rarity: 1
+    babyUntilDays: 1
+    youngUntilDays: 3
+    adultUntilDays: 15
+    seniorUntilDays: 30
+  - rarity: 2
+    babyUntilDays: 1
+    youngUntilDays: 3
+    adultUntilDays: 25
+    seniorUntilDays: 50
+  - rarity: 3
+    babyUntilDays: 1
+    youngUntilDays: 3
+    adultUntilDays: 35
+    seniorUntilDays: 70
+  - rarity: 4
+    babyUntilDays: 1
+    youngUntilDays: 3
+    adultUntilDays: 100
+    seniorUntilDays: 200
+  babyOutputMultiplier: 0.5
+  youngOutputMultiplier: 0.8
+  adultOutputMultiplier: 1
+  seniorOutputMultiplier: 0.7
+  oldOutputMultiplier: 0.1
+  minimumBreedingAge: 1
+  maxHappiness: 300
+  happinessGrowthPerHour: 5
+  happinessHungerDecayPerHour: 10
+  happinessMinMultiplier: 1
+  happinessMaxMultiplier: 2
+  baseLovePerHour: 100
+  lovePerPastureAnimalPerHour: 10
+  lovePerBreedingAnimalPerHour: 15
+  breedingPairLoveMultiplier: 2
+  eggSlots:
+  - baseLoveCost: 200
+    loveReductionPerUpgradeLevel: 20
+    maxLoveReductionLevels: 5
+    luckBonusPerLevel: 10
+    maxLuckLevels: 5
+  - baseLoveCost: 400
+    loveReductionPerUpgradeLevel: 20
+    maxLoveReductionLevels: 5
+    luckBonusPerLevel: 10
+    maxLuckLevels: 5
+  - baseLoveCost: 600
+    loveReductionPerUpgradeLevel: 20
+    maxLoveReductionLevels: 5
+    luckBonusPerLevel: 10
+    maxLuckLevels: 5
+  cartonTiers:
+  - loveCost: 2000
+  - loveCost: 2000
+  - loveCost: 2000
+  - loveCost: 2000
+  - loveCost: 2000

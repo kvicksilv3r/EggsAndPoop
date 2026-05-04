@@ -2,6 +2,6 @@ public enum EnclosureType
 {
     Pasture,
     BreedingPen,
-    FeedingTrough,
+    FarmingPlot,
     Storage
 }

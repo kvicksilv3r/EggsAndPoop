@@ -34,19 +34,6 @@ public class PhysicalAnimal : MonoBehaviour
 
         StartCoroutine(Loop());
 
-        if (animalData.poopRate > 0)
-            StartCoroutine(PoopLoop());
-    }
-
-    private IEnumerator PoopLoop()
-    {
-        while (true)
-        {
-            float multiplier = GetOutputMultiplier();
-            float interval = (3600f / animalData.poopRate) / Mathf.Max(multiplier, 0.01f);
-            yield return new WaitForSeconds(interval);
-            PoopManager.Instance.AddPoop(1);
-        }
     }
 
     private float GetOutputMultiplier()

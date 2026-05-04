@@ -14,7 +14,7 @@ public class WelcomeBackScreen : MonoBehaviour
 
     public void UpdateText()
     {
-        var timeAway = System.TimeSpan.FromHours(FertilizerManager.Instance.CachedHoursAway);
+        var timeAway = System.TimeSpan.FromHours(FoodManager.Instance.CachedHoursAway);
 
         string days = timeAway.Days > 0 ? timeAway.Days + "d " : "";
         string hours = timeAway.Hours > 0 ? timeAway.Hours + "h " : "";
@@ -23,8 +23,7 @@ public class WelcomeBackScreen : MonoBehaviour
 
         welcomeBackTMP.text = $"{baseAfkText} \n {days}{hours}{minutes}{seconds}";
 
-        var earnedEggs = EnclosureManager.Instance.LastSessionEggsEarned
-                       + EggSlotManager.Instance.LastSessionEggsEarned;
+        var earnedEggs = EggSlotManager.Instance.LastSessionEggsEarned;
 
         if (earnedEggs == 0)
         {

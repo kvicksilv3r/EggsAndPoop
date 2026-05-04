@@ -121,7 +121,12 @@ public class NavController : MonoBehaviour
 
         if (to == TAB_EGGS)
         {
-            if (eggOverlayCanvas != null) eggOverlayCanvas.enabled = true;
+            if (eggOverlayCanvas != null)
+            {
+                var parent = eggOverlayCanvas.transform.parent?.gameObject;
+                if (parent != null && !parent.activeSelf) parent.SetActive(true);
+                eggOverlayCanvas.enabled = true;
+            }
             GameManager.Instance.m_EggContextOpened.Invoke();
         }
 

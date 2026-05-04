@@ -8,8 +8,6 @@ public class TopBarHUD : MonoBehaviour
     public static TopBarHUD Instance;
 
     [SerializeField] TextMeshProUGUI coinText;
-    [SerializeField] TextMeshProUGUI poopText;
-    [SerializeField] Image poopFillBar;
     [SerializeField] TextMeshProUGUI eggTimerText;
 
     void Awake()
@@ -40,11 +38,7 @@ public class TopBarHUD : MonoBehaviour
 
     public void RefreshUI()
     {
-        coinText.text = CoinManager.FormatCoins(CoinManager.Instance.GetCoins());
-
-        int poop    = PoopManager.Instance.GetPoopAmount();
-        int poopCap = PoopManager.Instance.GetPoopCapacity();
-        poopText.text          = $"{poop}/{poopCap}";
-        poopFillBar.fillAmount = poopCap > 0 ? (float)poop / poopCap : 0f;
+        if (coinText != null)
+            coinText.text = CoinManager.FormatCoins(CoinManager.Instance.GetCoins());
     }
 }

@@ -16,18 +16,13 @@ public class SaveData
     public int farmLevel = 0;
     public int playerLevel = 1;
     public int playerExperience = 0;
-    public int fertilizerAmount = 0;
-    public int fertilizerCapacity = 0;
     public int foodAmount = 0;
     public int foodCapacity = 0;
-    public int poopAmount = 0;
-    public int poopCapacity = 0;
 
     // Egg Slot System
-    public float currentSlotProgress = 0f;
-    public int currentSlotIndex = 0;
+    public float[] slotProgresses = new float[4];
     public int[] slotLoveReductionLevel = new int[3];
     public int[] slotLuckLevel = new int[3];
     public int cartonCurrentTier = 0;
-    public float cartonLoveProgress = 0f;
+    public System.Collections.Generic.List<UnclaimedEggData> unclaimedEggs = new System.Collections.Generic.List<UnclaimedEggData>();
 }

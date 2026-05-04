@@ -10,8 +10,7 @@ public class EggSlotManager : MonoBehaviour
 
     public InventoryConfig inventoryConfig;
 
-    private float _slotProgress;
-    private int _activeSlot;       // 0-2 = regular slots, 3 = carton
+    private float[] _slotProgress = new float[4];
     private int[] _loveReductionLevels = new int[3];
     private int[] _luckLevels = new int[3];
     private int _cartonTier;
@@ -26,8 +25,8 @@ public class EggSlotManager : MonoBehaviour
     public void LoadSlots()
     {
         var data = DataController.instance.GetData();
-        _slotProgress = data.currentSlotProgress;
-        _activeSlot = Mathf.Clamp(data.currentSlotIndex, 0, 3);
+        _slotProgress = data.slotProgresses != null && data.slotProgresses.Length == 4
+            ? data.slotProgresses : new float[4];
         _loveReductionLevels = data.slotLoveReductionLevel != null && data.slotLoveReductionLevel.Length == 3
             ? data.slotLoveReductionLevel : new int[3];
         _luckLevels = data.slotLuckLevel != null && data.slotLuckLevel.Length == 3
@@ -57,56 +56,39 @@ public class EggSlotManager : MonoBehaviour
 
     private void ApplyLove(float love)
     {
-        while (love > 0)
+        for (int i = 0; i < 4; i++)
         {
-            if (!PlayerInventoryManager.Instance.CanAddEgg()) break;
+            if (EggNestManager.Instance != null && EggNestManager.Instance.IsNestOccupied(i))
+                continue;
 
-            float cost = CurrentSlotCost();
-            float needed = cost - _slotProgress;
+            _slotProgress[i] += love;
+            float cost = GetSlotCostForIndex(i);
 
-            if (love >= needed)
+            if (_slotProgress[i] >= cost)
             {
-                love -= needed;
-                _slotProgress = 0f;
-                FireCurrentSlot();
-                _activeSlot = (_activeSlot + 1) % 4;
-            }
-            else
-            {
-                _slotProgress += love;
-                break;
+                _slotProgress[i] = 0f;
+                FireSlot(i);
             }
         }
     }
 
-    private void FireCurrentSlot()
+    private void FireSlot(int i)
     {
-        if (_activeSlot < 3)
+        EggType eggType;
+        if (i < 3)
         {
-            PlayerInventoryManager.Instance.AddEgg();
+            var types = PlayerInventoryManager.Instance.unlockedEggTypes;
+            eggType = types[UnityEngine.Random.Range(0, types.Count)];
         }
         else
         {
-            PlayerInventoryManager.Instance.AddEggsOfType(EggType.Farm, 1);
-            _cartonTier = Mathf.Min(_cartonTier + 1, inventoryConfig.cartonTiers.Length - 1);
+            eggType = EggType.Farm;
+            if (inventoryConfig.cartonTiers != null && inventoryConfig.cartonTiers.Length > 0)
+                _cartonTier = Mathf.Min(_cartonTier + 1, inventoryConfig.cartonTiers.Length - 1);
         }
+
+        EggNestManager.Instance?.SpawnEggAtNest(i, eggType);
         LastSessionEggsEarned++;
-    }
-
-    private float CurrentSlotCost()
-    {
-        if (_activeSlot < 3)
-        {
-            if (inventoryConfig.eggSlots == null || inventoryConfig.eggSlots.Length <= _activeSlot)
-                return 200f;
-            var config = inventoryConfig.eggSlots[_activeSlot];
-            float reduction = _loveReductionLevels[_activeSlot] * config.loveReductionPerUpgradeLevel;
-            return Mathf.Max(config.baseLoveCost - reduction, 10f);
-        }
-
-        if (inventoryConfig.cartonTiers == null || inventoryConfig.cartonTiers.Length == 0)
-            return 2000f;
-        return inventoryConfig.cartonTiers[Mathf.Clamp(_cartonTier, 0, inventoryConfig.cartonTiers.Length - 1)].loveCost;
     }
 
     public float GetLovePerHour()
@@ -152,21 +134,42 @@ public class EggSlotManager : MonoBehaviour
     {
         float lovePerSecond = GetLovePerHour() / 3600f;
         if (lovePerSecond <= 0) return "no love...";
-        if (!PlayerInventoryManager.Instance.CanAddEgg()) return "egg slots full";
 
-        float remaining = CurrentSlotCost() - _slotProgress;
+        float minRemaining = float.MaxValue;
+        for (int i = 0; i < 4; i++)
+        {
+            if (EggNestManager.Instance != null && EggNestManager.Instance.IsNestOccupied(i))
+                continue;
+            float remaining = GetSlotCostForIndex(i) - _slotProgress[i];
+            if (remaining < minRemaining) minRemaining = remaining;
+        }
+
+        if (minRemaining == float.MaxValue) return "all nests full";
+        if (minRemaining <= 0) return "any moment now...";
+
+        return FormatTime(minRemaining / lovePerSecond);
+    }
+
+    public string TimeUntilNextEgg(int slotIndex)
+    {
+        float lovePerSecond = GetLovePerHour() / 3600f;
+        if (lovePerSecond <= 0) return "no love...";
+
+        float remaining = GetSlotCostForIndex(slotIndex) - _slotProgress[slotIndex];
         if (remaining <= 0) return "any moment now...";
 
-        var span = TimeSpan.FromSeconds(remaining / lovePerSecond);
+        return FormatTime(remaining / lovePerSecond);
+    }
+
+    private static string FormatTime(float seconds)
+    {
+        var span = TimeSpan.FromSeconds(seconds);
         string hours = span.Hours > 0 ? span.Hours + "h " : "";
         string minutes = span.Minutes > 0 ? span.Minutes + "m " : "";
         return hours + minutes + span.Seconds + "s";
     }
 
-    public float GetSlotProgress() => _slotProgress;
-    public float GetCurrentSlotCost() => CurrentSlotCost();
-    public int GetActiveSlot() => _activeSlot;
-    public float GetCartonProgress() => _activeSlot == 3 ? _slotProgress : 0f;
+    public float GetSlotProgress(int slot) => slot >= 0 && slot < 4 ? _slotProgress[slot] : 0f;
     public int GetCartonTier() => _cartonTier;
 
     public float GetSlotCostForIndex(int slot)
@@ -186,8 +189,7 @@ public class EggSlotManager : MonoBehaviour
 
     public void ModifySaveData(ref SaveData saveData)
     {
-        saveData.currentSlotProgress = _slotProgress;
-        saveData.currentSlotIndex = _activeSlot;
+        saveData.slotProgresses = _slotProgress;
         saveData.slotLoveReductionLevel = _loveReductionLevels;
         saveData.slotLuckLevel = _luckLevels;
         saveData.cartonCurrentTier = _cartonTier;

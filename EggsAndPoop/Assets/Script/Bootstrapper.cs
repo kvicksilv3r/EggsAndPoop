@@ -6,14 +6,15 @@ public class Bootstrapper : MonoBehaviour
     {
         DataController.instance.CheckForSave();
         PlayerInventoryManager.Instance.LoadInventory();
-        FertilizerManager.Instance.LoadFertilizer();  // snapshots lastTimeActive before any CompleteSave
+        FoodManager.Instance.LoadFood();  // snapshots lastTimeActive before any CompleteSave
         FarmManager.Instance.LoadFarm();
         FarmManager.Instance.ApplyCurrentLevel();
-        PoopManager.Instance.LoadPoop();
         CoinManager.Instance.LoadCoins();
         EggSlotManager.Instance.LoadSlots();
+        EggNestManager.Instance.LoadUnclaimedEggs();
         EnclosureManager.Instance.Initialize();        // AFK eggs + AFK poop, then fires m_AfkDataProcessed
         EggSlotManager.Instance.StartRealTimeGeneration();
         PhysicalAnimalController.Instance.InstantiateAnimals();
+        EggNestManager.Instance.SpawnUnclaimedEggs();
     }
 }

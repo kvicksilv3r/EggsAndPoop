@@ -72,11 +72,11 @@ public class DataController : MonoBehaviour
     {
         saveData.lastTimeActive = DateTime.Now.Ticks;
         PlayerInventoryManager.Instance.ModifySaveData(ref saveData);
-        FertilizerManager.Instance.ModifySaveData(ref saveData);
-        PoopManager.Instance.ModifySaveData(ref saveData);
+        FoodManager.Instance.ModifySaveData(ref saveData);
         CoinManager.Instance.ModifySaveData(ref saveData);
         FarmManager.Instance.ModifySaveData(ref saveData);
         EggSlotManager.Instance.ModifySaveData(ref saveData);
+        EggNestManager.Instance.ModifySaveData(ref saveData);
         return saveData;
     }
 
