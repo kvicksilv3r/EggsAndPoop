@@ -89,16 +89,21 @@ public class EggNestManager : MonoBehaviour
 
     private IEnumerator ShrinkThenCollect(GameObject eggGo, Vector3 worldPos, Texture2D icon, EggNest nest)
     {
-        float duration = 0.12f;
-        float t = 0;
-        Vector3 startScale = eggGo.transform.localScale;
-        while (t < duration)
+        if (eggGo != null)
         {
-            t += Time.deltaTime;
-            eggGo.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t / duration);
-            yield return null;
+            float duration = 0.12f;
+            float t = 0;
+            Vector3 startScale = eggGo.transform.localScale;
+            while (t < duration && eggGo != null)
+            {
+                t += Time.deltaTime;
+                eggGo.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t / duration);
+                yield return null;
+            }
+            if (eggGo != null)
+                Destroy(eggGo);
         }
-        Destroy(eggGo);
+
         nest.IsCollecting = false;
 
         if (CollectFX.Instance != null && eggCollectTarget != null)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseMaxOwnedEggs: 20
   baseMaxOwnedAnimals: 50
-  baseMaxActiveAnimals: 10
+  baseMaxActiveAnimals: 15
   breedingPenCapacity: 2
   farmingPlotCapacity: 2
   baseFoodCapacity: 100
@@ -94,8 +94,8 @@ MonoBehaviour:
     luckBonusPerLevel: 10
     maxLuckLevels: 5
   cartonTiers:
-  - loveCost: 2000
-  - loveCost: 2000
-  - loveCost: 2000
-  - loveCost: 2000
-  - loveCost: 2000
+  - loveCost: 3000
+  - loveCost: 6000
+  - loveCost: 9000
+  - loveCost: 12000
+  - loveCost: 15000

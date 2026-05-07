@@ -5,6 +5,7 @@ public class EggInventoryUI : MonoBehaviour
 {
     public Transform eggButtonHolster;
     public GameObject eggButton;
+    public GameObject openAllButton;
 
     public GameObject noEggsPanel;
     public GameObject fullAnimalSlotsPanel;
@@ -25,6 +26,7 @@ public class EggInventoryUI : MonoBehaviour
         DestroyEggButtons();
         HideFullAnimalInventory();
         HideOutOfEggs();
+        openAllButton?.SetActive(false);
     }
 
     private void DestroyEggButtons()
@@ -45,6 +47,8 @@ public class EggInventoryUI : MonoBehaviour
             var eggData = EggRoster.Instance.GetByType(eggEntry.eggType);
             g.GetComponent<EggUiButton>().SetupButton(eggData, eggEntry.eggAmount);
         }
+
+        openAllButton?.SetActive(true);
     }
 
     public void RefreshUI()

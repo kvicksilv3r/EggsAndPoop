@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EggOpeningController : MonoBehaviour
@@ -75,5 +76,46 @@ public class EggOpeningController : MonoBehaviour
     public void RemoveEggFromInventory()
     {
         PlayerInventoryManager.Instance.RemoveEgg(eggData.eggType);
+    }
+
+    public void OpenAllEggs()
+    {
+        if (!PlayerInventoryManager.Instance.HasEggs()) return;
+
+        if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots())
+        {
+            FloatingMessageController.Instance.Show("Your farm and barn are full. Make some room first!");
+            return;
+        }
+
+        // Snapshot egg counts before modifying the list during iteration
+        var snapshot = new List<(EggType type, int count)>();
+        foreach (var e in PlayerInventoryManager.Instance.playerEggs)
+            snapshot.Add((e.eggType, e.eggAmount));
+
+        int countBefore = PlayerInventoryManager.Instance.playerAnimals.Count;
+
+        foreach (var (type, count) in snapshot)
+        {
+            var data = EggRoster.Instance.GetByType(type);
+            if (data == null) continue;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!PlayerInventoryManager.Instance.HasOpenAnimalSlots()) break;
+                var animal = AnimalRedeeming.Instance.OpenEgg(data);
+                PlayerInventoryManager.Instance.AddAnimal(animal);
+                PlayerInventoryManager.Instance.RemoveEgg(type);
+            }
+        }
+
+        // Collect the entries that were just added so the panel shows names + icons
+        var newEntries = new List<PlayerAnimalEntry>();
+        var allAnimals = PlayerInventoryManager.Instance.playerAnimals;
+        for (int i = countBefore; i < allAnimals.Count; i++)
+            newEntries.Add(allAnimals[i]);
+
+        GameManager.Instance.m_EggCrackedOpenPost.Invoke();
+        OpenAllResultsPanel.Instance?.Show(newEntries);
     }
 }
