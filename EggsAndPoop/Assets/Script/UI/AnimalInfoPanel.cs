@@ -179,6 +179,7 @@ public class AnimalInfoPanel : MonoBehaviour
             PlayerInventoryManager.Instance.MoveAnimalToStorage(currentGuid);
         }
 
+        BarnPanel.Instance?.Refresh();
         Hide();
     }
 
