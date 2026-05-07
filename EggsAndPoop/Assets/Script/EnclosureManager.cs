@@ -147,15 +147,16 @@ public class EnclosureManager : MonoBehaviour
         if (entry == null) return false;
         if (entry.enclosureType == targetType) return true;
 
-        if (targetType != EnclosureType.Storage && !CanAssignToEnclosure(targetType))
+        EnclosureType previousType = entry.enclosureType;
+        bool wasActive = previousType != EnclosureType.Storage;
+        bool willBeActive = targetType != EnclosureType.Storage;
+
+        // Skip capacity check when moving between active enclosures — the active count doesn't change.
+        if (willBeActive && !wasActive && !CanAssignToEnclosure(targetType))
         {
             Debug.LogWarning($"[Enclosure] {entry.customAnimalName} → {targetType} REJECTED (full)");
             return false;
         }
-
-        EnclosureType previousType = entry.enclosureType;
-        bool wasActive = previousType != EnclosureType.Storage;
-        bool willBeActive = targetType != EnclosureType.Storage;
 
         entry.enclosureType = targetType;
 

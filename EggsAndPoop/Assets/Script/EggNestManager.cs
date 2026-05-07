@@ -80,13 +80,14 @@ public class EggNestManager : MonoBehaviour
             var worldPos = eggGo.transform.position;
             var eggData = EggRoster.Instance.GetByType(entry.eggType);
             nest.spawnedEgg = null;
-            StartCoroutine(ShrinkThenCollect(eggGo, worldPos, eggData?.eggIcon));
+            nest.IsCollecting = true;
+            StartCoroutine(ShrinkThenCollect(eggGo, worldPos, eggData?.eggIcon, nest));
         }
 
         DataController.instance.CompleteSave();
     }
 
-    private IEnumerator ShrinkThenCollect(GameObject eggGo, Vector3 worldPos, Texture2D icon)
+    private IEnumerator ShrinkThenCollect(GameObject eggGo, Vector3 worldPos, Texture2D icon, EggNest nest)
     {
         float duration = 0.12f;
         float t = 0;
@@ -98,6 +99,7 @@ public class EggNestManager : MonoBehaviour
             yield return null;
         }
         Destroy(eggGo);
+        nest.IsCollecting = false;
 
         if (CollectFX.Instance != null && eggCollectTarget != null)
             CollectFX.Instance.Play(worldPos, icon, eggCollectTarget);
