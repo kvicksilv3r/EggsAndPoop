@@ -20,7 +20,6 @@ MonoBehaviour:
   rarity: 0
   family: 0
   behaviour: 0
-  age: 0
   possibleEvolutions:
   - {fileID: 11400000, guid: 10e2998f29b67d4438a2eac1b78c8087, type: 2}
   - {fileID: 11400000, guid: 82700624f9be4b64eb87ceb783901fc5, type: 2}
@@ -31,5 +30,5 @@ MonoBehaviour:
   movementSpeed: 2
   acceleration: 8
   poopRate: 1
-  eggContribution: 0.05
+  loveGeneration: 5
   sexOverride: 0

@@ -3,6 +3,21 @@ using UnityEngine;
 
 public class NukeAllSaveData : MonoBehaviour
 {
+    public void ResetUnlockedEggs()
+    {
+        PlayerInventoryManager.Instance.unlockedEggTypes.Clear();
+        PlayerInventoryManager.Instance.unlockedEggTypes.Add(EggType.Farm);
+        DataController.instance.CompleteSave();
+        NextEggUnlockPanel.Instance.RefreshUI();
+    }
+
+    public void NukeAllEggs()
+    {
+        PlayerInventoryManager.Instance.playerEggs.Clear();
+        DataController.instance.CompleteSave();
+        GameManager.Instance.m_EggContextOpened.Invoke();
+    }
+
     public void NukeIt()
     {
         GameManager.Instance.m_NukeSaveData.Invoke();

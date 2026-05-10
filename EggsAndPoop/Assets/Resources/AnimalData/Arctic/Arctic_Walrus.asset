@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Arctic_Walrus
   m_EditorClassIdentifier: 
   prefab: {fileID: 6935659746675284366, guid: 45dd76ea3e48f1b4f9ee53f144721d54, type: 3}
+  icon: {fileID: 2800000, guid: cbe32854b7197684caaacf2d77898bf6, type: 3}
   speciesName: Walrus
-  description: Hey look, it is Jamie Hyneman
+  description: Hey look, it is the guy that tested myths on tv 100 years ago!
   rarity: 4
   family: 1
   behaviour: 1
-  age: 1
   possibleEvolutions: []
   openingExtraScale: 2.2
   sellPrice: 60
@@ -27,5 +27,5 @@ MonoBehaviour:
   movementSpeed: 1
   acceleration: 1
   poopRate: 1
-  eggContribution: 0.05
+  loveGeneration: 7.5
   sexOverride: 0

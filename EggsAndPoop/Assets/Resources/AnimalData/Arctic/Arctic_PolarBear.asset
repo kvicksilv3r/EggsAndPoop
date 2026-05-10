@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Arctic_PolarBear
   m_EditorClassIdentifier: 
   prefab: {fileID: 3709661200891039494, guid: 13010ba8a92e1e84094704ebcf1e34cc, type: 3}
+  icon: {fileID: 2800000, guid: 7ed3c7c4d118ee3438e0818b555b099f, type: 3}
   speciesName: Polar bear
   description: 'Lets hope this fierce predator isnt bi-polar '
   rarity: 3
   family: 1
   behaviour: 1
-  age: 1
   possibleEvolutions: []
   openingExtraScale: 2.5
   sellPrice: 10
@@ -27,5 +27,5 @@ MonoBehaviour:
   movementSpeed: 3
   acceleration: 1
   poopRate: 1
-  eggContribution: 0.05
+  loveGeneration: 7.5
   sexOverride: 0

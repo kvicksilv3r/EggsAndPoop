@@ -83,6 +83,17 @@ public class EggProgressionManager : MonoBehaviour
         return true;
     }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    public void DEBUG_UnlockNextEgg()
+    {
+        var next = GetNextLocked();
+        if (next == null) return;
+        PlayerInventoryManager.Instance.AddUnlockedEggType(next.eggType);
+        DataController.instance.CompleteSave();
+        NextEggUnlockPanel.Instance.RefreshUI();
+    }
+#endif
+
     // Human-readable description of a single condition for the UI.
     public string DescribeCondition(EggUnlockCondition condition, out bool met)
     {

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Arctic_SnowWeasel
   m_EditorClassIdentifier: 
   prefab: {fileID: 1155825526630284977, guid: 916e6e9d024ac9b4e8a2b7d8fd285cb4, type: 3}
+  icon: {fileID: 2800000, guid: f9b3049f8b17b584f87a95a16cc433f6, type: 3}
   speciesName: Snow weasel
   description: I don't know anything about these animals, sorry
   rarity: 2
   family: 1
   behaviour: 1
-  age: 1
   possibleEvolutions: []
   openingExtraScale: 1.4
   sellPrice: 5
@@ -27,5 +27,5 @@ MonoBehaviour:
   movementSpeed: 4
   acceleration: 10
   poopRate: 1
-  eggContribution: 0.05
+  loveGeneration: 7.5
   sexOverride: 0

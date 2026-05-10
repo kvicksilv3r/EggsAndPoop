@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Arctic_Ox
   m_EditorClassIdentifier: 
   prefab: {fileID: 1703209682340281143, guid: 8459140a28c7eac4d8b170b721453d02, type: 3}
+  icon: {fileID: 2800000, guid: 059c3571ca06889428dcaaa113392baf, type: 3}
   speciesName: Ox
   description: This big cow is actually an OX. He sends you love and kisses xoxo
   rarity: 1
   family: 1
   behaviour: 0
-  age: 1
   possibleEvolutions: []
   openingExtraScale: 2
   sellPrice: 3
@@ -27,5 +27,5 @@ MonoBehaviour:
   movementSpeed: 1
   acceleration: 2
   poopRate: 1
-  eggContribution: 0.05
+  loveGeneration: 7.5
   sexOverride: 0

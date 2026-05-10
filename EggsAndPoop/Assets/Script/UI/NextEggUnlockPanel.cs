@@ -7,13 +7,11 @@ public class NextEggUnlockPanel : MonoBehaviour
     public static NextEggUnlockPanel Instance;
 
     public GameObject panel;
-    public RawImage eggIcon;
-    public TextMeshProUGUI eggNameText;
-    public TextMeshProUGUI tierText;
+    public GameObject unlockContent;
+    public GameObject allUnlockedContent;
     public TextMeshProUGUI costText;
-    public TextMeshProUGUI coinsText;
     public Transform conditionsContainer;
-    public GameObject conditionRowPrefab;   // TextMeshProUGUI child displaying "✓/✗ <description>"
+    public GameObject conditionRowPrefab;
     public Button unlockButton;
 
     private EggData _target;
@@ -36,21 +34,17 @@ public class NextEggUnlockPanel : MonoBehaviour
 
         if (_target == null)
         {
-            panel.SetActive(false);
+            panel.SetActive(true);
+            unlockContent.SetActive(false);
+            allUnlockedContent.SetActive(true);
             return;
         }
 
         panel.SetActive(true);
-        eggNameText.text = _target.eggName;
-        tierText.text = $"Tier {_target.tier}";
+        unlockContent.SetActive(true);
+        allUnlockedContent.SetActive(false);
         costText.text = $"{_target.unlockCost} coins";
-        coinsText.text = $"You have: {CoinManager.Instance.GetCoins()} coins";
-
-        if (eggIcon != null)
-            eggIcon.texture = _target.eggIcon;
-
         BuildConditionRows();
-
         unlockButton.interactable = EggProgressionManager.Instance.CanPurchase(_target);
     }
 
@@ -69,7 +63,7 @@ public class NextEggUnlockPanel : MonoBehaviour
             var row = Instantiate(conditionRowPrefab, conditionsContainer);
             var label = row.GetComponentInChildren<TextMeshProUGUI>();
             if (label != null)
-                label.text = (met ? "✓ " : "✗ ") + description;
+                label.text = (met ? "[+] " : "[-] ") + description;
         }
     }
 

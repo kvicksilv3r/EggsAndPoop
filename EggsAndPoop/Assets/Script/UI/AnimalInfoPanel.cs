@@ -16,7 +16,9 @@ public class AnimalInfoPanel : MonoBehaviour
     public TextMeshProUGUI happinessText;
     public Button changeNameButton;
     public Button favouriteButton;
-    public TextMeshProUGUI favouriteButtonText;
+    public Image favouriteButtonIcon;
+    public Sprite favouriteOnSprite;
+    public Sprite favouriteOffSprite;
     public Button sellButton;
     public Button sendToStorageButton;
     public TextMeshProUGUI sendToStorageButtonText;
@@ -95,8 +97,8 @@ public class AnimalInfoPanel : MonoBehaviour
 
     private void RefreshFavouriteButton(PlayerAnimalEntry entry)
     {
-        if (favouriteButtonText != null)
-            favouriteButtonText.text = entry.favourite ? "♥" : "♡";
+        if (favouriteButtonIcon != null)
+            favouriteButtonIcon.sprite = entry.favourite ? favouriteOnSprite : favouriteOffSprite;
     }
 
     private void SellAnimal()

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,30 +37,33 @@ public class NestPreferencePanel : MonoBehaviour
         var unlocked = PlayerInventoryManager.Instance.unlockedEggTypes;
         var ordered = EggProgressionManager.Instance.GetOrderedEggs();
 
+        int count = 0;
         foreach (var eggData in ordered)
         {
             if (unlocked.Contains(eggData.eggType))
+            {
                 SpawnButton(eggData);
+                count++;
+            }
+        }
+
+        if (count % 2 != 0)
+        {
+            var placeholder = Instantiate(eggChoiceButtonPrefab, buttonContainer);
+            var cg = placeholder.AddComponent<CanvasGroup>();
+            cg.alpha = 0f;
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
         }
     }
 
     private void SpawnButton(EggData eggData)
     {
         var go = Instantiate(eggChoiceButtonPrefab, buttonContainer);
-        var btn = go.GetComponent<Button>();
-        var icon = go.GetComponentInChildren<RawImage>();
-        var label = go.GetComponentInChildren<TextMeshProUGUI>();
+        go.GetComponent<EggChoiceButton>().Setup(eggData);
 
-        bool isRandom = eggData == null;
-
-        if (icon != null)
-            icon.texture = isRandom ? null : (eggData.nestPickerIcon != null ? eggData.nestPickerIcon : eggData.eggIcon);
-
-        if (label != null)
-            label.text = isRandom ? "Random" : eggData.eggName;
-
-        var capturedType = isRandom ? EggType.Unknown : eggData.eggType;
-        btn?.onClick.AddListener(() =>
+        var capturedType = eggData.eggType;
+        go.GetComponent<Button>().onClick.AddListener(() =>
         {
             EggSlotManager.Instance.SetNestPreference(_targetSlot, capturedType);
             Close();

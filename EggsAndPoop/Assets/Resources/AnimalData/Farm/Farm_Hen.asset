@@ -20,7 +20,6 @@ MonoBehaviour:
   rarity: 1
   family: 0
   behaviour: 0
-  age: 1
   possibleEvolutions: []
   openingExtraScale: 2
   sellPrice: 2
@@ -29,5 +28,5 @@ MonoBehaviour:
   movementSpeed: 3
   acceleration: 8
   poopRate: 1
-  eggContribution: 0.1
+  loveGeneration: 10
   sexOverride: 2
