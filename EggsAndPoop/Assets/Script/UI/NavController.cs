@@ -130,8 +130,11 @@ public class NavController : MonoBehaviour
             GameManager.Instance.m_EggContextOpened.Invoke();
         }
 
-        if (to == TAB_UPGRADES && FarmUpgradePanel.Instance != null)
-            FarmUpgradePanel.Instance.RefreshUI();
+        if (to == TAB_UPGRADES)
+        {
+            FarmUpgradePanel.Instance?.RefreshUI();
+            NextEggUnlockPanel.Instance?.RefreshUI();
+        }
     }
 
     private float Smooth(float t) => t * t * (3f - 2f * t);

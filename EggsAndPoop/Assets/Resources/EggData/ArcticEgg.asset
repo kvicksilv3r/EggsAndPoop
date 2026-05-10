@@ -20,3 +20,12 @@ MonoBehaviour:
   eggPrefab: {fileID: 5581874701819194801, guid: fae3cc8616a3fbf4e80487cb16987a6a, type: 3}
   nestEggPrefab: {fileID: 8107552873743471414, guid: add5a22e68b59e540b1ce2db9f30de77, type: 3}
   eggIcon: {fileID: 2800000, guid: 36a00e796fec879469c0784b27f157d6, type: 3}
+  nestPickerIcon: {fileID: 2800000, guid: c75f74c853ad61141af279c9e200a3f9, type: 3}
+  tier: 1
+  unlockCost: 10
+  nestLoveCostMultiplier: 1.5
+  unlockConditions:
+  - type: 0
+    requiredAmount: 10
+    requiredFamily: 0
+    requiredEggType: 1

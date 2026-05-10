@@ -14,6 +14,6 @@ public class EggNest : MonoBehaviour
         if (spawnedEgg != null)
             EggNestManager.Instance.CollectEgg(slotIndex);
         else
-            FloatingMessageController.Instance.Show($"Egg ready in: {EggSlotManager.Instance.TimeUntilNextEgg(slotIndex)}");
+            NestPreferencePanel.Instance?.Open(slotIndex);
     }
 }

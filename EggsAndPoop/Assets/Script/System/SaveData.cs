@@ -25,4 +25,7 @@ public class SaveData
     public int[] slotLuckLevel = new int[3];
     public int cartonCurrentTier = 0;
     public System.Collections.Generic.List<UnclaimedEggData> unclaimedEggs = new System.Collections.Generic.List<UnclaimedEggData>();
+
+    // Nest preferences — indices 0-2 map to the three regular slots; Unknown = random
+    public EggType[] nestPreferredEggTypes = new EggType[3];
 }

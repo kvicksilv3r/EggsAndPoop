@@ -14,6 +14,7 @@ public class EggSlotManager : MonoBehaviour
     private int[] _loveReductionLevels = new int[3];
     private int[] _luckLevels = new int[3];
     private int _cartonTier;
+    private EggType[] _nestPreferred = new EggType[3];
 
     public int LastSessionEggsEarned { get; private set; }
 
@@ -32,6 +33,8 @@ public class EggSlotManager : MonoBehaviour
         _luckLevels = data.slotLuckLevel != null && data.slotLuckLevel.Length == 3
             ? data.slotLuckLevel : new int[3];
         _cartonTier = data.cartonCurrentTier;
+        _nestPreferred = data.nestPreferredEggTypes != null && data.nestPreferredEggTypes.Length == 3
+            ? data.nestPreferredEggTypes : new EggType[3];
     }
 
     public void CalculateAfkOutput(float hoursAway)
@@ -78,7 +81,10 @@ public class EggSlotManager : MonoBehaviour
         if (i < 3)
         {
             var types = PlayerInventoryManager.Instance.unlockedEggTypes;
-            eggType = types[UnityEngine.Random.Range(0, types.Count)];
+            var preferred = _nestPreferred[i];
+            eggType = preferred != EggType.Unknown && types.Contains(preferred)
+                ? preferred
+                : types[UnityEngine.Random.Range(0, types.Count)];
         }
         else
         {
@@ -89,6 +95,21 @@ public class EggSlotManager : MonoBehaviour
 
         EggNestManager.Instance?.SpawnEggAtNest(i, eggType);
         LastSessionEggsEarned++;
+    }
+
+    public void SetNestPreference(int slotIndex, EggType type)
+    {
+        if (slotIndex < 0 || slotIndex >= 3) return;
+        if (_nestPreferred[slotIndex] == type) return;
+        _nestPreferred[slotIndex] = type;
+        _slotProgress[slotIndex] = 0f;
+        DataController.instance.CompleteSave();
+    }
+
+    public EggType GetNestPreference(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= 3) return EggType.Unknown;
+        return _nestPreferred[slotIndex];
     }
 
     public float GetLovePerHour()
@@ -180,7 +201,17 @@ public class EggSlotManager : MonoBehaviour
                 return 200f;
             var config = inventoryConfig.eggSlots[slot];
             float reduction = _loveReductionLevels[slot] * config.loveReductionPerUpgradeLevel;
-            return Mathf.Max(config.baseLoveCost - reduction, 10f);
+            float baseCost = Mathf.Max(config.baseLoveCost - reduction, 10f);
+
+            var preferred = _nestPreferred[slot];
+            if (preferred != EggType.Unknown)
+            {
+                var eggData = EggRoster.Instance.GetByType(preferred);
+                if (eggData != null && eggData.nestLoveCostMultiplier > 0f)
+                    baseCost *= eggData.nestLoveCostMultiplier;
+            }
+
+            return baseCost;
         }
         if (inventoryConfig.cartonTiers == null || inventoryConfig.cartonTiers.Length == 0)
             return 2000f;
@@ -204,5 +235,6 @@ public class EggSlotManager : MonoBehaviour
         saveData.slotLoveReductionLevel = _loveReductionLevels;
         saveData.slotLuckLevel = _luckLevels;
         saveData.cartonCurrentTier = _cartonTier;
+        saveData.nestPreferredEggTypes = _nestPreferred;
     }
 }
